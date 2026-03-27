@@ -58,7 +58,7 @@ python3 .codebuddy/skills/token-switch/scripts/switch_tokens.py --target iOS --p
 
 切换后必须确认：
 - `json/index.json` 可正常解析
-- `css/QQ_color_tokens.css` 中关键映射变量均存在
+- `css/*.css` 中 `--qq-*` 与 `--color-*` 变量完成替换；`tokens.css` 变量按“目标有对应 token 则替换、无对应则保留原值”执行
 - 报告文件已生成
 
 如检查失败：
@@ -71,6 +71,7 @@ python3 .codebuddy/skills/token-switch/scripts/switch_tokens.py --target iOS --p
 基于 `md/TOKEN_SWITCH_REPORT.md` 汇总输出以下维度：
 - 变化覆盖率（映射总数 / 实际变化数）
 - 颜色语义变化（文本色、品牌色、背景色、分割色）
+- CSS 全量替换率（`--qq-*`、`--color-*`）
 - 工程影响范围（受影响文件）
 - 风险与兼容性（未命中变量、潜在视觉偏差）
 
