@@ -1,0 +1,60 @@
+{
+  "id": "grid",
+  "name": "宫格 Grid",
+  "category": "数据",
+  "description": "将多个同类内容项以网格形式排列的区域，支持平铺与横滑两种交互方式，适合入口导航与分类展示。",
+  "spec": "md/GRID_COMPONENT_SPEC.md",
+
+  "totalVariants": 17,
+
+  "variants": {
+    "A_tile": [
+      { "id": "A1", "name": "平铺·横版2列", "cols": 2, "thumbSize": [192, 108], "radius": 16, "fontSize": 14, "height": 168, "shape": "横版", "thumbOffsetX": -1 },
+      { "id": "A2", "name": "平铺·竖版2列", "cols": 2, "thumbSize": [192, 192], "radius": 16, "fontSize": 14, "height": 252, "shape": "竖版", "thumbOffsetX": -1 },
+      { "id": "A3", "name": "平铺·正方形3列", "cols": 3, "thumbSize": [120, 120], "radius": 16, "fontSize": 14, "height": 180, "shape": "正方形" },
+      { "id": "A4", "name": "平铺·正方形4列", "cols": 4, "thumbSize": [88, 88], "radius": 16, "fontSize": 12, "height": 145, "shape": "正方形" },
+      { "id": "A5", "name": "平铺·圆形4列", "cols": 4, "thumbSize": [64, 64], "radius": "50%", "fontSize": 12, "height": 109, "shape": "圆形", "useIcon": true },
+      { "id": "A6", "name": "平铺·圆形5列", "cols": 5, "thumbSize": [64, 64], "radius": "50%", "fontSize": 12, "height": 121, "shape": "圆形", "useIcon": true },
+      { "id": "A7", "name": "平铺·圆形5列", "cols": 5, "thumbSize": [64, 64], "radius": "50%", "fontSize": 12, "height": 109, "shape": "圆形", "useIcon": true },
+      { "id": "A8", "name": "平铺·横版2列(高)", "cols": 2, "thumbSize": [190, 269], "radius": 16, "fontSize": 14, "height": 329, "shape": "横版" },
+      { "id": "A9", "name": "平铺·竖版3列", "cols": 3, "thumbSize": [120, 168], "radius": 16, "fontSize": 14, "height": 228, "shape": "竖版" }
+    ],
+    "B_scroll": [
+      { "id": "B1", "name": "横滑·正方形3列", "visibleCols": 3, "totalCols": 8, "thumbSize": [112, 112], "radius": 16, "fontSize": 14, "height": 172, "shape": "正方形" },
+      { "id": "B2", "name": "横滑·正方形4列", "visibleCols": 4, "totalCols": 10, "thumbSize": [80, 80], "radius": 12, "fontSize": 12, "height": 137, "shape": "正方形" },
+      { "id": "B3", "name": "横滑·圆形6列", "visibleCols": 6, "totalCols": 12, "thumbSize": [60, 60], "radius": "50%", "fontSize": 10, "height": 114, "shape": "圆形", "useIcon": true },
+      { "id": "B4", "name": "横滑·圆形6列", "visibleCols": 6, "totalCols": 12, "thumbSize": [60, 60], "radius": "50%", "fontSize": 10, "height": 112, "shape": "圆形", "useIcon": true },
+      { "id": "B5", "name": "横滑·圆形7列", "visibleCols": 7, "totalCols": 14, "thumbSize": [52, 52], "radius": "50%", "fontSize": 10, "height": 106, "shape": "圆形", "useIcon": true },
+      { "id": "B6", "name": "横滑·圆形7列", "visibleCols": 7, "totalCols": 14, "thumbSize": [52, 52], "radius": "50%", "fontSize": 10, "height": 104, "shape": "圆形", "useIcon": true },
+      { "id": "B7", "name": "横滑·竖版2列", "visibleCols": 2, "totalCols": 6, "thumbSize": [172, 256], "radius": 15.2, "fontSize": 14, "height": 316, "shape": "竖版" },
+      { "id": "B8", "name": "横滑·竖版3列", "visibleCols": 3, "totalCols": 8, "thumbSize": [108, 152], "radius": 16, "fontSize": 14, "height": 212, "shape": "竖版" }
+    ]
+  },
+
+  "layout": {
+    "containerWidth": 428,
+    "background": "white",
+    "itemStructure": "缩略图/图标 + 标题文字（上下排列）",
+    "thumbFill": { "token": "fill_standard_primary", "value": "rgba(13, 16, 49, 0.04)" }
+  },
+
+  "style": {
+    "titleText": { "font": "PingFang SC", "fontWeight": 400, "color": { "token": "text_primary", "value": "rgba(0, 0, 0, 0.90)" }, "align": "center" },
+    "lineHeightMap": { "14px": 20, "12px": 17, "10px": 14 }
+  },
+
+  "interaction": {
+    "tile": "内容不可滚动，所有项完整展示",
+    "scroll": {
+      "overflowX": "auto",
+      "scrollbarHidden": true,
+      "inertiaScroll": "-webkit-overflow-scrolling: touch",
+      "peekHint": "totalCols > visibleCols 时最右侧项露出一部分"
+    }
+  },
+
+  "usage": {
+    "tile": "功能入口、分类导航等固定数量展示",
+    "scroll": "推荐内容、热门分类等可探索性内容展示"
+  }
+}

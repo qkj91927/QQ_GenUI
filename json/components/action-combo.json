@@ -1,0 +1,103 @@
+{
+  "id": "action",
+  "name": "操作组合 ActionCombo",
+  "category": "操作",
+  "description": "位于页面底部或内容尾部的操作触发区域，聚合主要行动按钮与辅助文字链，引导用户完成关键决策。分为操作行（Button 按钮型）和辅助操作行（Action 文字链型）两类。",
+  "spec": "md/ACTION_COMPONENT_SPEC.md",
+
+  "totalVariants": 13,
+
+  "variants": {
+    "A_actionBar": [
+      { "id": "A1", "name": "双按钮（二级+一级）", "structure": "1个二级 + 1个一级，等宽排列", "height": 84 },
+      { "id": "A2", "name": "三按钮（二级+二级+一级）", "structure": "2个二级 + 1个一级，等宽排列", "height": 84 },
+      { "id": "A3", "name": "单按钮（一级满宽）", "structure": "1个一级按钮，满宽", "height": 84 },
+      { "id": "A4", "name": "单按钮（二级满宽）", "structure": "1个二级按钮，满宽", "height": 84 },
+      { "id": "A5", "name": "四宫格操作", "structure": "4个图标+文字操作项，等宽排列", "height": 72, "itemWidth": 99 },
+      { "id": "A6", "name": "六图标横排", "structure": "6个纯图标按钮，横向均匀分布", "height": 48, "iconGap": 68, "padding": "12px 32px" },
+      { "id": "A7", "name": "四图标文字行", "structure": "4个图标+文字操作项，等宽排列", "height": 48, "itemWidth": 99, "padding": "12px 16px" },
+      { "id": "A8", "name": "操作+勾选+按钮", "structure": "文字操作 + 2个勾选项 + 小一级按钮", "height": 72 }
+    ],
+    "B_auxBar": [
+      { "id": "B1", "name": "勾选+文案+文字链", "structure": "Checkbox + 辅助文案 + 文字链", "height": 36 },
+      { "id": "B2", "name": "辅助文案+文字链", "structure": "辅助说明文案 + 文字链", "height": 36 },
+      { "id": "B3", "name": "单 Action", "structure": "1个居中 Action 文字链", "height": 36 },
+      { "id": "B4", "name": "双 Action", "structure": "2个 Action 文字链 + 分隔线", "height": 36 },
+      { "id": "B5", "name": "三 Action", "structure": "3个 Action 文字链 + 分隔线", "height": 36 }
+    ]
+  },
+
+  "buttonProperties": {
+    "primary": {
+      "bg": { "token": "brand_standard", "value": "#0099FF" },
+      "text": { "token": "text_allwhite", "value": "#FFFFFF" },
+      "fontSize": { "large": 17, "small": 14 },
+      "fontWeight": { "large": 600, "small": 500 },
+      "height": { "large": 52, "small": 36 },
+      "radius": { "large": 14, "small": 9999 }
+    },
+    "secondary": {
+      "bg": { "token": "fill_tertiary", "value": "rgba(118, 118, 128, 0.12)" },
+      "text": { "token": "text_primary", "value": "rgba(0, 0, 0, 0.90)" },
+      "fontSize": 17,
+      "fontWeight": 600,
+      "height": 52,
+      "radius": 14
+    },
+    "iconButton": {
+      "bg": { "token": "fill_tertiary", "value": "rgba(118, 118, 128, 0.12)" },
+      "size": 52,
+      "iconSize": 24,
+      "radius": 9999
+    }
+  },
+
+  "actionProperties": {
+    "fontSize": 14,
+    "fontWeight": 500,
+    "color": { "token": "text_link", "value": "#214CA5" },
+    "divider": { "width": 1, "height": 14, "color": { "token": "separator", "value": "rgba(0, 0, 0, 0.08)" }, "margin": "0 8px" }
+  },
+
+  "auxTextProperties": {
+    "fontSize": 14,
+    "fontWeight": 400,
+    "color": { "token": "text_secondary", "value": "rgba(60, 60, 67, 0.76)" }
+  },
+
+  "checkboxProperties": {
+    "B1_size": 16,
+    "A9_size": 20,
+    "marginRight": 4,
+    "svgIntrinsicSize": 20,
+    "unchecked": "Checkbox.svg",
+    "checked": "Checkbox_filled.svg"
+  },
+
+  "layout": {
+    "containerWidth": 428,
+    "A_padding": { 
+      "A1_A4": "16px 24px", 
+      "A5": "16px",
+      "A6": "16px",
+      "A7": "12px 32px",
+      "A8": "12px 16px",
+      "A9": "16px"
+    },
+    "B_padding": "0 16px",
+    "buttonGap": 12,
+    "iconGap": { "A7": 68 },
+    "itemWidth": { "A6": 99, "A8": 99 },
+    "B_align": "center"
+  },
+
+  "usage": {
+    "A1_A3": "半屏浮层确认操作、表单提交",
+    "A2": "多操作选择",
+    "A5_A6": "分享/收藏等快捷操作",
+    "A7": "横向紧凑型快捷图标操作",
+    "A8": "四图标文字快捷操作",
+    "B1": "协议勾选+说明",
+    "B3_B5": "底部辅助链接"
+  }
+}

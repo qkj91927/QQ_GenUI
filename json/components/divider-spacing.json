@@ -1,0 +1,68 @@
+{
+  "id": "divider_spacing",
+  "name": "分隔与间距 Divider & Spacing",
+  "category": "数据",
+  "description": "用于分隔内容层级与控制视觉节奏的基础布局组件，通过分割线与间距两类子组件组织页面结构。",
+  "spec": "md/DIVIDER_SPACING_COMPONENT_SPEC.md",
+
+  "totalVariants": 7,
+
+  "variants": {
+    "A_divider": [
+      {
+        "id": "A1",
+        "name": "分割线 Divider",
+        "usage": "分隔同一区域内的列表条目或内容块"
+      }
+    ],
+    "B_spacing": [
+      { "id": "B1", "name": "间距 4px", "height": 4, "usage": "微间距，紧凑排列的辅助信息之间" },
+      { "id": "B2", "name": "间距 8px", "height": 8, "usage": "小间距，同组内容块之间" },
+      { "id": "B3", "name": "间距 12px", "height": 12, "usage": "中小间距，相关联的不同内容组之间" },
+      { "id": "B4", "name": "间距 16px", "height": 16, "usage": "标准间距，不同功能组之间" },
+      { "id": "B5", "name": "间距 24px", "height": 24, "usage": "大间距，不同功能模块之间" },
+      { "id": "B6", "name": "间距 32px", "height": 32, "usage": "超大间距，主要板块之间" }
+    ]
+  },
+
+  "dividerStyle": {
+    "height": 0.5,
+    "color": { "token": "separator", "value": "rgba(0, 0, 0, 0.08)" },
+    "colorValue": "rgba(0, 0, 0, 0.08)",
+    "background": "transparent"
+  },
+
+  "dividerParams": {
+    "description": "分割线基础样式统一，以下为使用时的参数变化，不构成独立变体",
+    "width": {
+      "fullWidth": { "width": 428, "leftOffset": 0, "desc": "通栏，撑满屏幕宽度" },
+      "insetLeft": { "width": 376, "leftOffset": 52, "desc": "左缩进，与内容文字对齐" },
+      "insetBoth": { "width": 396, "leftOffset": 16, "rightOffset": 16, "desc": "居中，左右各缩进16px" }
+    },
+    "orientation": ["horizontal", "vertical"]
+  },
+
+  "spacingStyle": {
+    "width": 428,
+    "background": "transparent"
+  },
+
+  "constraints": [
+    "分割线高度固定 0.5px（Retina 1 物理像素）",
+    "颜色不可自定义，统一使用 rgba(0,0,0,0.08)",
+    "列表最后一行底部不显示分割线",
+    "同一列表内只使用一种分割线样式",
+    "分割线支持通栏/左缩进/居中及水平/垂直方向，但基础样式不变",
+    "间距高度为 4px 整数倍（4px 网格系统）",
+    "间距区域始终透明，不可添加可见元素",
+    "不可使用非标准间距值（5px、10px、20px 等）"
+  ],
+
+  "compositionGuide": {
+    "listItems": "分割线 (A1)，保持视觉连续性",
+    "betweenModules": "间距 (B2-B6)，创造层级区分",
+    "cardInternal": "分割线 (A1) 居中模式，匹配卡片内边距",
+    "navToContent": "分割线 (A1) 通栏模式，标记区域边界",
+    "actionToContent": "间距 (B4/B5)，留白突出操作区"
+  }
+}

@@ -1,0 +1,73 @@
+{
+  "id": "textfield",
+  "name": "输入框 Textfield",
+  "category": "操作",
+  "description": "表单场景中最基础的信息录入组件，支持多种输入类型与交互状态，满足不同数据采集需求。",
+  "spec": "md/TEXTFIELD_COMPONENT_SPEC.md",
+
+  "totalVariants": 20,
+
+  "dimensions": {
+    "type": [
+      { "id": "A", "name": "单行无标题", "scene": "搜索、备注等简单输入" },
+      { "id": "B", "name": "单行有标题", "scene": "表单填写（姓名、地址等）", "titleWidth": 90, "titleGap": 24, "inputAreaWidth": 250 },
+      { "id": "C", "name": "电话号码", "scene": "手机号/电话号码输入", "prefix": "中国+86", "prefixColor": { "token": "text_link", "value": "#214CA5" }, "inputAreaWidth": 275 },
+      { "id": "D", "name": "多行文本", "scene": "长文本输入（评论、描述等）" }
+    ],
+    "state": [
+      { "id": "1", "name": "默认态", "hasCursor": false, "hasClear": false, "placeholder": true },
+      { "id": "2", "name": "激活态", "hasCursor": true, "hasClear": false, "placeholder": true },
+      { "id": "3", "name": "输入态", "hasCursor": true, "hasClear": true, "placeholder": false, "charCount": "已输入/总数" },
+      { "id": "4", "name": "完成态", "hasCursor": false, "hasClear": false, "placeholder": false },
+      { "id": "5", "name": "错误态", "hasCursor": true, "hasClear": true, "placeholder": false, "charCountColor": { "token": "feedback_error", "value": "#F74C30" } }
+    ]
+  },
+
+  "singleLineLayout": {
+    "totalWidth": 428,
+    "rowHeight": 56,
+    "roundDecorSize": [16, 56],
+    "inputAreaWidth": 364,
+    "bottomHelperHeight": 24,
+    "totalHeight": 80,
+    "bottomDivider": { "width": 364, "height": 0.5 }
+  },
+
+  "multiLineLayout": {
+    "totalWidth": 428,
+    "textAreaHeight": 197,
+    "contentHeight": 144,
+    "padding": 16,
+    "radius": 12,
+    "charCountPosition": "右下角",
+    "bottomHelperHeight": 24
+  },
+
+  "style": {
+    "placeholder": { "fontSize": 17, "fontWeight": 400, "color": { "token": "text_quaternary", "value": "rgba(60,60,67,0.26)" } },
+    "inputText": { "fontSize": 17, "fontWeight": 400, "color": { "token": "text_primary", "value": "rgba(0, 0, 0, 0.90)" } },
+    "titleText": { "fontSize": 17, "fontWeight": 400, "color": { "token": "text_primary", "value": "rgba(0, 0, 0, 0.90)" } },
+    "helperText": { "fontSize": 14, "fontWeight": 400, "color": { "token": "text_tertiary", "value": "rgba(60, 60, 67, 0.56)" } },
+    "charCount_single": { "fontSize": 14, "fontWeight": 400, "color": { "token": "text_tertiary", "value": "rgba(60, 60, 67, 0.56)" } },
+    "charCount_multi": { "fontSize": 12, "fontWeight": 400, "color": { "token": "text_tertiary", "value": "rgba(60, 60, 67, 0.56)" } },
+    "cursor": { "width": 1, "height": 18, "color": { "token": "brand_standard", "value": "#0099FF" } },
+    "clearButton": { "size": 20, "color": { "token": "icon_secondary", "value": "#929296" } },
+    "divider": { "color": { "token": "border_standard", "value": "rgba(0, 0, 0, 0.10)" } },
+    "inputBackground": "white"
+  },
+
+  "stateTransitions": {
+    "default→focused": "点击/聚焦",
+    "focused→typing": "开始输入",
+    "typing→completed": "失去焦点",
+    "typing→error": "字数超限",
+    "completed→focused": "再次聚焦",
+    "error→typing": "删减文字"
+  },
+
+  "interaction": {
+    "helperRow": "所有类型均支持底部附加说明行",
+    "charCountFormat": { "defaultFocused": "N字", "typingCompletedError": "已输入/N字" },
+    "clearAction": "点击后清空内容，回到激活态"
+  }
+}

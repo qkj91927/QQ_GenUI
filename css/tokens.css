@@ -1,0 +1,186 @@
+/*
+ * ============================================================
+ *  Design System — Global Design Tokens (CSS Custom Properties)
+ *  Source: json/index.json
+ *  Generated: 2026-03-23
+ * ============================================================
+ *
+ *  本文件定义设备参数、字体、间距、圆角、阴影、动效等非颜色 Token。
+ *  颜色 Token 已独立拆分至主题文件，按需引入：
+ *    - css/QQ_color_tokens.css       （默认且唯一可用，data-theme="qq-light" / "qq-dark"）
+ *    ⚠️ iOS / Material 主题文件暂未提供，未来版本可能新增
+ *
+ *  使用方法：
+ *    1. 在 HTML 中引入 tokens.css + 一套颜色主题文件
+ *    2. 在 <html> 标签上设置 data-theme 属性激活颜色（默认使用 "qq-light"）
+ *    3. 通过 var(--token-name) 使用所有样式变量
+ */
+
+/* ————————————————————————————————————
+   0. 设备与基础
+   ———————————————————————————————————— */
+:root {
+  /* 设备参数 (iPhone 14 Pro Max) */
+  --device-width: 428px;
+  --device-screen-height: 926px;
+  --device-status-bar-height: 54px;
+  --device-home-bar-height: 34px;
+  --device-home-bar-indicator-width: 144px;
+  --device-home-bar-indicator-height: 5px;
+  --device-home-bar-indicator-radius: 2.5px;
+  --device-platform: "iOS";
+  --device-font: "PingFang SC", -apple-system, "Helvetica Neue", sans-serif;
+}
+
+/* ————————————————————————————————————
+   1. 字体 Token (Typography)
+   ———————————————————————————————————— */
+:root {
+  --font-family:               "PingFang SC", -apple-system, "Helvetica Neue", sans-serif;
+
+  /* Large Title — 26/34/600 */
+  --typo-large-title-size:     26px;
+  --typo-large-title-weight:   600;
+  --typo-large-title-lh:       34px;
+
+  /* Title 1 — 22/28/500 */
+  --typo-title1-size:          22px;
+  --typo-title1-weight:        500;
+  --typo-title1-lh:            28px;
+
+  /* Title 2 — 18/26/500 */
+  --typo-title2-size:          18px;
+  --typo-title2-weight:        500;
+  --typo-title2-lh:            26px;
+
+  /* Headline — 17/24/600 */
+  --typo-headline-size:        17px;
+  --typo-headline-weight:      600;
+  --typo-headline-lh:          24px;
+
+  /* Body — 17/24/400 */
+  --typo-body-size:            17px;
+  --typo-body-weight:          400;
+  --typo-body-lh:              24px;
+
+  /* Callout — 16/22/400 */
+  --typo-callout-size:         16px;
+  --typo-callout-weight:       400;
+  --typo-callout-lh:           22px;
+
+  /* Subhead — 15/20/400 */
+  --typo-subhead-size:         15px;
+  --typo-subhead-weight:       400;
+  --typo-subhead-lh:           20px;
+
+  /* Footnote — 14/20/400 */
+  --typo-footnote-size:        14px;
+  --typo-footnote-weight:      400;
+  --typo-footnote-lh:          20px;
+
+  /* Caption 1 — 12/17/400 */
+  --typo-caption1-size:        12px;
+  --typo-caption1-weight:      400;
+  --typo-caption1-lh:          17px;
+
+  /* Caption 2 — 10/14/400 */
+  --typo-caption2-size:        10px;
+  --typo-caption2-weight:      400;
+  --typo-caption2-lh:          14px;
+}
+
+/* ————————————————————————————————————
+   2. 间距 Token (Spacing)
+   ———————————————————————————————————— */
+:root {
+  --spacing-page-padding:      16px;    /* 页面左右内边距 */
+  --spacing-icon-gap:          12px;    /* 图标与文字间距 */
+  --spacing-section-gap:       8px;     /* 区块间距 */
+  --spacing-grid-unit:         4px;     /* 4px 网格基准单位 */
+
+  /* 组件间距梯度（详见 DIVIDER_SPACING_COMPONENT_SPEC.md） */
+  --spacing-b1:                4px;     /* 组件内部：紧凑排列的辅助信息之间 */
+  --spacing-b2:                8px;     /* 组件内部：同组内容块之间、标签与内容之间 */
+  --spacing-b3:                12px;    /* 组件间：同类组件相邻 */
+  --spacing-b4:                16px;    /* 组件间：不同组件相邻（默认） */
+  --spacing-b5:                24px;    /* 组件间：不同功能模块之间 */
+  --spacing-b6:                32px;    /* 组件与页面：页面底部留白（可滑动场景除外） */
+}
+
+/* ————————————————————————————————————
+   3. 圆角 Token (Radius)
+   ———————————————————————————————————— */
+:root {
+  --radius-button:             14px;    /* 常规按钮（大尺寸 S1 / ActionCombo A1-A5） */
+  --radius-button-pill:        9999px;  /* 胶囊按钮 */
+  --radius-thumb-small:        4px;     /* 小缩略图 */
+  --radius-thumb-medium:       8px;     /* 中缩略图 */
+  --radius-thumb-large:        16px;    /* 大缩略图 */
+  --radius-overlay:            20px;    /* 半屏浮层顶部 */
+  --radius-action-sheet:       16px;    /* 操作面板顶部 */
+  --radius-dialog:             14px;    /* 对话框 */
+  --radius-menu:               12px;    /* 菜单 */
+  --radius-input:              12px;    /* 输入框 */
+  --radius-segment:            6px;     /* 分段选择 */
+}
+
+/* ————————————————————————————————————
+   4. 阴影 Token (Shadow)
+   ———————————————————————————————————— */
+:root {
+  --shadow-dialog:             0 8px 32px rgba(0, 0, 0, 0.12);  /* 对话框阴影 */
+  --shadow-menu:               0 8px 32px rgba(0, 0, 0, 0.12);  /* 菜单阴影 */
+}
+
+/* ————————————————————————————————————
+   5. 动效 Token (Animation)
+   ———————————————————————————————————— */
+:root {
+  /* 按压 */
+  --anim-press-in-duration:    100ms;
+  --anim-press-in-easing:      ease-out;
+  --anim-press-out-duration:   150ms;
+  --anim-press-out-easing:     ease-out;
+
+  /* 开关切换 */
+  --anim-switch-duration:      200ms;
+  --anim-switch-easing:        ease-out;
+
+  /* 子行展开/收起 */
+  --anim-expand-duration:      250ms;
+  --anim-expand-easing:        ease-in-out;
+  --anim-collapse-duration:    200ms;
+  --anim-collapse-easing:      ease-in;
+
+  /* 半屏浮层 */
+  --anim-halfscreen-in-duration:  420ms;
+  --anim-halfscreen-in-easing:    cubic-bezier(0.32, 0.72, 0.35, 1);
+  --anim-halfscreen-out-duration: 300ms;
+  --anim-halfscreen-out-easing:   cubic-bezier(0.32, 0.72, 0.35, 1);
+
+  /* 菜单 */
+  --anim-menu-in-duration:     200ms;
+  --anim-menu-in-easing:       ease-out;
+  --anim-menu-in-transform:    scale(0.9);   /* → scale(1) */
+  --anim-menu-out-duration:    150ms;
+  --anim-menu-out-easing:      ease-in;
+  --anim-menu-out-transform:   scale(1);     /* → scale(0.9) */
+
+  /* 操作面板 ActionSheet（底部弹出） */
+  --anim-actionsheet-in-duration:  420ms;
+  --anim-actionsheet-in-easing:    cubic-bezier(0.32, 0.72, 0.35, 1);
+  --anim-actionsheet-out-duration: 300ms;
+  --anim-actionsheet-out-easing:   cubic-bezier(0.32, 0.72, 0.35, 1);
+
+  /* 对话框 Dialog（居中缩放淡入） */
+  --anim-dialog-in-duration:   250ms;
+  --anim-dialog-in-easing:     ease-out;
+  --anim-dialog-out-duration:  200ms;
+  --anim-dialog-out-easing:    ease-in;
+
+  /* 蒙层 Overlay */
+  --anim-overlay-in-duration:  250ms;
+  --anim-overlay-in-easing:    ease-out;
+  --anim-overlay-out-duration: 200ms;
+  --anim-overlay-out-easing:   ease-in;
+}

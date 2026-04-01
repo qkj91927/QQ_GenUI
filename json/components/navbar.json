@@ -1,0 +1,76 @@
+{
+  "id": "navbar",
+  "name": "导航栏 NavBar",
+  "category": "导航",
+  "description": "固定于页面顶部的全局导航容器，承载页面标题、返回操作与功能入口，建立层级导航与快捷操作的统一框架。",
+  "spec": "md/NAVBAR_COMPONENT_SPEC.md",
+
+  "totalVariants": 97,
+  "theoreticalCombinations": "6×6×7=252",
+  "validCombinationCount": 97,
+
+  "anatomy": {
+    "areas": ["左侧区域 Left Area", "中间区域 Middle Area", "右侧区域 Right Area"],
+    "layout": "三段式布局，各区域高度固定，逻辑独立"
+  },
+
+  "dimensions": {
+    "L": [
+      { "id": "L1", "name": "返回", "visual": "基础返回箭头图标" },
+      { "id": "L2", "name": "返回+气泡", "visual": "返回箭头 + 数字气泡 (Badge，中性灰色)" },
+      { "id": "L3", "name": "关闭", "visual": "关闭图标 (X)" },
+      { "id": "L4", "name": "图标", "visual": "其他功能性图标" },
+      { "id": "L5", "name": "操作", "visual": "17px 纯文字按钮" },
+      { "id": "L6", "name": "头像", "visual": "36×36 头像 + 昵称 + 描述信息" }
+    ],
+    "C": [
+      { "id": "C0/Empty", "name": "Empty", "visual": "空白" },
+      { "id": "C1", "name": "标题", "visual": "17px 粗体居中标题" },
+      { "id": "C2", "name": "下拉标题", "visual": "标题文字 + icons/chevron_down.svg（12×12px 向下箭头）" },
+      { "id": "C3", "name": "标题+副标题", "visual": "主标题 + 11px 辅助描述" },
+      { "id": "C4", "name": "标题+可点击副标题", "visual": "主标题 + 黑色 11px 副标题(具备点击态)" },
+      { "id": "C5", "name": "分段选择", "visual": "分段控制器，胶囊背景 + 选中滑块" }
+    ],
+    "R": [
+      { "id": "R0/Empty", "name": "Empty" },
+      { "id": "R1", "name": "图标", "visual": "icons/empty_icon.svg（单个功能操作图标占位）" },
+      { "id": "R2", "name": "双图标", "visual": "icons/empty_icon.svg × 2（两个横向排列的操作图标占位）" },
+      { "id": "R3", "name": "操作", "visual": "黑色 17px 动作文字" },
+      { "id": "R4", "name": "按钮", "visual": "胶囊形高亮动作按钮" },
+      { "id": "R5", "name": "图标+按钮", "visual": "icons/empty_icon.svg（功能图标占位）与按钮的组合" },
+      { "id": "R6", "name": "勾选", "visual": "icons/Checkbox_filled.svg（蓝色勾选）" }
+    ]
+  },
+
+  "constraints": [
+    { "rule": "L2 → C ∈ {C1, C4}, R = R1 (C4时允许R3)", "reason": "返回+气泡仅限特定中间和右侧组合" },
+    { "rule": "L5 → R = R3", "reason": "操作文字左侧只能与操作文字右侧组合（取消/完成布局）" },
+    { "rule": "L6 → C = C0/Empty, R ∈ {R1, R2}", "reason": "头像型左侧不需要中间标题，仅搭配图标右侧" },
+    { "rule": "C4 → L = L2, R = R3", "reason": "可点击副标题强绑定返回+气泡和操作文字" },
+    { "rule": "C5 → L ∈ {L1, L3}, R ∈ {R0, R1}", "reason": "分段选择仅搭配返回或关闭" }
+  ],
+
+  "layout": {
+    "height": 44,
+    "padding": "0 16px",
+    "width": 428,
+    "background": { "token": "transparent", "value": "transparent" },
+    "centerAbsolute": true,
+    "minTouchWidth": 60
+  },
+
+  "style": {
+    "title": { "fontSize": 17, "fontWeight": 600, "color": { "token": "text_primary", "value": "rgba(0, 0, 0, 0.90)" } },
+    "subtitle_C3": { "fontSize": 11, "color": { "token": "text_primary", "value": "rgba(0, 0, 0, 0.90)" } },
+    "descGroup_C4_L6": { "fontSize": 10, "color": { "token": "text_tertiary", "value": "rgba(60, 60, 67, 0.56)" } },
+    "actionText": { "fontSize": 17, "color": { "token": "text_primary", "value": "rgba(0, 0, 0, 0.90)" } },
+    "iconSize": 24,
+    "descIconSize": 10,
+    "brandColor": { "token": "brand_standard", "value": "#0099FF" }
+  },
+
+  "usage": {
+    "primary": "所有全屏页面的顶部导航",
+    "notFor": "半屏浮层内（应使用 hs_navbar）"
+  }
+}

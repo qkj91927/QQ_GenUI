@@ -1,0 +1,102 @@
+{
+  "id": "list",
+  "name": "通栏式列表 Plain List",
+  "category": "数据",
+  "description": "横向撑满屏幕，适合数据驱动型界面，快速扫描大量同类信息。",
+  "spec": "md/LIST_COMPONENT_SPEC.md",
+
+  "totalVariants": 67,
+  "theoreticalCombinations": "8×3×10=240",
+  "validCombinationCount": 67,
+
+  "anatomy": {
+    "areas": ["左侧区域 Left Area", "列表内容 Content Area", "右侧区域 Right Area"]
+  },
+
+  "dimensions": {
+    "L": [
+      { "id": "L0/Empty", "name": "Empty", "size": null, "radius": null, "type": "any" },
+      { "id": "L1", "name": "Icon", "size": [24, 24], "radius": 0, "cssClass": "icon-24", "type": "single" },
+      { "id": "L2", "name": "File Icon", "size": [52, 52], "radius": 0, "cssClass": "icon-52", "type": "multi" },
+      { "id": "L3", "name": "Small Avatar", "size": [32, 32], "radius": "50%", "cssClass": "avatar-32", "type": "single" },
+      { "id": "L4", "name": "Medium Avatar", "size": [40, 40], "radius": "50%", "cssClass": "avatar-40", "type": "multi" },
+      { "id": "L5", "name": "Large Avatar", "size": [52, 52], "radius": "50%", "cssClass": "avatar-52", "type": "multi" },
+      { "id": "L6", "name": "中缩略图", "size": [40, 40], "radius": 8, "cssClass": "thumb-40", "type": "multi" },
+      { "id": "L7", "name": "App Icon L", "size": [52, 52], "radius": 0, "cssClass": "icon-52", "type": "multi" }
+    ],
+    "C": [
+      { "id": "C1", "name": "单行", "lines": 1, "rowHeight": 52, "type": "single" },
+      { "id": "C2", "name": "双行", "lines": 2, "rowHeight": 72, "type": "multi" },
+      { "id": "C3", "name": "三行", "lines": 3, "rowHeight": 72, "type": "multi" }
+    ],
+    "R": [
+      { "id": "R0/Empty", "name": "Empty" },
+      { "id": "R1", "name": "辅助+箭头", "structure": ["helperText", "arrow"], "arrowIcon": "icons/chevron_right.svg", "helperStyle": { "fontSize": 17, "color": { "token": "text_secondary", "value": "rgba(60, 60, 67, 0.76)" }, "marginRight": 4 } },
+      { "id": "R2", "name": "辅助+头像+箭头", "structure": ["helperText", "avatar:32x32:round", "arrow"], "avatarAsset": "icons/Avatar_32.svg", "arrowIcon": "icons/chevron_right.svg", "avatarMarginRight": 8 },
+      { "id": "R3", "name": "辅助+图片+箭头", "structure": ["helperText", "image:32x32:r4", "arrow"], "imageAsset": "icons/Thumbnail_32.svg", "arrowIcon": "icons/chevron_right.svg", "imageRadius": 4, "imageMarginRight": 8 },
+      { "id": "R4", "name": "按钮", "style": { "padding": "6px 16px", "radius": 18, "fontSize": 14, "fontWeight": 500, "bg": { "token": "btn_bg", "value": "rgba(116, 116, 128, 0.08)" } } },
+      { "id": "R5", "name": "Action", "style": { "fontSize": 17, "color": { "token": "text_link", "value": "#214CA5" } } },
+      { "id": "R6", "name": "Icon", "visual": "基础操作图标" },
+      { "id": "R7", "name": "金额", "style": { "fontFamily": "DIN Alternate", "fontWeight": 700, "fontSize": 20 } },
+      { "id": "R8", "name": "步数", "style": { "numberFont": "DIN Alternate 20px", "iconColumn": true, "rankText": "12px", "iconSize": 16 } },
+      { "id": "R9", "name": "聊天", "style": { "timeFont": "12px", "timeColor": { "token": "text_tertiary", "value": "rgba(60, 60, 67, 0.56)" }, "flexDirection": "column", "alignItems": "flex-end" } }
+    ]
+  },
+
+  "constraints": [
+    { "rule": "single-type (L1,L3) → C = C1", "reason": "单行类型仅匹配单行内容" },
+    { "rule": "multi-type (L2,L4,L5,L6,L7) → C ∈ {C2, C3}", "reason": "多行类型仅匹配双行或三行" },
+    { "rule": "L0/Empty → C ∈ {C1, C2}, R ∈ {R1, R4, R5, R6}", "reason": "空左侧禁止三行C3，右侧仅限4种" },
+    { "rule": "R2 → L = L1, C = C1", "reason": "辅助+头像+箭头仅限 Icon 单行" },
+    { "rule": "R3 → C = C1", "reason": "辅助+图片仅限单行" },
+    { "rule": "L2 → R = R6", "reason": "File Icon 右侧仅限 Icon" },
+    { "rule": "R8, R9 → C = C2", "reason": "步数和聊天仅限双行" },
+    { "rule": "R7, R8 → L = L4", "reason": "金额和步数强绑定 Medium Avatar" },
+    { "rule": "R9 → L = L5", "reason": "聊天强绑定 Large Avatar" }
+  ],
+
+  "layout": {
+    "display": "flex",
+    "alignItems": "center",
+    "padding": "0 16px",
+    "width": 428,
+    "background": { "token": "bg_item", "value": "#FFFFFF" },
+    "leftAreaMarginRight": 12,
+    "rightAreaMarginLeft": 12
+  },
+
+  "style": {
+    "title": { "fontSize": 17, "lineHeight": 24, "color": { "token": "text_primary", "value": "rgba(0, 0, 0, 0.90)" }, "overflow": "ellipsis", "whiteSpace": "nowrap" },
+    "desc": { "fontSize": 14, "lineHeight": 20, "color": { "token": "text_secondary", "value": "rgba(60, 60, 67, 0.76)" } },
+    "linkText": { "color": { "token": "text_link", "value": "#214CA5" } },
+    "descStructure": "图标(16px) + 描述文本 · 描述文本 + textlink"
+  },
+
+  "interaction": {
+    "tapTarget": "整行为点击热区（L0+R0 除外）",
+    "pressed": { "background": { "token": "fill_pressed", "value": "rgba(0, 0, 0, 0.04)" }, "transition": "100ms ease-out" },
+    "released": { "background": { "token": "bg_item", "value": "#FFFFFF" }, "transition": "150ms ease-out" }
+  },
+
+  "separator": {
+    "height": 0.5,
+    "color": { "token": "separator", "value": "rgba(0, 0, 0, 0.08)" },
+    "marginLeft": 16,
+    "note": "列表行之间，由外部容器控制"
+  },
+
+  "compositionRules": {
+    "singleType": "同一页面视图中的通栏式列表必须由同一类型的子组件构成",
+    "structuralSwitch": "不同类型通过 Tab/Segment 等视图级切换控件展示"
+  },
+
+  "textRules": {
+    "title": { "maxLines": 1, "overflow": "ellipsis" },
+    "desc": { "maxLines": 2, "overflow": "ellipsis" }
+  },
+
+  "usage": {
+    "primary": "设置页、联系人列表、消息列表等数据驱动型界面",
+    "notFor": "任务驱动型界面（应使用卡片式列表）"
+  }
+}

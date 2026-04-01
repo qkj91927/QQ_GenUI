@@ -1,0 +1,102 @@
+{
+  "id": "dialog",
+  "name": "对话框 Dialog",
+  "category": "模态",
+  "description": "居中显示的模态弹窗组件，用于传达重要信息并请求用户确认或决策。支持标题、正文（纯文本/文本+勾选/输入框）和多种操作按钮布局。",
+  "spec": "md/DIALOG_COMPONENT_SPEC.md",
+
+  "totalVariants": 15,
+
+  "dimensions": {
+    "title": [
+      { "id": "T", "name": "有标题", "fontSize": 17, "fontWeight": 600, "lineHeight": "1.35", "padding": "20px 20px 0" },
+      { "id": "NT", "name": "无标题", "note": "正文字号调整为 17px/24px，padding-top 变为 20px" }
+    ],
+    "body": [
+      { "id": "P", "name": "纯文本", "padding_withTitle": "4px 28px 20px", "padding_noTitle": "20px 28px 20px" },
+      { "id": "C", "name": "文本+勾选", "padding_withTitle": "4px 28px 20px", "padding_noTitle": "20px 28px 20px", "checkIcon": { "size": 20, "marginTop": 12, "gap": 8, "unchecked": "Checkbox.svg", "checked": "Checkbox_filled.svg" } },
+      { "id": "I", "name": "输入框", "padding": "16px 24px 24px", "requiresTitle": true, "inputSize": [248, 48], "inputBg": "rgba(116,116,128,0.08)", "inputRadius": 12, "inputTextLeft": 16 }
+    ],
+    "action": [
+      { "id": "S", "name": "单按钮", "layout": "全宽横向" },
+      { "id": "D", "name": "双按钮", "layout": "水平排列，中间0.5px竖向分割线" },
+      { "id": "T", "name": "三按钮", "layout": "纵向堆叠，每个顶部0.5px横向分割线" }
+    ]
+  },
+
+  "variantMatrix": [
+    { "id": "T-P-S", "title": true, "body": "纯文本", "action": "单按钮" },
+    { "id": "T-P-D", "title": true, "body": "纯文本", "action": "双按钮" },
+    { "id": "T-P-T", "title": true, "body": "纯文本", "action": "三按钮" },
+    { "id": "T-C-S", "title": true, "body": "文本+勾选", "action": "单按钮" },
+    { "id": "T-C-D", "title": true, "body": "文本+勾选", "action": "双按钮" },
+    { "id": "T-C-T", "title": true, "body": "文本+勾选", "action": "三按钮" },
+    { "id": "T-I-S", "title": true, "body": "输入框", "action": "单按钮" },
+    { "id": "T-I-D", "title": true, "body": "输入框", "action": "双按钮" },
+    { "id": "T-I-T", "title": true, "body": "输入框", "action": "三按钮" },
+    { "id": "NT-P-S", "title": false, "body": "纯文本", "action": "单按钮" },
+    { "id": "NT-P-D", "title": false, "body": "纯文本", "action": "双按钮" },
+    { "id": "NT-P-T", "title": false, "body": "纯文本", "action": "三按钮" },
+    { "id": "NT-C-S", "title": false, "body": "文本+勾选", "action": "单按钮" },
+    { "id": "NT-C-D", "title": false, "body": "文本+勾选", "action": "双按钮" },
+    { "id": "NT-C-T", "title": false, "body": "文本+勾选", "action": "三按钮" }
+  ],
+
+  "constraints": [
+    "输入框类型必须搭配标题（无标题×输入框不存在）",
+    "切换正文为输入框时自动强制开启标题开关",
+    "输入框选中期间标题开关不可关闭"
+  ],
+
+  "layout": {
+    "width": 296,
+    "radius": 14,
+    "background": { "token": "bg_item", "value": "#FFFFFF" },
+    "shadow": { "token": "shadow.dialog", "value": "0 8px 32px rgba(0,0,0,0.12)" },
+    "overlay": { "token": "overlay_dialog", "value": "rgba(0, 0, 0, 0.40)" },
+    "actionButtonHeight": 54,
+    "divider": { "height": 0.5, "color": { "token": "border_standard", "value": "rgba(0, 0, 0, 0.10)" } },
+    "bodyContentWidth": 240,
+    "inputContentWidth": 248,
+    "inputInnerWidth": 216
+  },
+
+  "style": {
+    "title": { "fontSize": 17, "fontWeight": 600, "color": { "token": "text_primary", "value": "rgba(0, 0, 0, 0.90)" }, "align": "center", "font": "PingFang SC" },
+    "body_withTitle": { "fontSize": 14, "lineHeight": 20, "fontWeight": 400, "color": { "token": "text_primary", "value": "rgba(0, 0, 0, 0.90)" } },
+    "body_noTitle": { "fontSize": 17, "lineHeight": 24, "fontWeight": 400, "color": { "token": "text_primary", "value": "rgba(0, 0, 0, 0.90)" } },
+    "auxText": { "fontSize": 14, "fontWeight": 400, "color": { "token": "text_tertiary", "value": "rgba(60, 60, 67, 0.56)" } },
+    "actionButton": { "fontSize": 17, "fontWeight": 400, "color": { "token": "text_link", "value": "#214CA5" } },
+    "inputPlaceholder": { "color": { "token": "text_quaternary", "value": "rgba(60,60,67,0.26)" } },
+    "inputCursor": { "color": { "token": "brand_standard", "value": "#0099FF" } }
+  },
+
+  "bodyAlignRule": {
+    "method": "渲染完成后 requestAnimationFrame 检测 scrollHeight",
+    "singleLine": "text-align: center",
+    "multiLine": "text-align: left",
+    "appliesTo": ["纯文本", "文本+勾选"],
+    "notAppliesTo": ["输入框"]
+  },
+
+  "interaction": {
+    "appear": "居中弹出，遮罩层淡入",
+    "dismiss": "点击操作按钮关闭",
+    "modal": "背景页面不可操作（模态遮罩阻断）"
+  },
+
+  "animation": {
+    "appear": { "type": "scaleFadeIn", "transform": "scale(0.85) opacity(0) → scale(1) opacity(1)", "duration": 250, "easing": "ease-out" },
+    "dismiss": { "type": "scaleFadeOut", "transform": "scale(1) opacity(1) → scale(0.85) opacity(0)", "duration": 200, "easing": "ease-in" },
+    "overlay": { "fadeIn": 250, "fadeOut": 200, "color": "rgba(0,0,0,0.40)" }
+  },
+
+  "triggeredBy": ["button", "action"],
+  "closeOnOverlay": false,
+
+  "controls": [
+    { "type": "二态开关", "name": "标题", "property": "hasTitle", "default": true },
+    { "type": "分段选择器", "name": "正文类型", "options": ["纯文本", "文本+勾选", "输入框"], "property": "bodyType", "default": "纯文本" },
+    { "type": "分段选择器", "name": "操作类型", "options": ["单按钮", "双按钮", "三按钮"], "property": "actionType", "default": "双按钮" }
+  ]
+}

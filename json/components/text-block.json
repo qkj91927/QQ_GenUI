@@ -1,0 +1,48 @@
+{
+  "id": "text_block",
+  "name": "文本块 TextBlock",
+  "category": "数据",
+  "description": "纯文本内容的排版区域，涵盖标题、正文、摘要、提示等层级，支持居左与居中两种对齐方式，用于构建页面的信息层次与阅读节奏。",
+  "spec": "md/TEXT_BLOCK_COMPONENT_SPEC.md",
+
+  "totalVariants": 13,
+
+  "variants": [
+    { "id": "H1", "name": "大标题", "group": "H.居左", "textType": "title", "textAlign": "left", "height": 50, "fontSize": 26, "fontWeight": 600, "lineHeight": 34, "color": { "token": "text_primary", "value": "rgba(0, 0, 0, 0.90)" }, "textTop": 8 },
+    { "id": "H2", "name": "一级标题", "group": "H.居左", "textType": "subtitle", "textAlign": "left", "height": 44, "fontSize": 22, "fontWeight": 500, "lineHeight": 28, "color": { "token": "text_primary", "value": "rgba(0, 0, 0, 0.90)" }, "textTop": 8 },
+    { "id": "H3", "name": "二级标题", "group": "H.居左", "textType": "aux-title", "textAlign": "left", "height": 42, "fontSize": 18, "fontWeight": 500, "lineHeight": 26, "color": { "token": "text_primary", "value": "rgba(0, 0, 0, 0.90)" }, "textTop": 8 },
+    { "id": "H4", "name": "正文段落", "group": "H.居左", "textType": "body", "textAlign": "left", "height": 56, "fontSize": 17, "fontWeight": 400, "lineHeight": 24, "color": { "token": "text_primary", "value": "rgba(0, 0, 0, 0.90)" }, "textTop": 4 },
+    { "id": "H5", "name": "前缀正文", "group": "H.居左", "textType": "body", "textAlign": "left", "height": 56, "fontSize": 17, "fontWeight": 400, "lineHeight": 24, "color": { "token": "text_primary", "value": "rgba(0, 0, 0, 0.90)" }, "textTop": 4, "note": "用于需要前缀标识(序号/标记)的段落" },
+    { "id": "H6", "name": "摘要文本", "group": "H.居左", "textType": "summary", "textAlign": "left", "height": 48, "fontSize": 14, "fontWeight": 400, "lineHeight": 20, "color": { "token": "text_primary", "value": "rgba(0, 0, 0, 0.90)" }, "textTop": 4 },
+    { "id": "H7", "name": "提示文本", "group": "H.居左", "textType": "hint", "textAlign": "left", "height": 42, "fontSize": 12, "fontWeight": 400, "lineHeight": 20, "color": { "token": "text_primary", "value": "rgba(0, 0, 0, 0.90)" }, "textTop": 4 },
+    { "id": "C1", "name": "大标题", "group": "C.居中", "textType": "title", "textAlign": "center", "height": 50, "fontSize": 26, "fontWeight": 600, "lineHeight": 34, "color": { "token": "text_primary", "value": "rgba(0, 0, 0, 0.90)" }, "textTop": 8 },
+    { "id": "C2", "name": "一级标题", "group": "C.居中", "textType": "subtitle", "textAlign": "center", "height": 44, "fontSize": 22, "fontWeight": 500, "lineHeight": 28, "color": { "token": "text_primary", "value": "rgba(0, 0, 0, 0.90)" }, "textTop": 8 },
+    { "id": "C3", "name": "二级标题", "group": "C.居中", "textType": "aux-title", "textAlign": "center", "height": 42, "fontSize": 18, "fontWeight": 500, "lineHeight": 26, "color": { "token": "text_primary", "value": "rgba(0, 0, 0, 0.90)" }, "textTop": 8 },
+    { "id": "C4", "name": "正文段落", "group": "C.居中", "textType": "body", "textAlign": "center", "height": 56, "fontSize": 17, "fontWeight": 400, "lineHeight": 24, "color": { "token": "text_primary", "value": "rgba(0, 0, 0, 0.90)" }, "textTop": 4 },
+    { "id": "C5", "name": "摘要文本", "group": "C.居中", "textType": "summary", "textAlign": "center", "height": 48, "fontSize": 14, "fontWeight": 400, "lineHeight": 20, "color": { "token": "text_primary", "value": "rgba(0, 0, 0, 0.90)" }, "textTop": 4 },
+    { "id": "C6", "name": "提示文本", "group": "C.居中", "textType": "hint", "textAlign": "center", "height": 42, "fontSize": 12, "fontWeight": 400, "lineHeight": 20, "color": { "token": "text_primary", "value": "rgba(0, 0, 0, 0.90)" }, "textTop": 4 }
+  ],
+
+  "layout": {
+    "containerWidth": 428,
+    "background": "transparent",
+    "textAreaWidth": 388,
+    "textAreaLeft": 20,
+    "textAreaPosition": "absolute",
+    "wordWrap": "break-word"
+  },
+
+  "interaction": {
+    "editable": "组件构建器中支持内联编辑（.editable-text）"
+  },
+
+  "usage": {
+    "H1_C1": "页面/模块大标题",
+    "H2_C2": "内容区段标题",
+    "H3_C3": "二级分类标题",
+    "H4_C4": "说明文案/详情描述",
+    "H5": "带序号/标记的段落（居左专用）",
+    "H6_C5": "次要摘要信息",
+    "H7_C6": "底部提示/辅助文字"
+  }
+}

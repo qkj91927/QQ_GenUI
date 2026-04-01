@@ -1,0 +1,109 @@
+{
+  "id": "aio_input",
+  "name": "AIO 输入框 AIOInput",
+  "category": "操作",
+  "description": "AI 对话场景专用的底部输入组件，集成文字输入、语音输入功能。由 I1默认态 / I2生成中态 / I3输入态 共 3 种子组件构成。",
+  "spec": "md/AIO_INPUT_COMPONENT_SPEC.md",
+
+  "totalVariants": 3,
+
+  "variants": [
+    { "id": "I1", "name": "默认态", "key": "default", "mappedStates": ["S1(默认/键盘)", "S2(激活/光标)", "S3(按住说话)"] },
+    { "id": "I2", "name": "生成中态", "key": "generating", "mappedStates": ["S5(音波动画)", "S6(可中断/停止按钮)"] },
+    { "id": "I3", "name": "输入态", "key": "typing", "mappedStates": ["S4(已输入文字)"] }
+  ],
+
+  "structure": {
+    "container": {
+      "width": 428,
+      "height": 72,
+      "backdropFilter": "blur(25px)"
+    },
+    "inputBar": {
+      "width": 396,
+      "height": 56,
+      "offsetLeft": 16,
+      "offsetTop": 8,
+      "background": "#FFFFFF",
+      "borderRadius": 24,
+      "border": "0.5px solid rgba(0, 0, 0, 0.10)",
+      "padding": "0 12px"
+    }
+  },
+
+  "states": [
+    {
+      "id": "S1",
+      "name": "默认态（键盘模式）",
+      "key": "default",
+      "leftIcon": "mic",
+      "content": { "type": "placeholder", "text": "发消息或按住说话..." },
+      "rightIcons": ["camera"],
+      "barStyle": { "borderRadius": 24, "shadow": "none" }
+    },
+    {
+      "id": "S2",
+      "name": "激活态（光标闪烁）",
+      "key": "focused",
+      "leftIcon": "mic",
+      "content": { "type": "cursor", "animation": "blink 1s step-end infinite" },
+      "rightIcons": ["camera"],
+      "barStyle": { "borderRadius": 100, "shadow": "0px 4px 16px rgba(0, 0, 0, 0.04)" }
+    },
+    {
+      "id": "S3",
+      "name": "按住说话态（语音模式）",
+      "key": "voice",
+      "leftIcon": "keyboard",
+      "content": { "type": "text", "text": "按住说话", "fontWeight": 500, "align": "center" },
+      "rightIcons": ["camera"],
+      "barStyle": { "borderRadius": 24, "shadow": "none" }
+    },
+    {
+      "id": "S4",
+      "name": "输入态（已输入文字）",
+      "key": "typing",
+      "leftIcon": null,
+      "content": { "type": "input", "text": "帮我总结这2个群聊", "fontWeight": 400 },
+      "rightIcons": ["camera", "send"],
+      "barStyle": { "borderRadius": 24, "shadow": "none" }
+    },
+    {
+      "id": "S5",
+      "name": "AI 生成中（音波动画）",
+      "key": "generating",
+      "leftIcon": null,
+      "content": { "type": "wave", "barCount": 34, "barWidth": 2.5, "gap": 3.5, "color": "white" },
+      "rightIcons": [],
+      "barStyle": { "borderRadius": 24, "shadow": "none", "background": "#0099FF" }
+    },
+    {
+      "id": "S6",
+      "name": "生成中可中断态（停止按钮）",
+      "key": "stoppable",
+      "leftIcon": "mic",
+      "content": { "type": "placeholder", "text": "发消息或按住说话..." },
+      "rightIcons": ["stop"],
+      "barStyle": { "borderRadius": 24, "shadow": "none" }
+    }
+  ],
+
+  "icons": {
+    "mic": { "size": 28, "container": 32, "color": "#1A1A1A" },
+    "keyboard": { "size": 28, "container": 32, "color": "#1A1A1A" },
+    "camera": { "size": 28, "container": 32, "color": "black" },
+    "send": { "size": 19, "container": 32, "background": "#0099FF", "borderRadius": 22.86, "iconColor": "white" },
+    "stop": { "size": 19, "container": 32, "background": "#0099FF", "borderRadius": 22.86, "iconColor": "white" }
+  },
+
+  "stateTransitions": [
+    { "from": "default", "trigger": "tap_input", "to": "focused" },
+    { "from": "focused", "trigger": "type_text", "to": "typing" },
+    { "from": "typing", "trigger": "tap_send", "to": "generating" },
+    { "from": "generating", "trigger": "complete", "to": "default" },
+    { "from": "generating", "trigger": "interruptable", "to": "stoppable" },
+    { "from": "stoppable", "trigger": "tap_stop", "to": "default" },
+    { "from": "default", "trigger": "tap_mic", "to": "voice" },
+    { "from": "voice", "trigger": "tap_keyboard", "to": "default" }
+  ]
+}

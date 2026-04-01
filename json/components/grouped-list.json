@@ -1,0 +1,132 @@
+{
+  "id": "form",
+  "name": "卡片式列表 Grouped List",
+  "category": "数据",
+  "description": "左右缩进且以圆角容器封装，适合任务驱动型界面，在复杂信息中快速定位功能或操作。",
+  "spec": "md/GROUPED_LIST_COMPONENT_SPEC.md",
+
+  "totalVariants": "27 基础变体 + 6 组合变体 = 33",
+
+  "dimensions": {
+    "L": [
+      { "id": "L1", "name": "单行标题", "visual": "17px 黑色文字", "lines": 1, "height": 56 },
+      { "id": "L2", "name": "双行标题", "visual": "17px 标题 + 14px 辅助说明", "lines": 2, "height": 72 },
+      { "id": "L3", "name": "图标+单行标题", "visual": "icons/empty_icon.svg（24px 占位图标）+ 17px 文字，间距 12px", "lines": 1, "height": 56 },
+      { "id": "L4", "name": "图标+双行标题", "visual": "icons/empty_icon.svg（24px 占位图标）+ 17px 标题 + 14px 辅助说明", "lines": 2, "height": 72 },
+      { "id": "L5", "name": "二级+单行标题", "visual": "icons/secondary.svg（二级引导图标）+ 17px 文字（从属层级）", "lines": 1, "height": 56 },
+      { "id": "L6", "name": "二级+双行标题", "visual": "icons/secondary.svg（二级引导图标）+ 17px 标题 + 14px 辅助说明", "lines": 2, "height": 72 },
+      { "id": "L7", "name": "头像+双行标题", "visual": "icons/Avatar_40.svg（40px 圆形头像占位）+ 17px 标题 + 14px 辅助说明", "avatarSize": 40, "lines": 2, "height": 72 }
+    ],
+    "R": [
+      { "id": "R0", "name": "为空 / None" },
+      { "id": "R1", "name": "跳转 / Detail", "visual": "可选 17px 灰色辅助信息 + icons/chevron_right.svg（16px 右箭头）" },
+      { "id": "R2", "name": "辅助信息+下拉菜单", "visual": "17px 灰色文字 + icons/expand_list.svg（16px 下拉箭头）" },
+      { "id": "R3", "name": "头像 / Avatar", "visual": "icons/Avatar_32.svg（32px 圆形头像占位）+ icons/chevron_right.svg（16px 右箭头），间距 8px" },
+      { "id": "R4", "name": "开关 / Switch", "visual": "44×26px 胶囊开关，开启态 #0099FF" },
+      { "id": "R5", "name": "勾选 / Checkbox", "visual": "icons/Checkbox_filled.svg(选中) / icons/Checkbox.svg(未选中)（20px，蓝色 #0099FF）" }
+    ]
+  },
+
+  "constraints": [
+    { "rule": "L5, L6 → R ∈ {R1, R2, R4}", "reason": "二级缩进变体可搭配跳转、下拉菜单或开关" },
+    { "rule": "R3 → L ∈ {L3, L4}", "reason": "头像右侧仅限搭配图标型左侧" },
+    { "rule": "L7 → R ∈ {R0, R5}", "reason": "头像型左侧仅限搭配为空或勾选" },
+    { "rule": "R0 → L ∈ {L1, L7}", "reason": "仅这两种左侧可不配置右侧" },
+    { "rule": "L5/L6 需要父级 R4 开关", "reason": "二级缩进依赖父级开关触发" },
+    { "rule": "R4 ≠ L7", "reason": "头像型左侧不支持开关" }
+  ],
+
+  "validMatrix": {
+    "L1": ["R0", "R1", "R2", "R4", "R5"],
+    "L2": ["R1", "R2", "R4", "R5"],
+    "L3": ["R1", "R2", "R3", "R4", "R5"],
+    "L4": ["R1", "R2", "R3", "R4", "R5"],
+    "L5": ["R1", "R2", "R4"],
+    "L6": ["R1", "R2", "R4"],
+    "L7": ["R0", "R5"]
+  },
+
+  "comboVariants": [
+    { "id": "Combo1", "structure": "分组标题+单表单+底部说明", "hasTitle": true, "hasFooter": true, "rows": 1 },
+    { "id": "Combo2", "structure": "分组标题+单表单", "hasTitle": true, "hasFooter": false, "rows": 1 },
+    { "id": "Combo3", "structure": "单表单+底部说明", "hasTitle": false, "hasFooter": true, "rows": 1 },
+    { "id": "Combo4", "structure": "分组标题+多表单+底部说明", "hasTitle": true, "hasFooter": true, "rows": "≥2" },
+    { "id": "Combo5", "structure": "分组标题+多表单", "hasTitle": true, "hasFooter": false, "rows": "≥2" },
+    { "id": "Combo6", "structure": "多表单+底部说明", "hasTitle": false, "hasFooter": true, "rows": "≥2" }
+  ],
+
+  "layout": {
+    "containerWidth": 428,
+    "cardWidth": 396,
+    "containerPadding": "12px 16px",
+    "cardRadius": 12,
+    "rowPadding": "0 16px",
+    "background": { "page": { "token": "bg_page", "value": "#F0F0F2" }, "card": { "token": "bg_item", "value": "#FFFFFF" } },
+  "pageBackgroundConstraint": {
+    "required": "bg_bottom_standard",
+    "value": "#F0F0F2",
+    "reason": "白色卡片容器需要浅灰色页面背景形成视觉层级分离"
+  },
+    "sectionGap": "≥8px",
+    "rightAreaGap": 4,
+    "rightAreaMarginLeft": 12,
+    "leftAreaGap": 12
+  },
+
+  "style": {
+    "title": { "fontSize": 17, "color": { "token": "text_primary", "value": "rgba(0, 0, 0, 0.90)" }, "overflow": "ellipsis" },
+    "subtitle": { "fontSize": 14, "color": { "token": "text_tertiary", "value": "rgba(60, 60, 67, 0.56)" }, "lineHeight": 1.2, "marginTop": 1 },
+    "helperText": { "fontSize": 17, "color": { "token": "text_secondary", "value": "rgba(60, 60, 67, 0.76)" } },
+    "separator": { "height": 0.5, "color": { "token": "separator", "value": "rgba(0, 0, 0, 0.08)" }, "inset": "16px" },
+    "groupHeader": { "padding": "8px 0", "fontSize": 14, "color": { "token": "text_tertiary", "value": "rgba(60, 60, 67, 0.56)" } },
+    "groupFooter": { "padding": "8px 16px 0", "fontSize": 14, "color": { "token": "text_tertiary", "value": "rgba(60, 60, 67, 0.56)" } }
+  },
+
+  "compositionRelations": {
+    "grouping": {
+      "description": "同类关系 — 多行聚合为一卡片，允许不同 L×R 混排",
+      "rules": ["同类行必须相邻排列", "组间以页面背景间距(≥8px)区隔"]
+    },
+    "mutualExclusion": {
+      "description": "互斥关系 — R5 勾选触发，组内同一时刻仅一个选中",
+      "rules": ["所有行左侧类型一致", "切换过渡 ≤200ms ease-out"]
+    },
+    "parentChild": {
+      "description": "父子关系 — R4 开关控制子行显隐",
+      "case1": "子列表 <3 个：父子在同一卡片，子行用 L5/L6",
+      "case2": "子列表 ≥3 个：子列表可单独成卡片",
+      "maxNesting": 2
+    }
+  },
+
+  "interaction": {
+    "R0": { "tapTarget": "整行", "behavior": "自定义操作", "note": "L1+R0 时标题可为警示色(#FF3B30)或链接色(#0099FF)" },
+    "R1": { "tapTarget": "整行", "behavior": "Push 跳转新页面" },
+    "R2": { "tapTarget": "整行", "behavior": "弹出有勾选菜单(Menu-C)，选中后更新辅助信息文字" },
+    "R3": { "tapTarget": "头像+箭头区域", "behavior": "Push 跳转新页面" },
+    "R4": { "tapTarget": "仅开关", "behavior": "切换开关状态，可触发父子联动", "cssToggle": "classList.toggle('off')", "onClass": "form-switch", "offClass": "form-switch off" },
+    "R5": { "tapTarget": "整行", "behavior": "触发勾选/取消，互斥关系中联动", "checkedIcon": "Checkbox_filled.svg", "uncheckedIcon": "Checkbox.svg" }
+  },
+
+  "states": {
+    "default": { "background": { "token": "bg_item", "value": "#FFFFFF" }, "textColor": { "token": "text_primary", "value": "rgba(0, 0, 0, 0.90)" } },
+    "pressed": { "background": { "token": "fill_pressed", "value": "rgba(0, 0, 0, 0.04)" } },
+    "disabled": { "opacity": 0.40, "pointerEvents": "none" },
+    "switchOn": { "background": { "token": "brand_standard", "value": "#0099FF" }, "thumbPosition": "right", "cssClass": "form-switch" },
+    "switchOff": { "background": "rgba(120,120,128,0.16)", "thumbPosition": "left", "cssClass": "form-switch off" }
+  },
+
+  "animation": {
+    "rowPress": { "duration": 100, "easing": "ease-out" },
+    "rowRelease": { "duration": 150, "easing": "ease-out" },
+    "switchToggle": { "duration": 200, "easing": "ease-out" },
+    "childExpand": { "duration": 250, "easing": "ease-in-out", "properties": "max-height + opacity" },
+    "childCollapse": { "duration": 200, "easing": "ease-in" },
+    "disabledTransition": { "duration": 150, "easing": "ease-out", "property": "opacity" }
+  },
+
+  "usage": {
+    "primary": "设置页面、表单配置、功能选项列表",
+    "notFor": "数据展示型列表（应使用通栏式列表）"
+  }
+}

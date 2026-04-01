@@ -1,0 +1,58 @@
+{
+  "id": "hs_navbar",
+  "name": "半屏导航栏 HalfScreen NavBar",
+  "category": "导航",
+  "description": "专用于半屏浮层顶部的导航组件，承载标题展示、层级返回与关闭操作，为浮层内容提供统一的导航框架。",
+  "spec": "md/HS_NAVBAR_COMPONENT_SPEC.md",
+
+  "variants": {
+    "A_primary": [
+      { "id": "A1", "name": "标题+关闭", "structure": "左侧标题 + 右侧关闭按钮(圆形底色)", "height": 54 },
+      { "id": "A2", "name": "标题+副标题+关闭", "structure": "左侧标题+副标题 + 右侧关闭按钮(圆形底色)", "height": 65 },
+      { "id": "A3", "name": "单关闭", "structure": "右侧关闭按钮(圆形底色)，无标题", "height": 54, "note": "遇到图片组件时叠在图片上不占高度" },
+      { "id": "A4", "name": "图标+标题+关闭", "structure": "左侧App图标+标题 + 右侧功能图标", "height": 54 }
+    ],
+    "B_secondary": [
+      { "id": "B1", "name": "返回+标题+操作", "structure": "左侧返回箭头 + 居中标题 + 右侧文字操作", "height": 54 },
+      { "id": "B2", "name": "返回+标题+关闭", "structure": "左侧返回箭头 + 居中标题 + 右侧功能图标", "height": 54 },
+      { "id": "B3", "name": "返回+标题", "structure": "左侧返回箭头 + 居中标题", "height": 54 }
+    ]
+  },
+
+  "totalVariants": 7,
+
+  "layout": {
+    "width": "100%",
+    "baseHeight": 54,
+    "padding": "0 16px",
+    "primaryAlign": "标题左对齐，关闭按钮右对齐，垂直居中",
+    "secondaryAlign": "返回箭头左对齐，标题绝对居中，操作/图标右对齐"
+  },
+
+  "style": {
+    "title": { "fontSize": 17, "fontWeight": 500, "color": { "token": "text_primary", "value": "rgba(0, 0, 0, 0.90)" } },
+    "subtitle": { "fontSize": 12, "fontWeight": 400, "color": { "token": "text_secondary", "value": "rgba(60, 60, 67, 0.76)" } },
+    "actionText": { "fontSize": 17, "fontWeight": 400, "color": { "token": "text_primary", "value": "rgba(0, 0, 0, 0.90)" } },
+    "secondaryTitle": { "fontSize": 17, "fontWeight": 500, "color": { "token": "text_primary", "value": "rgba(0, 0, 0, 0.90)" } },
+    "closeButton": { "size": 30, "radius": "50%", "background": "rgba(0,0,0,0.04)", "iconSize": 16, "iconFile": "icons/Close_HalfScreen.svg" },
+    "backArrow": { "size": 24, "file": "icons/chevron_left.svg" },
+    "appIcon": { "size": 24, "gap": 8, "file": "icons/Thumbnail_24.svg" }
+  },
+
+  "interaction": {
+    "A3_imageBlock": {
+      "behavior": "叠在图片上方，position: absolute; z-index: 10，不占内容流高度",
+      "fallback": "遇到其他组件类型时正常占据54px高度"
+    },
+    "closeAction": "点击关闭按钮收起整个半屏浮层",
+    "backAction": "点击返回箭头返回半屏内上一层级页面"
+  },
+
+  "usage": {
+    "primary": "半屏浮层的顶部导航",
+    "A1": "最常用的半屏导航形态",
+    "A2": "需要补充说明信息时使用",
+    "A3": "内容自带标题或以图片开头时使用",
+    "A4": "展示来源应用信息时使用"
+  }
+}

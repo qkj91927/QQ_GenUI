@@ -1,0 +1,145 @@
+{
+  "id": "card",
+  "name": "卡片 Card",
+  "category": "数据",
+  "description": "独立的内容容器，使用24px圆角白色卡片承载不同区块组合，适用于信息流、个人资料、产品展示等场景。需搭配浅灰色页面背景(#F0F0F2)使用。",
+  "spec": "md/CARD_COMPONENT_SPEC.md",
+
+  "totalVariants": 10,
+
+  "variants": [
+    { "id": "C1", "name": "头像+标题+短图", "key": "avatar_short_img", "blocks": ["headerRow", "imageArea(180px)"] },
+    { "id": "C2", "name": "头像+标题+长图", "key": "avatar_long_img", "blocks": ["headerRow", "imageArea(320px)"] },
+    { "id": "C3", "name": "短图+标题描述+辅助", "key": "short_img_title_aux", "blocks": ["imageArea(180px)", "titleSection", "auxRow"] },
+    { "id": "C4", "name": "长图+标题描述+辅助", "key": "long_img_title_aux", "blocks": ["imageArea(320px)", "titleSection", "auxRow"] },
+    { "id": "C5", "name": "九宫格+列表按钮", "key": "grid_list_btn", "blocks": ["gridArea", "listRow(noIcon)"] },
+    { "id": "C6", "name": "头像+大标题+大按钮", "key": "avatar_bigtitle_btn", "blocks": ["headerRow", "bigTitleSection", "bigBtnArea"] },
+    { "id": "C7", "name": "头像+大标题+键值对+列表", "key": "avatar_bigtitle_kv", "blocks": ["headerRow", "bigTitleSection", "kvRows(×2)", "arrowRows(×2)"] },
+    { "id": "C8", "name": "标题描述+辅助", "key": "title_desc_aux", "blocks": ["titleSection", "auxRow"] },
+    { "id": "C9", "name": "头像+图标列表×2", "key": "avatar_icon_list", "blocks": ["headerRow", "listRow(withIcon, ×2)"] },
+    { "id": "C10", "name": "头像+标题+Markdown内容", "key": "avatar_markdown", "blocks": ["headerRow", "markdownContent"], "height": "自适应，最大840px" }
+  ],
+
+  "layout": {
+    "outerWidth": 428,
+    "contentWidth": 396,
+    "horizontalPadding": 16,
+    "borderRadius": 24,
+    "background": "#FFFFFF",
+    "pageBackground": {
+      "required": "#F0F0F2",
+      "token": "bg_bottom_standard",
+      "reason": "白色卡片容器需要浅灰色页面背景形成视觉层级分离"
+    }
+  },
+
+  "blocks": {
+    "headerRow": {
+      "description": "头像行：32px圆形头像 + 标题文字",
+      "height": 56,
+      "avatar": { "size": 32, "borderRadius": 16 },
+      "title": { "fontSize": 17, "fontWeight": 400, "color": "text_primary", "marginLeft": 8 },
+      "separator": { "width": 364, "height": 0.5, "color": "separator", "position": "bottom", "offsetLeft": 16 }
+    },
+    "imageArea": {
+      "description": "图片区域：宽度撑满396px，高度按变体不同为180px或320px",
+      "width": "100%",
+      "heights": [180, 320],
+      "objectFit": "cover"
+    },
+    "titleSection": {
+      "description": "标题描述区：标题+描述+右侧图标(52px)",
+      "padding": "12px 16px 0",
+      "title": { "fontSize": 17, "fontWeight": 400, "color": "text_primary", "lineHeight": 24, "maxWidth": 288 },
+      "desc": { "fontSize": 14, "fontWeight": 400, "color": "text_secondary", "lineHeight": 20, "marginTop": 4, "maxLines": 2 },
+      "icon": { "size": 52, "borderRadius": 12, "position": "topRight" },
+      "separator": { "width": 364, "height": 0.5, "color": "border_standard", "marginTop": 12 }
+    },
+    "auxRow": {
+      "description": "辅助信息行",
+      "height": 40,
+      "fontSize": 12,
+      "fontWeight": 400,
+      "color": "text_secondary",
+      "padding": "0 16px"
+    },
+    "gridArea": {
+      "description": "九宫格图片：1大图(176×176)+4小图(82×82)",
+      "padding": 16,
+      "gap": 12,
+      "largeImage": { "size": 176, "borderRadius": 12 },
+      "smallImage": { "size": 82, "borderRadius": 12, "count": 4, "layout": "2×2 wrap" }
+    },
+    "listRow": {
+      "description": "列表行：可选App图标(52px) + 标题描述 + 按钮",
+      "height": 72,
+      "icon": { "size": 52, "borderRadius": 12, "optional": true },
+      "title": { "fontSize": 17, "fontWeight": 400, "color": "text_primary" },
+      "desc": { "fontSize": 12, "fontWeight": 400, "color": "text_secondary" },
+      "button": { "width": 72, "height": 36, "borderRadius": 9999, "background": "btn_bg", "fontSize": 14, "fontWeight": 500 }
+    },
+    "bigTitleSection": {
+      "description": "大标题区：22px标题 + 17px辅助信息",
+      "paddingTop": 20,
+      "paddingBottom": { "C6": 0, "C7": 8, "note": "C7含键值对区块，需要8px下内边距；C7键值对与箭头列表行之间额外12px间距" },
+      "title": { "fontSize": 22, "fontWeight": 600, "color": "text_primary", "lineHeight": 28 },
+      "subtitle": { "fontSize": 17, "fontWeight": 400, "color": "text_secondary", "lineHeight": 24, "marginTop": 6 }
+    },
+    "bigBtnArea": {
+      "description": "大按钮：364×52px圆角胶囊按钮",
+      "padding": 16,
+      "button": { "width": 364, "height": 52, "borderRadius": 999, "background": "btn_bg", "fontSize": 17, "fontWeight": 600 }
+    },
+    "kvRow": {
+      "description": "键值对行：标签(84px)+值",
+      "height": 24,
+      "label": { "fontSize": 17, "fontWeight": 400, "color": "text_secondary", "width": 84 },
+      "value": { "fontSize": 17, "fontWeight": 400, "color": "text_primary", "flex": 1 },
+      "gap": 8
+    },
+    "arrowRow": {
+      "description": "带箭头列表行：标题 + 右箭头chevron",
+      "height": 52,
+      "innerWidth": 364,
+      "title": { "fontSize": 17, "fontWeight": 400, "color": "text_primary" },
+      "arrow": { "size": [8, 16], "color": "rgba(60,60,67,0.75)" },
+      "separator": { "width": 364, "height": 0.5, "color": "separator", "position": "top" }
+    },
+    "markdownContent": {
+      "description": "Markdown内容区：用于C10，承载AI生成内容或富文本，使用A2-A7文本块子组件",
+      "contentWidth": 364,
+      "padding": { "top": 12, "bottom": 16, "left": 16, "right": 16 },
+      "maxHeight": 784,
+      "overflow": "auto",
+      "supportedBlocks": ["A2(一级标题)", "A3(二级标题)", "A4(正文段落)", "A5(前缀正文)", "A6(摘要文本)", "A7(提示文本)"],
+      "note": "详细间距规范和Markdown语法映射见 md/CARD_COMPONENT_SPEC.md §6"
+    }
+  },
+
+  "assets": {
+    "path": "icons/",
+    "avatars": { "note": "已迁移至 icons/Avatar_32.svg 通用占位头像" },
+    "appIcons": { "note": "已迁移至 icons/Thumbnail_52.svg 通用占位图标" },
+    "images": {
+      "shortImg": "15.png",
+      "longImg": "16.png",
+      "gridLarge": "17.png",
+      "gridSmall": "21.png"
+    },
+    "note": "头像和图标SVG已统一使用 icons/ 目录下的通用占位资源，此目录仅保留4张PNG图片占位图"
+  },
+
+  "constraints": [
+    "外层容器宽428px，内容区宽396px（左右各缩进16px），卡片圆角24px",
+    "卡片使用时页面背景必须为 #F0F0F2 (bg_bottom_standard)",
+    "头像行高度固定56px，头像32px圆形，标题字号17px",
+    "图片区域高度仅支持180px（短图）和320px（长图）两种规格",
+    "标题描述区标题最大宽度288px（右侧留给52px图标），描述最多两行",
+    "辅助信息行高度40px，字号12px",
+    "九宫格大图176×176px，小图82×82px，均圆角12px，间距12px",
+    "列表行高72px，App图标52px圆角12px，按钮72×36px胶囊形",
+    "键值对标签宽84px，值区域flex:1自适应",
+    "C10 Markdown内容区高度自适应，最大不超过840px（含56px头像行），内容超出时可滚动",
+    "C10 仅支持A2-A7文本块类型，不使用A1大标题，详见 md/CARD_COMPONENT_SPEC.md §6"
+  ]
+}

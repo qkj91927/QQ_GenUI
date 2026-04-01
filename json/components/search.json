@@ -1,0 +1,60 @@
+{
+  "id": "search",
+  "name": "搜索框 Search",
+  "category": "操作",
+  "description": "用于内容检索的搜索输入组件，支持多种交互状态与布局形式，引导用户快速定位目标内容。",
+  "spec": "md/SEARCH_COMPONENT_SPEC.md",
+
+  "totalVariants": 6,
+
+  "variants": {
+    "A_primary": [
+      { "id": "A1", "name": "一级·默认", "state": "default", "hasBack": false, "inputWidth": 396, "placeholderAlign": "center" },
+      { "id": "A2", "name": "一级·激活", "state": "focused", "hasBack": false, "inputWidth": 350, "placeholderAlign": "left", "hasCursor": true, "hasCancel": true },
+      { "id": "A3", "name": "一级·输入", "state": "typing", "hasBack": false, "inputWidth": 350, "placeholderAlign": "left", "hasCursor": true, "hasCancel": true, "hasClear": true }
+    ],
+    "B_secondary": [
+      { "id": "B1", "name": "二级·默认", "state": "default", "hasBack": true, "inputWidth": 328, "placeholderAlign": "left" },
+      { "id": "B2", "name": "二级·激活", "state": "focused", "hasBack": true, "inputWidth": 328, "placeholderAlign": "left", "hasCursor": true, "hasCancel": true },
+      { "id": "B3", "name": "二级·输入", "state": "typing", "hasBack": true, "inputWidth": 328, "placeholderAlign": "left", "hasCursor": true, "hasCancel": true, "hasClear": true }
+    ]
+  },
+
+  "layout": {
+    "outerContainer": { "width": 428, "height": 60, "background": { "token": "bg_item", "value": "#FFFFFF" }, "padding": "0 16px" },
+    "inputBox": { "height": 36, "background": { "token": "fill_standard_brand", "value": "rgba(13, 16, 49, 0.04)" }, "radius": 12 }
+  },
+
+  "style": {
+    "icons": {
+      "searchDefault": { "size": 18, "color": { "token": "icon_secondary", "value": "#929296" }, "file": "icons/search.svg" },
+      "searchTyping": { "size": 18, "color": { "token": "icon_primary", "value": "#1A1A1A" }, "file": "icons/search.svg" },
+      "cursor": { "width": 1, "height": 18, "color": { "token": "brand_standard", "value": "#0099FF" } },
+      "clear": { "size": 20, "color": { "token": "icon_secondary", "value": "#929296" }, "file": "icons/close_input.svg" },
+      "backArrow": { "size": 24, "color": { "token": "icon_primary", "value": "#1A1A1A" }, "file": "icons/chevron_left.svg" }
+    },
+    "text": {
+      "placeholder": { "fontSize": 17, "fontWeight": 400, "color": { "token": "text_tertiary", "value": "rgba(60, 60, 67, 0.56)" } },
+      "input": { "fontSize": 17, "fontWeight": 400, "color": { "token": "text_primary", "value": "rgba(0, 0, 0, 0.90)" } },
+      "cancel": { "fontSize": 16, "fontWeight": 400, "color": { "token": "text_link", "value": "#214CA5" } }
+    },
+    "backArrowLayout": { "containerWidth": 12, "svgSize": 24, "marginLeft": -6, "gapToInput": 12 }
+  },
+
+  "interaction": {
+    "defaultToFocused": "点击默认态输入框 → 激活态，显示光标和取消按钮",
+    "focusedToTyping": "开始输入文字 → 输入态，搜索图标变深色，显示清除按钮",
+    "clearAction": "点击清除按钮 → 清空文字，回到激活态",
+    "cancelAction": "点击取消按钮 → 回到默认态",
+    "backAction": "点击返回箭头 → 返回上一级页面"
+  },
+
+  "figmaMapping": {
+    "A1": "level=primary, state=default, align=center",
+    "A2": "level=primary, state=focused",
+    "A3": "level=primary, state=typing",
+    "B1": "level=secondary, state=default, hasBack=true",
+    "B2": "level=secondary, state=focused, hasBack=true",
+    "B3": "level=secondary, state=typing, hasBack=true"
+  }
+}
