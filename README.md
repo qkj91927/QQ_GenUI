@@ -24,7 +24,7 @@
 
 ## 一、设备与系统框架
 
-### 1.1 设备基准
+### 1.1 设备基准，生成界面的默认尺寸
 
 | 属性 | 值 |
 |------|------|
@@ -104,7 +104,7 @@ iOS 底部小横条，**系统级元素，全局唯一**。
 
 ---
 
-## 二、资源包结构
+## 二、组件文件索引
 
 ```
 design-system-v1.3/
@@ -124,14 +124,6 @@ design-system-v1.3/
 │   └── QUI_24_icons/            ← QUI 图标库（437 枚，24px SVG）
 ```
 
-### component-matrix.html 与 component-builder.html
-
-| 文件 | 用途 | 说明 |
-|------|------|------|
-| `component-matrix.html` | 组件矩阵 | 以网格形式预览全部 20 个母组件及其所有子组件变体，用于快速查找和对比 |
-| `component-builder.html` | 组件搭建器 | 交互式页面构建工具，支持从母组件列表中选择组件，拖入画布组装完整页面 |
-
-两个文件中的**子组件数量、样式、ID 编码必须严格一致**，是镜像对应关系。
 
 ### 结构图标清单（icons/ 根目录）
 
@@ -197,7 +189,7 @@ design-system-v1.3/
 
 | 维度 | JSON（`json/components/`） | MD（`md/`） |
 |------|---------------------------|-------------|
-| **定位** | 精确数值源（机器可读） | 设计意图 + 约束规则（人/AI 可读） |
+| **定位** | 精确数值源（机器可读） | 设计意图 + 约束规则
 | **包含** | 尺寸、间距、颜色Token、变体列表、状态定义、交互参数 | 组件概述、ASCII结构图、约束规则、交互行为、布局规则、使用场景 |
 | **权威性** | 所有精确数值（px/颜色/字重等）以 JSON 为准 | 变体数量、约束规则、组合合法性以 MD 为准 |
 | **互引** | 每个 JSON 含 `"spec"` 字段指向对应 MD | MD 尺寸表精简为属性+值两列，颜色/字体引用 JSON |
@@ -284,63 +276,3 @@ design-system-v1.3/
 > **使用方法**：在 CSS 中通过 `var(--anim-xxx-duration)` 和 `var(--anim-xxx-easing)` 引用，确保动效参数全局一致。
 
 ---
-
-## 八、⚠️ 生成前强制检查清单
-
-在输出任何 UI 组件 HTML 之前，**必须按以下步骤逐项验证**：
-
-### 步骤 1：读取组件规范
-- 确认要使用的组件，读取其 `md/<COMPONENT>_SPEC.md`
-- 重点阅读文档中的 **"属性约束"** 章节
-
-### 步骤 2：检查组合合法性
-- 通栏式列表 → 检查 `LIST_COMPONENT_SPEC.md` §3 属性约束（L×C×R 组合过滤）
-- 卡片式列表 → 检查 `GROUPED_LIST_COMPONENT_SPEC.md` §3 属性约束（L×R 组合 + 嵌套规则）
-- 导航栏 → 检查 `NAVBAR_COMPONENT_SPEC.md` §3 属性约束（L×C×R 强绑定）
-- 模态组件 → 检查各自 SPEC 中的控件联动规则
-
-### 步骤 3：检查颜色 Token
-- **⚠️ 颜色权威来源**：颜色值以 `css/QQ_color_tokens.css` 为唯一权威来源。`json/index.json` 中的颜色摘要仅为快速参考，若有冲突以 CSS 文件为准
-- `css/tokens.css` 仅包含非颜色 Token（设备/字体/间距/圆角/阴影/动效）
-- 颜色 Token 定义在 `css/QQ_color_tokens.css` 中，通过 `data-theme` 属性切换主题
-- 在 `<html>` 上设置 `data-theme="qq-light"`（默认浅色模式）或 `data-theme="qq-dark"`（深色模式）
-- 所有颜色值必须使用 Token 定义的值，禁止自行编造色值
-- 页面背景色须遵守上方"第六章 页面背景色约束"规则
-
-### 步骤 4：检查通用规则
-- 同一通栏式列表内所有行的 L/C/R 组合必须一致
-- 模态组件（ActionSheet / Dialog / HalfScreenOverlay）之间不可嵌套
-- 分割线不在列表最后一行底部显示
-- 间距值必须为 4px 的整数倍，共 6 档（4/8/12/16/24/32px），组件间间距选择规则详见 `DIVIDER_SPACING_COMPONENT_SPEC.md`
-
-### 步骤 5：图标使用规则
-
-**已绑定图标（不可替换）**：
-- 组件 MD / JSON 中已绑定具体 SVG 文件名的图标（如 `chevron_right.svg`、`tick.svg`、`Close_HalfScreen.svg`、`search.svg` 等）是**固定图标**，在实际设计任务中**不能更换为其他文件**
-- 这些图标承载固定的交互语义（返回、关闭、勾选、展开等），更换会导致用户认知混乱
-
-**占位图标（必须替换）**：
-- `empty_icon.svg` 是**通用占位图标**，在实际设计任务中**必须替换**为 `icons/QUI_24_icons/` 中的真实图标
-- 图标库位于 `icons/QUI_24_icons/`，共 437 枚 24px SVG 图标
-- 引用路径格式：`icons/QUI_24_icons/<图标名>.svg`
-
-**头像 / 缩略图占位（保持占位图）**：
-- `Avatar_32/40/52.svg` 和 `Thumbnail_24/32/40/52.svg` 是**占位资源**，在生成时**保持占位图即可，不替换为真实图片**
-- 占位图用于标示该区域的语义（头像、缩略图），保持相同尺寸和圆角规则（头像 `border-radius: 50%`，缩略图按组件规范）
-
-### 步骤 6：输出审查与完善建议
-- 完成设计任务后，审视最终方案，以清单形式附在回复末尾，涵盖以下维度：
-  - **缺失组件**：当前 20 个母组件无法覆盖的设计需求（如需要但不存在的组件类型）
-  - **缺失变体**：现有组件的变体不足以满足场景（如缺少某种尺寸、状态或布局）
-  - **不合理之处**：组件规范与实际设计需求之间的冲突或不适配
-  - **主流设计系统对比**：将当前方案与国际主流设计系统（Apple HIG、Material Design 3、Samsung One UI 等）进行对比，从交互模式、视觉美学、动效规范、无障碍等方面指出差异，并给出可借鉴的完善建议
-- 无问题的维度注明"无缺失"或"符合主流规范"
-
----
-
-## 九、版本日志
-
-| 版本 | 日期 | 变更 |
-|------|------|------|
-| v1.3 | 2026-03-31 | **图标绑定完善**：Plain List（L1-L7/R2/R6/R8/R9/C2-C3描述行）、NavBar（L1-L4/L6/C2/C4描述组10px）、Dialog（勾选图标路径前缀）全部完成 `icons/` 路径绑定；L1 尺寸从36px修正为24px；Card MD 删除"或内联SVG" · **图标使用规则重写**：README §步骤5 分三类——已绑定图标不可替换 / empty_icon 仅从 QUI_24_icons 替换 / 头像缩略图保持占位图不替换 · **Home Bar 规则重写**：明确系统级、页面层级最顶层、全局唯一不重复 · **资源大清理**：删除 `assets/` 整个目录（含 1_9048/15个SVG + 1_9610/32个PNG + 3366_9122/4个PNG + 11个未引用子目录70个文件）；新增 3 个通用占位 SVG（`placeholder_landscape/portrait/square.svg`）统一放入 `icons/`，各组件通过 `object-fit: cover` 适配；Grid 圆形变体（A5-A7/B3-B6）从 assets SVG 改为 CSS `grid-item-thumb` 渲染；AIOInput 光标改 CSS 实现、图标改引用 `empty_icon.svg` · **同步更新**：`component-matrix.html` / `component-builder.html` / 6个MD / 3个JSON 全部同步；修复 HSO Demo 断裂引用；修复 builder 因 `assetPath: ap` 未定义变量导致的崩溃 |
-| v1.3 | 2026-03-30 | 动效体系完善（ActionSheet/Dialog/Overlay token 补全）；组件间联动规范新增（触发/嵌套/互斥关系）；Button/NavBar/Search/Textfield/Card/GroupedList/ActionCombo/AIOInput MD 补充组件联动章节；modalBehavior 扩展 overlayColor/closeMethods/gestureClose；Dialog 显式标注蒙层不可关闭；AIOInput 新增状态转换条件和 Message 配合关系；所有模态组件 MD/JSON 补充量化动效参数；60个按钮 token 补充注释；20个 MD 标准化元数据头部；TextBlock 编号体系改为 H(居左)/C(居中)；ActionSheet 操作数扩展至 0-10（42变体）；HSO 把手型全屏态规范（NavBar L3 + 手势参数）；结构图统一英文化对齐；C10 开放插槽嵌套规则完善 |

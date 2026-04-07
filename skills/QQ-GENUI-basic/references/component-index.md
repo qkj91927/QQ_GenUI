@@ -25,7 +25,7 @@
 
 ## 关键全局约束
 
-- 每次执行前先读取 `references/failure-log.md`，优先规避历史高频错误
+- 首次使用时若项目根目录不存在 `failure-log.md`，先创建；后续每次执行前读取项目根目录 `failure-log.md`，优先规避历史高频错误；每次失败或重试后立即写入
 - 间距使用 4px 网格（4 的整数倍）
 - 颜色值必须来自 `css/QQ_color_tokens.css`
 - 包含 `card` 或 `form`（Grouped List）时页面背景强制灰底 `#F0F0F2`
