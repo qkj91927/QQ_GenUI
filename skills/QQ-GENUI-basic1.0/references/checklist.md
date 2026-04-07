@@ -1,0 +1,141 @@
+# Gate 执行与回归检查清单（Knot 知识库 + 图标本地化 + Failure Log 版）
+
+> 规则：每个 Gate 未通过不得进入下一 Gate。组件规范、Token 和图标通过 Knot 知识库 MCP 按需检索，禁止克隆仓库。页面用到的图标必须下载到本地 `assets/icons/`。首次使用时须完成 Knot MCP 安装与 Token 配置；若项目根目录不存在 `failure-log.md`，必须先创建；后续每次生成/调整前先读；每次失败、返工或重试后立即写入。
+
+## Gate -1：Knot MCP 安装与 Token 配置（首次）
+
+- [ ] 已检查当前环境是否已安装 knot MCP 服务
+- [ ] 若未安装，已自动写入 MCP 配置
+- [ ] 已提示用户前往 https://knot.woa.com/settings/token 获取 Token
+- [ ] 用户已提供 Token，已自动填入 `x-knot-api-token`
+- [ ] 已通过一次简单检索验证 MCP 连接正常
+
+## Gate 0：初始化并读取 Failure Log
+
+- [ ] 已检查项目根目录是否存在 `failure-log.md`
+- [ ] 若不存在，已在项目根目录创建 `failure-log.md`
+- [ ] 已读取项目根目录 `failure-log.md`
+- [ ] 已检索与当前任务相似的历史失败记录
+- [ ] 已提炼本次任务的高风险错误清单
+- [ ] 若日志为空，已确认后续一旦失败、返工或重试需立即补记
+
+## Gate 1：通过 Knot 检索入口指南
+
+- [ ] 已通过 knowledgebase_search 检索到 README.md 相关内容
+- [ ] 已理解 20 个母组件列表、背景色规则、文件读取顺序
+- [ ] 未执行 git clone / git pull / 任何仓库级本地下载
+
+## Gate 2：目标与组件候选
+
+- [ ] 已明确页面目标、信息层级、交互动作
+- [ ] 已列出候选母组件
+- [ ] 已标记是否包含 `Grouped List` 或 `Card`
+- [ ] 已列出待通过 Knot 检索的 SPEC 文件清单
+- [ ] 已结合 Failure Log 补充本次任务的风险检查点
+
+## Gate 3：通过 Knot 检索组件硬约束
+
+- [ ] 已通过 Knot 检索到目标组件 SPEC 内容
+- [ ] List 组合满足 `LIST_COMPONENT_SPEC.md`
+- [ ] Grouped List 组合满足 `GROUPED_LIST_COMPONENT_SPEC.md`
+- [ ] NavBar 组合满足 `NAVBAR_COMPONENT_SPEC.md`
+- [ ] 模态组件未嵌套
+- [ ] 已标记 SPEC 中描述的组件交互行为，生成时必须 100% 实现
+
+## Gate 4：通过 Knot 检索 Token 与主题
+
+- [ ] 已通过 Knot 检索到 `QQ_color_tokens.css` 内容
+- [ ] 已通过 Knot 检索到 `tokens.css` 内容
+- [ ] `<html>` 已设置 `data-theme`
+- [ ] 颜色全部来自 `QQ_color_tokens.css`
+- [ ] 间距均为 4px 整数倍
+
+## Gate 5：背景色强约束
+
+- [ ] 包含 `Grouped List`/`Card` 时使用 `#F0F0F2`
+- [ ] 默认场景使用 `#FFFFFF`
+- [ ] 冲突场景灰底优先
+
+## Gate 6：状态栏
+
+- [ ] 页面顶部包含 428×54 StatusBar
+- [ ] 时间固定 `9:41`
+- [ ] 状态栏图标已通过 Knot 检索后下载到本地 `assets/icons/`（network.svg / wifi.svg / battery.svg）
+- [ ] HTML 中使用本地相对路径引用状态栏图标
+- [ ] 状态栏背景与 NavBar 一致
+
+## Gate 7：图标检索与本地化
+
+- [ ] `empty_icon.svg` 残留为 0
+- [ ] 图标均通过 Knot 知识库从 `icons/QUI_24_icons/` 或 `icons/` 检索获得
+- [ ] 所有页面用到的图标已下载到本地 `assets/icons/` 目录
+- [ ] HTML 中所有图标路径均为本地相对路径 `assets/icons/*.svg`
+- [ ] 不存在远程 URL 引用图标
+- [ ] 禁止自绘/emoji
+- [ ] 缺失图标已输出问题报告
+
+## Gate 8：初次产出
+
+- [ ] 页面生成与必要实现已完成
+- [ ] 内部规则检查已完成并可进入回归
+
+## Gate 9：严格规范回归（逐项核对，最多3轮）
+
+每轮须按以下五个维度逐条核对，中间轮次静默修复，仅最后一轮输出摘要。
+
+### A. 组件细则
+
+- [ ] 组件变体使用 SPEC 定义的合法值
+- [ ] 组件属性取值在 SPEC 允许范围内
+- [ ] 子元素数量、类型符合 SPEC children 约束
+- [ ] 组件嵌套/组合在 SPEC 允许列表中
+- [ ] SPEC 必选属性/插槽均已提供
+- [ ] SPEC 禁止用法均已避免
+- [ ] 组件交互行为按 SPEC 描述 100% 实现
+
+### B. 结构语义
+
+- [ ] HTML 层级与组件 JSON 节点树一致
+- [ ] 组件父子/兄弟关系符合组合规则
+- [ ] 列表分组、行数、分割线规则符合 SPEC
+- [ ] 末行已隐藏底部分割线
+- [ ] 模态组件无互相嵌套
+- [ ] NavBar 按钮数量、位置、类型与 SPEC 一致
+
+### C. 版式细节
+
+- [ ] 颜色值均来自 `QQ_color_tokens.css`，无硬编码
+- [ ] 间距均为 4px 整数倍
+- [ ] 字号/字重/行高使用 `tokens.css` Token
+- [ ] 圆角使用 Token 或 SPEC 指定值
+- [ ] 背景色符合 Gate 5 规则
+- [ ] 状态栏尺寸/时间/图标完整
+- [ ] 状态栏背景与 NavBar 一致
+
+### D. 图标本地化
+
+- [ ] 所有图标已下载到 `assets/icons/`
+- [ ] HTML 中无远程 URL 引用图标
+- [ ] 无 `empty_icon.svg` 残留
+- [ ] 无自绘图标或 emoji
+
+### E. 交互行为
+
+- [ ] SPEC 描述的交互行为均已实现
+- [ ] 交互效果（动画、过渡、状态切换）与 SPEC 一致
+- [ ] 可交互元素具有正确的触摸区域和反馈样式
+
+### 回归结果要求
+
+- [ ] 在 ≤3 轮内达到 100% 合规，或执行满3轮后结束回归
+- [ ] 仅最后一轮输出核对摘要（只列不通过项）
+- [ ] 若第3轮后仍不合规，已输出未修复问题清单
+
+## Gate 10：最终交付与 Failure Log 回填
+
+- [ ] 已附 Gate -1~10 通过状态
+- [ ] 已附回归轮次摘要
+- [ ] 未达100%时已附未修复问题清单
+- [ ] 已附审查与完善建议（四维度）
+- [ ] 若本次出现失败、偏差、返工、重试或反复调整，已在发生后写入项目根目录 `failure-log.md`
+- [ ] 最终交付前已补全对应日志的解决方式、预防规则与关联规范
