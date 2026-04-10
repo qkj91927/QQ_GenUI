@@ -163,25 +163,25 @@
 .navbar-row .nav-title {
     font-size: 17px;
     font-weight: 600;
-    color: var(--color-text-primary);
+    color: var(--text_primary);
     white-space: nowrap;
     line-height: 1.2;
 }
 .navbar-row .nav-subtitle {
     font-size: 11px;
-    color: var(--color-text-tertiary);
+    color: var(--text_secondary);
     line-height: 1.2;
     margin-top: 1px;
 }
 .navbar-row .nav-text {
     font-size: 17px;
-    color: var(--color-text-primary);
+    color: var(--text_primary);
     cursor: pointer;
     line-height: 24px;
 }
 .navbar-row .nav-btn {
-    background: var(--color-brand-standard);
-    color: var(--color-text-allwhite);
+    background: var(--brand_standard);
+    color: var(--text_allwhite_primary);
     width: 72px;
     height: 32px;
     border-radius: 16px;
@@ -236,7 +236,7 @@
 .nav-profile-name {
     font-size: 17px;
     font-weight: 500;
-    color: var(--color-text-primary);
+    color: var(--text_primary);
     line-height: 1.2;
 }
 .nav-profile-desc-group {
@@ -244,7 +244,7 @@
     align-items: center;
     gap: 4px;
     font-size: 10px;
-    color: var(--color-text-tertiary);
+    color: var(--text_secondary);
 }
 .navbar-row .nav-subtitle.clickable,
 .nav-profile-desc-group.clickable {
@@ -264,7 +264,7 @@
     display: flex;
     align-items: center;
     padding: 0 10px;
-    color: var(--color-text-tertiary);
+    color: var(--text_secondary);
     font-size: 14px;
     margin: 0 8px;
 }
@@ -272,7 +272,7 @@
     display: flex;
     width: 196px;
     height: 36px;
-    background: var(--color-btn-bg);
+    background: var(--fill_standard_secondary);
     border-radius: 20px;
     padding: 4px;
     position: relative;
@@ -286,13 +286,13 @@
     justify-content: center;
     font-size: 14px;
     font-weight: 500;
-    color: var(--color-text-primary);
+    color: var(--text_primary);
     z-index: 1;
 }
 .nav-segment-item.active {
-    background: var(--color-bg-item);
+    background: var(--bg_bottom_light);
     border-radius: 16px;
-    box-shadow: 0 3px 8px rgba(0, 0, 0, 0.12), 0 3px 1px var(--color-fill-pressed);
+    box-shadow: 0 3px 8px rgba(0, 0, 0, 0.12), 0 3px 1px var(--fill_standard_primary);
 }
 ```
 
@@ -300,8 +300,8 @@
 
 ```css
 .nav-badge {
-    background: var(--color-border-standard);
-    color: var(--color-text-primary);
+    background: var(--border_standard);
+    color: var(--text_primary);
     font-size: 12px;
     padding: 2px 6px;
     border-radius: 10px;
@@ -309,8 +309,8 @@
     font-weight: 500;
 }
 .nav-badge-neutral {
-    background: var(--color-border-standard);
-    color: var(--color-text-primary);
+    background: var(--border_standard);
+    color: var(--text_primary);
     font-size: 14px;
     font-family: "SF Pro Display", -apple-system, sans-serif;
     padding: 0 6px;
@@ -324,13 +324,13 @@
 .nav-checkbox-selected {
     width: 24px;
     height: 24px;
-    background: var(--color-brand-standard);
+    background: var(--brand_standard);
     border-radius: 50%;
     display: flex;
     align-items: center;
     justify-content: center;
-    color: var(--color-text-allwhite);
-    border: 1.5px solid var(--color-bg-item);
+    color: var(--text_allwhite_primary);
+    border: 1.5px solid var(--bg_bottom_light);
     box-sizing: border-box;
 }
 ```

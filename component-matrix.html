@@ -1,53 +1,78 @@
 <!DOCTYPE html>
-<html lang="zh-CN">
+<html lang="zh-CN" data-theme="qq-light">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>组件矩阵 - Component Matrix</title>
+    <link rel="stylesheet" href="css/QQ_color_tokens.css">
     <style>
         /*
-         * 简化 Token 变量 — 与 css/QQ_color_tokens.css 的映射关系：
-         * --text-primary     → --color-text-primary
-         * --text-secondary   → --color-text-secondary
-         * --text-tertiary    → --color-text-tertiary
-         * --brand-blue       → --color-brand-standard (#0099FF)
-         * --bg-item          → --color-bg-item (#FFFFFF)
-         * --bg-page          → --color-bg-page (#F0F0F2)
-         * --separator        → --color-separator
-         * --border-standard  → --color-border-standard
+         * 本地简化变量 — HTML 内联 :root 快捷别名（已接入 QQ_color_tokens.css）
+         * QBasicToken 权威来源：css/QQ_color_tokens.css（39个 token，下划线命名）
+         *
+         * 当前本地变量 → 对应 QBasicToken 映射：
+         * --text-primary       → --text_primary
+         * --text-secondary     → --text_primary_light
+         * --text-tertiary      → --text_secondary
+         * --text-quaternary    → --text_tertiary
+         * --text-link          → --text_link
+         * --text-allwhite      → --text_allwhite_primary
+         * --brand-blue         → --brand_standard
+         * --brand-blue-pressed → --brand_standard（dark）
+         * --feedback-error     → --feedback_error
+         * --feedback-success   → --feedback_success
+         * --feedback-blue      → --brand_standard
+         * --bg-item            → --bg_bottom_light
+         * --bg-page            → --bg_middle_standard
+         * --bg-secondary       → --bg_middle_standard
+         * --separator          → --border_light
+         * --border-standard    → --border_standard
+         * --border-stroke      → --border_standard
+         * --border-disabled    → --border_light
+         * --fill-standard      → --fill_standard_primary
+         * --fill-pressed       → --fill_standard_primary
+         * --fill-tertiary      → --fill_standard_secondary
+         * --btn-bg             → --fill_standard_secondary
+         * --icon-primary       → --icon_primary
+         * --icon-secondary     → --icon_secondary
+         * --overlay-dark       → --overlay_dark
+         * --overlay-dialog     → --overlay_dark
+         * --handle-color       → --text_tertiary
+         * --switch-off         → --fill_standard_secondary
          * 颜色权威来源：css/QQ_color_tokens.css
          */
         :root {
-            --text-primary: rgba(0, 0, 0, 0.9);
-            --text-secondary: rgba(60, 60, 67, 0.76);
-            --text-tertiary: rgba(60, 60, 67, 0.56);
-            --text-quaternary: rgba(60, 60, 67, 0.26);
-            --text-link: #214CA5;
-            --text-allwhite: #FFFFFF;
-            --separator: rgba(0, 0, 0, 0.05);
-            --border-standard: rgba(0, 0, 0, 0.10);
-            --border-stroke: rgba(60, 60, 67, 0.25);
-            --border-disabled: rgba(60, 60, 67, 0.12);
-            --bg-page: #F0F0F2;
-            --bg-item: #FFFFFF;
-            --bg-secondary: #F3F3F7;
-            --feedback-blue: #0099FF;
-            --feedback-error: #F74C30;
-            --feedback-success: #34C759;
-            --brand-blue: #0099FF;
-            --brand-blue-pressed: #008AE5;
-            --brand-blue-light: rgba(0, 153, 255, 0.10);
-            --btn-bg: rgba(116, 116, 128, 0.08);
-            --fill-tertiary: rgba(118, 118, 128, 0.12);
-            --fill-standard: rgba(13, 16, 49, 0.04);
-            --fill-pressed: rgba(0, 0, 0, 0.04);
-            --overlay-dark: rgba(0, 0, 0, 0.50);
-            --overlay-dialog: rgba(0, 0, 0, 0.40);
-            --handle-color: rgba(60, 60, 67, 0.30);
-            --switch-off: #E5E5EA;
-            --icon-primary: #1A1A1A;
-            --icon-secondary: #929296;
-            --arrow-color: rgba(60, 60, 67, 0.30);
+            --text-primary: var(--text_primary);
+            --text-secondary: var(--text_primary_light);
+            --text-tertiary: var(--text_secondary);
+            --text-quaternary: var(--text_tertiary);
+            --text-link: var(--text_link);
+            --text-allwhite: var(--text_allwhite_primary);
+            --separator: var(--border_light);
+            --border-standard: var(--border_standard);
+            --border-stroke: var(--border_standard);
+            --border-disabled: var(--border_light);
+            --bg-page: var(--bg_middle_standard);
+            --bg-canvas: #E3E3E8;                        /* 无对应 token，matrix 专用画布色 */
+            --bg-item: var(--bg_bottom_light);
+            --bg-secondary: var(--bg_middle_standard);
+            --feedback-blue: var(--brand_standard);
+            --feedback-error: var(--feedback_error);
+            --feedback-success: var(--feedback_success);
+            --brand-blue: var(--brand_standard);
+            --brand-blue-pressed: var(--brand_standard);
+            --brand-blue-light: var(--brand_light);
+            --btn-bg: var(--fill_standard_primary);
+            --fill-tertiary: var(--fill_standard_secondary);
+            --fill-standard: var(--fill_standard_primary);
+            --fill-pressed: var(--fill_standard_primary);
+            --overlay-dark: var(--overlay_dark);
+            --overlay-dialog: var(--overlay_dark);
+            --handle-color: var(--text_tertiary);
+            --switch-off: var(--fill_standard_secondary);
+            --icon-primary: var(--icon_primary);
+            --icon-secondary: var(--icon_secondary);
+            --arrow-color: var(--text_tertiary);
         }
 
         * {
@@ -58,7 +83,7 @@
 
         body {
             font-family: -apple-system, "SF Pro SC", "SF Pro Text", "PingFang SC", "Helvetica Neue", sans-serif;
-            background-color: var(--bg-page);
+            background-color: var(--bg-canvas);
             padding: 64px 20px 60px; /* 减小顶部 padding 到 64px */
             color: var(--text-primary);
             -webkit-font-smoothing: antialiased;
@@ -95,19 +120,6 @@
             gap: 12px;
         }
 
-        #spec-link {
-            text-decoration: none;
-            color: inherit;
-            display: flex;
-            align-items: center;
-            gap: 6px;
-            transition: opacity 0.2s;
-        }
-
-        #spec-link:hover {
-            opacity: 0.7;
-        }
-
         .header-title h1 {
             font-size: 19px;
             font-weight: 600;
@@ -128,25 +140,102 @@
             padding: 2px 8px;
             border-radius: 4px;
             margin-right: 8px;
+            position: relative;
+            cursor: default;
+        }
+        .variant-count-badge[data-tooltip]:hover::after {
+            content: attr(data-tooltip);
+            position: absolute;
+            top: calc(100% + 6px);
+            left: 0;
+            width: max-content;
+            min-width: 280px;
+            max-width: 400px;
+            white-space: normal;
+            background: rgba(30,30,35,0.92);
+            color: #fff;
+            font-size: 12px;
+            font-weight: 400;
+            line-height: 1.6;
+            padding: 8px 12px;
+            border-radius: 8px;
+            box-shadow: 0 4px 16px rgba(0,0,0,0.18);
+            z-index: 9999;
+            pointer-events: none;
         }
 
         .dropdown-container {
             position: relative;
         }
-
-        select {
+        .custom-select-wrapper {
+            position: relative;
+            display: inline-block;
+        }
+        .custom-select-trigger {
             appearance: none;
             -webkit-appearance: none;
-            padding: 6px 32px 6px 12px;
+            padding: 6px 10px 6px 12px;
             font-size: 14px;
             font-weight: 400;
-            border-radius: 8px;
-            border: 1px solid rgba(0,0,0,0.1);
-            background: rgba(0,0,0,0.04) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='10' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E") no-repeat right 10px center;
             cursor: pointer;
-            outline: none;
-            font-family: inherit;
-            transition: all 0.2s;
+            border-radius: 8px;
+            border: 1px solid rgba(0,0,0,0.12);
+            background: rgba(255,255,255,0.9);
+            color: var(--text-primary);
+            width: auto;
+            white-space: nowrap;
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+        }
+        .custom-select-trigger .trigger-arrow {
+            width: 16px;
+            height: 16px;
+            flex-shrink: 0;
+            opacity: 0.5;
+        }
+        .custom-select-dropdown {
+            display: none;
+            position: absolute;
+            top: calc(100% + 8px);
+            right: 0;
+            min-width: 220px;
+            background: rgba(255,255,255,0.98);
+            border: 1px solid rgba(0,0,0,0.1);
+            border-radius: 10px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.12);
+            z-index: 2000;
+            overflow: hidden;
+            max-height: 400px;
+            overflow-y: auto;
+        }
+        .custom-select-dropdown.open {
+            display: block;
+        }
+        .custom-select-option {
+            padding: 9px 14px;
+            font-size: 14px;
+            cursor: pointer;
+            color: var(--text-primary);
+            white-space: nowrap;
+        }
+        .custom-select-option:hover {
+            background: rgba(0,0,0,0.05);
+        }
+        .custom-select-option.selected {
+            color: var(--brand-blue, #0099FF);
+            font-weight: 500;
+        }
+        .custom-select-group-label {
+            padding: 14px 14px 4px;
+            font-size: 11px;
+            color: var(--text-tertiary);
+            font-weight: 500;
+            letter-spacing: 0.05em;
+            text-transform: uppercase;
+        }
+        .custom-select-group-label:first-child {
+            padding-top: 8px;
         }
 
         select:hover {
@@ -181,6 +270,44 @@
         /* Shared UI Elements */
         img { display: block; }
 
+        /* --- Icon Indicator (CSS mask，颜色由 token 控制） --- */
+        .icon-indicator {
+            display: inline-block;
+            flex-shrink: 0;
+            background-color: var(--icon-secondary);
+            -webkit-mask-repeat: no-repeat;
+            mask-repeat: no-repeat;
+            -webkit-mask-position: center;
+            mask-position: center;
+            -webkit-mask-size: contain;
+            mask-size: contain;
+        }
+        .icon-indicator.chevron-right {
+            width: 16px; height: 16px;
+            -webkit-mask-image: url("data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTYiIGhlaWdodD0iMTYiIHZpZXdCb3g9IjAgMCAxNiAxNiIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPHBhdGggZmlsbC1ydWxlPSJldmVub2RkIiBjbGlwLXJ1bGU9ImV2ZW5vZGQiIGQ9Ik00LjkzMjgxIDEuNTk5MzJDNC43MTE1MSAxLjgyMDYyIDQuNzExNTEgMi4xNzk0MSA0LjkzMjgxIDIuNDAwNzFMMTAuMTc4NiA3LjY0NjQ2QzEwLjMxNzIgNy43ODUwOCAxMC4zOTY3IDcuODY1MjYgMTAuNDUwNSA3LjkyODU0QzEwLjQ3MjQgNy45NTQ0MiAxMC40ODMzIDcuOTY5OTIgMTAuNDg4IDcuOTc3MTJDMTAuNDkxNiA3Ljk5MjE4IDEwLjQ5MTYgOC4wMDc4NiAxMC40ODggOC4wMjI5MkMxMC40ODMzIDguMDMwMTEgMTAuNDcyNCA4LjA0NTYxIDEwLjQ1MDUgOC4wNzE0OUMxMC4zOTY3IDguMTM0NzggMTAuMzE3MiA4LjIxNDk1IDEwLjE3ODYgOC4zNTM1N0w0LjkzMjgxIDEzLjU5OTNDNC43MTE1MSAxMy44MjA2IDQuNzExNTEgMTQuMTc5NCA0LjkzMjgxIDE0LjQwMDdDNS4xNTQxIDE0LjYyMiA1LjUxMjkgMTQuNjIyIDUuNzM0MTkgMTQuNDAwN0wxMC45OTM0IDkuMTQxNDZDMTEuMTEzOCA5LjAyMTEgMTEuMjI3MSA4LjkwNzg5IDExLjMxNDQgOC44MDQ5NkMxMS40MDk0IDguNjkzMTIgMTEuNTA2NiA4LjU1NjczIDExLjU2MzcgOC4zODExNEMxMS42NDQxIDguMTMzNDMgMTEuNjQ0MSA3Ljg2NjYgMTEuNTYzNyA3LjYxODlDMTEuNTA2NiA3LjQ0MzMxIDExLjQwOTQgNy4zMDY5MSAxMS4zMTQ0IDcuMTk1MDhDMTEuMjI3MSA3LjA5MjE0IDExLjExMzggNi45Nzg5MiAxMC45OTM0IDYuODU4NTZMNS43MzQxOSAxLjU5OTMyQzUuNTEyOSAxLjM3ODAzIDUuMTU0MSAxLjM3ODAzIDQuOTMyODEgMS41OTkzMloiIGZpbGw9IiMxQTFBMUEiLz4KPC9zdmc+Cg==");
+            mask-image: url("data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTYiIGhlaWdodD0iMTYiIHZpZXdCb3g9IjAgMCAxNiAxNiIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPHBhdGggZmlsbC1ydWxlPSJldmVub2RkIiBjbGlwLXJ1bGU9ImV2ZW5vZGQiIGQ9Ik00LjkzMjgxIDEuNTk5MzJDNC43MTE1MSAxLjgyMDYyIDQuNzExNTEgMi4xNzk0MSA0LjkzMjgxIDIuNDAwNzFMMTAuMTc4NiA3LjY0NjQ2QzEwLjMxNzIgNy43ODUwOCAxMC4zOTY3IDcuODY1MjYgMTAuNDUwNSA3LjkyODU0QzEwLjQ3MjQgNy45NTQ0MiAxMC40ODMzIDcuOTY5OTIgMTAuNDg4IDcuOTc3MTJDMTAuNDkxNiA3Ljk5MjE4IDEwLjQ5MTYgOC4wMDc4NiAxMC40ODggOC4wMjI5MkMxMC40ODMzIDguMDMwMTEgMTAuNDcyNCA4LjA0NTYxIDEwLjQ1MDUgOC4wNzE0OUMxMC4zOTY3IDguMTM0NzggMTAuMzE3MiA4LjIxNDk1IDEwLjE3ODYgOC4zNTM1N0w0LjkzMjgxIDEzLjU5OTNDNC43MTE1MSAxMy44MjA2IDQuNzExNTEgMTQuMTc5NCA0LjkzMjgxIDE0LjQwMDdDNS4xNTQxIDE0LjYyMiA1LjUxMjkgMTQuNjIyIDUuNzM0MTkgMTQuNDAwN0wxMC45OTM0IDkuMTQxNDZDMTEuMTEzOCA5LjAyMTEgMTEuMjI3MSA4LjkwNzg5IDExLjMxNDQgOC44MDQ5NkMxMS40MDk0IDguNjkzMTIgMTEuNTA2NiA4LjU1NjczIDExLjU2MzcgOC4zODExNEMxMS42NDQxIDguMTMzNDMgMTEuNjQ0MSA3Ljg2NjYgMTEuNTYzNyA3LjYxODlDMTEuNTA2NiA3LjQ0MzMxIDExLjQwOTQgNy4zMDY5MSAxMS4zMTQ0IDcuMTk1MDhDMTEuMjI3MSA3LjA5MjE0IDExLjExMzggNi45Nzg5MiAxMC45OTM0IDYuODU4NTZMNS43MzQxOSAxLjU5OTMyQzUuNTEyOSAxLjM3ODAzIDUuMTU0MSAxLjM3ODAzIDQuOTMyODEgMS41OTkzMloiIGZpbGw9IiMxQTFBMUEiLz4KPC9zdmc+Cg==");
+        }
+        .icon-indicator.expand-list {
+            width: 16px; height: 16px;
+            -webkit-mask-image: url("data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTYiIGhlaWdodD0iMTYiIHZpZXdCb3g9IjAgMCAxNiAxNiIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPHBhdGggZmlsbC1ydWxlPSJldmVub2RkIiBjbGlwLXJ1bGU9ImV2ZW5vZGQiIGQ9Ik0xMS4zNzExIDkuNzk5MjhDMTEuNTkyNCA5LjU3ODMgMTEuOTUwNyA5LjU3ODE0IDEyLjE3MTkgOS43OTkyOEMxMi4zOTMxIDEwLjAyMDUgMTIuMzkyOSAxMC4zNzg3IDEyLjE3MTkgMTAuNjAwMUw4LjQwMDQ0IDE0LjM3MTVMOC4zNTc0NyAxNC40MTA2QzguMTM0OSAxNC41OTIxIDcuODA3MTEgMTQuNTc5IDcuNTk5NjYgMTQuMzcxNUwzLjgyODE3IDEwLjYwMDFMMy43ODkxMSAxMC41NTgxQzMuNjA3NTggMTAuMzM1NSAzLjYyMDcxIDEwLjAwNjggMy44MjgxNyA5Ljc5OTI4QzQuMDM1NjQgOS41OTE4NiA0LjM2NDQxIDkuNTc4NyA0LjU4Njk2IDkuNzYwMjJMNC42Mjg5NSA5Ljc5OTI4TDguMDAwMDUgMTMuMTcwNEwxMS4zNzExIDkuNzk5MjhaTTcuNjQyNjMgMS41ODkzMkM3Ljg2NTE3IDEuNDA3OTEgOC4xOTMwMSAxLjQyMTAxIDguNDAwNDQgMS42MjgzOUwxMi4xNzE5IDUuMzk5ODdMMTIuMjExIDUuNDQyODRDMTIuMzkyMyA1LjY2NTM5IDEyLjM3OTMgNS45OTMyNyAxMi4xNzE5IDYuMjAwNjVDMTEuOTY0NSA2LjQwODEyIDExLjYzNTcgNi40MjEyNSAxMS40MTMxIDYuMjM5NzFMMTEuMzcxMSA2LjIwMDY1TDguMDAwMDUgMi44Mjk1Nkw0LjYyODk1IDYuMjAwNjVDNC40MDc2NCA2LjQyMTc1IDQuMDQ5NCA2LjQyMTg4IDMuODI4MTcgNi4yMDA2NUMzLjYwNyA1Ljk3OTQyIDMuNjA3MDkgNS42MjExNiAzLjgyODE3IDUuMzk5ODdMNy41OTk2NiAxLjYyODM5TDcuNjQyNjMgMS41ODkzMloiIGZpbGw9IiMxQTFBMUEiLz4KPC9zdmc+Cg==");
+            mask-image: url("data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTYiIGhlaWdodD0iMTYiIHZpZXdCb3g9IjAgMCAxNiAxNiIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPHBhdGggZmlsbC1ydWxlPSJldmVub2RkIiBjbGlwLXJ1bGU9ImV2ZW5vZGQiIGQ9Ik0xMS4zNzExIDkuNzk5MjhDMTEuNTkyNCA5LjU3ODMgMTEuOTUwNyA5LjU3ODE0IDEyLjE3MTkgOS43OTkyOEMxMi4zOTMxIDEwLjAyMDUgMTIuMzkyOSAxMC4zNzg3IDEyLjE3MTkgMTAuNjAwMUw4LjQwMDQ0IDE0LjM3MTVMOC4zNTc0NyAxNC40MTA2QzguMTM0OSAxNC41OTIxIDcuODA3MTEgMTQuNTc5IDcuNTk5NjYgMTQuMzcxNUwzLjgyODE3IDEwLjYwMDFMMy43ODkxMSAxMC41NTgxQzMuNjA3NTggMTAuMzM1NSAzLjYyMDcxIDEwLjAwNjggMy44MjgxNyA5Ljc5OTI4QzQuMDM1NjQgOS41OTE4NiA0LjM2NDQxIDkuNTc4NyA0LjU4Njk2IDkuNzYwMjJMNC42Mjg5NSA5Ljc5OTI4TDguMDAwMDUgMTMuMTcwNEwxMS4zNzExIDkuNzk5MjhaTTcuNjQyNjMgMS41ODkzMkM3Ljg2NTE3IDEuNDA3OTEgOC4xOTMwMSAxLjQyMTAxIDguNDAwNDQgMS42MjgzOUwxMi4xNzE5IDUuMzk5ODdMMTIuMjExIDUuNDQyODRDMTIuMzkyMyA1LjY2NTM5IDEyLjM3OTMgNS45OTMyNyAxMi4xNzE5IDYuMjAwNjVDMTEuOTY0NSA2LjQwODEyIDExLjYzNTcgNi40MjEyNSAxMS40MTMxIDYuMjM5NzFMMTEuMzcxMSA2LjIwMDY1TDguMDAwMDUgMi44Mjk1Nkw0LjYyODk1IDYuMjAwNjVDNC40MDc2NCA2LjQyMTc1IDQuMDQ5NCA2LjQyMTg4IDMuODI4MTcgNi4yMDA2NUMzLjYwNyA1Ljk3OTQyIDMuNjA3MDkgNS42MjExNiAzLjgyODE3IDUuMzk5ODdMNy41OTk2NiAxLjYyODM5TDcuNjQyNjMgMS41ODkzMloiIGZpbGw9IiMxQTFBMUEiLz4KPC9zdmc+Cg==");
+        }
+        .icon-indicator.secondary-icon {
+            width: 24px; height: 24px;
+            -webkit-mask-image: url("data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjQiIGhlaWdodD0iMjQiIHZpZXdCb3g9IjAgMCAyNCAyNCIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPHBhdGggZmlsbC1ydWxlPSJldmVub2RkIiBjbGlwLXJ1bGU9ImV2ZW5vZGQiIGQ9Ik02LjY1MzgxIDEyLjAwMDRDNi42NTM4MSAxMS41MzA5IDcuMDM0MzcgMTEuMTUwNCA3LjUwMzgxIDExLjE1MDRIMTYuNTAzOEMxNi45NzMzIDExLjE1MDQgMTcuMzUzOCAxMS41MzA5IDE3LjM1MzggMTIuMDAwNEMxNy4zNTM4IDEyLjQ2OTggMTYuOTczMyAxMi44NTA0IDE2LjUwMzggMTIuODUwNEg3LjUwMzgxQzcuMDM0MzcgMTIuODUwNCA2LjY1MzgxIDEyLjQ2OTggNi42NTM4MSAxMi4wMDA0WiIgZmlsbD0iIzFBMUExQSIvPgo8L3N2Zz4K");
+            mask-image: url("data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjQiIGhlaWdodD0iMjQiIHZpZXdCb3g9IjAgMCAyNCAyNCIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPHBhdGggZmlsbC1ydWxlPSJldmVub2RkIiBjbGlwLXJ1bGU9ImV2ZW5vZGQiIGQ9Ik02LjY1MzgxIDEyLjAwMDRDNi42NTM4MSAxMS41MzA5IDcuMDM0MzcgMTEuMTUwNCA3LjUwMzgxIDExLjE1MDRIMTYuNTAzOEMxNi45NzMzIDExLjE1MDQgMTcuMzUzOCAxMS41MzA5IDE3LjM1MzggMTIuMDAwNEMxNy4zNTM4IDEyLjQ2OTggMTYuOTczMyAxMi44NTA0IDE2LjUwMzggMTIuODUwNEg3LjUwMzgxQzcuMDM0MzcgMTIuODUwNCA2LjY1MzgxIDEyLjQ2OTggNi42NTM4MSAxMi4wMDA0WiIgZmlsbD0iIzFBMUExQSIvPgo8L3N2Zz4K");
+        }
+        .icon-indicator.heart {
+            width: 16px; height: 16px;
+            -webkit-mask-image: url("data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjAiIGhlaWdodD0iMjAiIHZpZXdCb3g9IjAgMCAyMCAyMCIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPHBhdGggZmlsbC1ydWxlPSJldmVub2RkIiBjbGlwLXJ1bGU9ImV2ZW5vZGQiIGQ9Ik04Ljk5MjU1IDUuMzQ5NDFDNy42ODk3MiAzLjg4MzczIDUuNDM2NTQgMy43NzU3NSAzLjk5OTUzIDUuMTEwMTJDMi43MjAxOCA2LjI5ODA5IDIuNTEzMDUgOC4yNDc2NSAzLjUxNDIzIDkuNjc3OTFMMy41OTgzOSA5Ljc5ODEzQzQuMDYxODEgMTAuNDYwMiA0LjU4MjIgMTEuMDgwNCA1LjE1MzYyIDExLjY1MThMOS45MTE3NCAxNi40MUM5Ljk2MDU1IDE2LjQ1ODggMTAuMDM5NyAxNi40NTg4IDEwLjA4ODUgMTYuNDFMMTQuODQ2NiAxMS42NTE4QzE1LjQxODEgMTEuMDgwNCAxNS45Mzg0IDEwLjQ2MDIgMTYuNDAxOSA5Ljc5ODEyTDE2LjQ4NiA5LjY3NzkxQzE3LjQ4NzIgOC4yNDc2NSAxNy4yODAxIDYuMjk4MDkgMTYuMDAwNyA1LjExMDEyQzE0LjU2MzcgMy43NzU3NSAxMi4zMTA1IDMuODgzNzMgMTEuMDA3NyA1LjM0OTQxTDEwLjAwMDEgNi40ODI5M0w4Ljk5MjU1IDUuMzQ5NDFaTTEwLjAwMDEgNC4zNTE0NUM4LjE2MjE1IDIuMzQ2MTMgNS4wMzYwMyAyLjIxNDQyIDMuMDM1NTUgNC4wNzJDMS4yMzc5MSA1Ljc0MTI0IDAuOTQ2ODcgOC40ODA2MiAyLjM1MzY1IDEwLjQ5MDNMMi40Mzc4MSAxMC42MTA1QzIuOTQ4NTYgMTEuMzQwMiAzLjUyMjEgMTIuMDIzOCA0LjE1MTg5IDEyLjY1MzZMOC45MSAxNy40MTE3QzkuNTEyMDYgMTguMDEzOCAxMC40ODgyIDE4LjAxMzggMTEuMDkwMyAxNy40MTE3TDE1Ljg0ODQgMTIuNjUzNkMxNi40NzgyIDEyLjAyMzggMTcuMDUxNyAxMS4zNDAyIDE3LjU2MjQgMTAuNjEwNUwxNy42NDY2IDEwLjQ5MDNDMTkuMDUzNCA4LjQ4MDYyIDE4Ljc2MjMgNS43NDEyNCAxNi45NjQ3IDQuMDcyQzE0Ljk2NDIgMi4yMTQ0MiAxMS44MzgxIDIuMzQ2MTMgMTAuMDAwMSA0LjM1MTQ1WiIgZmlsbD0iIzFBMUExQSIvPgo8L3N2Zz4K");
+            mask-image: url("data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjAiIGhlaWdodD0iMjAiIHZpZXdCb3g9IjAgMCAyMCAyMCIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPHBhdGggZmlsbC1ydWxlPSJldmVub2RkIiBjbGlwLXJ1bGU9ImV2ZW5vZGQiIGQ9Ik04Ljk5MjU1IDUuMzQ5NDFDNy42ODk3MiAzLjg4MzczIDUuNDM2NTQgMy43NzU3NSAzLjk5OTUzIDUuMTEwMTJDMi43MjAxOCA2LjI5ODA5IDIuNTEzMDUgOC4yNDc2NSAzLjUxNDIzIDkuNjc3OTFMMy41OTgzOSA5Ljc5ODEzQzQuMDYxODEgMTAuNDYwMiA0LjU4MjIgMTEuMDgwNCA1LjE1MzYyIDExLjY1MThMOS45MTE3NCAxNi40MUM5Ljk2MDU1IDE2LjQ1ODggMTAuMDM5NyAxNi40NTg4IDEwLjA4ODUgMTYuNDFMMTQuODQ2NiAxMS42NTE4QzE1LjQxODEgMTEuMDgwNCAxNS45Mzg0IDEwLjQ2MDIgMTYuNDAxOSA5Ljc5ODEyTDE2LjQ4NiA5LjY3NzkxQzE3LjQ4NzIgOC4yNDc2NSAxNy4yODAxIDYuMjk4MDkgMTYuMDAwNyA1LjExMDEyQzE0LjU2MzcgMy43NzU3NSAxMi4zMTA1IDMuODgzNzMgMTEuMDA3NyA1LjM0OTQxTDEwLjAwMDEgNi40ODI5M0w4Ljk5MjU1IDUuMzQ5NDFaTTEwLjAwMDEgNC4zNTE0NUM4LjE2MjE1IDIuMzQ2MTMgNS4wMzYwMyAyLjIxNDQyIDMuMDM1NTUgNC4wNzJDMS4yMzc5MSA1Ljc0MTI0IDAuOTQ2ODcgOC40ODA2MiAyLjM1MzY1IDEwLjQ5MDNMMi40Mzc4MSAxMC42MTA1QzIuOTQ4NTYgMTEuMzQwMiAzLjUyMjEgMTIuMDIzOCA0LjE1MTg5IDEyLjY1MzZMOC45MSAxNy40MTE3QzkuNTEyMDYgMTguMDEzOCAxMC40ODgyIDE4LjAxMzggMTEuMDkwMyAxNy40MTE3TDE1Ljg0ODQgMTIuNjUzNkMxNi40NzgyIDEyLjAyMzggMTcuMDUxNyAxMS4zNDAyIDE3LjU2MjQgMTAuNjEwNUwxNy42NDY2IDEwLjQ5MDNDMTkuMDUzNCA4LjQ4MDYyIDE4Ljc2MjMgNS43NDEyNCAxNi45NjQ3IDQuMDcyQzE0Ljk2NDIgMi4yMTQ0MiAxMS44MzgxIDIuMzQ2MTMgMTAuMDAwMSA0LjM1MTQ1WiIgZmlsbD0iIzFBMUExQSIvPgo8L3N2Zz4K");
+        }
+        .icon-indicator.remind-mute {
+            width: 16px; height: 16px;
+            -webkit-mask-image: url("data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTYiIGhlaWdodD0iMTYiIHZpZXdCb3g9IjAgMCAxNiAxNiIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPHBhdGggZD0iTTcuMjYwMDkgMi4yNzIxMkM3LjI2MDA5IDEuODY0MDMgNy41OTA5MiAxLjUzMzIgNy45OTkwMSAxLjUzMzJDOC40MDcxIDEuNTMzMiA4LjczNzkyIDEuODY0MDMgOC43Mzc5MiAyLjI3MjEyVjIuNTUxNTFDOC43Mzc5MiAyLjU2Njg0IDguNzM3NDYgMi41ODIwNiA4LjczNjU0IDIuNTk3MTVDMTAuOTA3OSAyLjk1MzkgMTIuMzI0MyA0Ljg3NDIgMTIuMzI0MyA3LjEwMzM5TDEyLjMyNDkgOS4zMTI2TDEzLjY2NjUgMTEuMDU5M0MxMy42OTMxIDExLjA5MzggMTMuNzE1NSAxMS4xMzEzIDEzLjczMzUgMTEuMTcxQzEzLjg0MDkgMTEuNDA4NyAxMy44NTc0IDExLjY1NTIgMTMuODAzOCAxMS44ODA0QzEzLjc5NTIgMTEuODcxNCAxMy43ODY1IDExLjg2MjUgMTMuNzc3NiAxMS44NTM3TDExLjE5MTYgOS4yODYxNEwxMS4xOTEgNy4xMDMzOUMxMS4xOTEgNS4xNTkxOCA5Ljg2MjM3IDMuNjcxMTggNy45OTg0MSAzLjY3MTE4QzcuMjg0NjUgMy42NzExOCA2LjY0OTM5IDMuODg5MzcgNi4xMzcxNyA0LjI2NzgxTDUuMzI0NTcgMy40NjEwM0M1Ljg2NDI2IDMuMDIzNTQgNi41MTg3MiAyLjcxODc4IDcuMjYxNDcgMi41OTY5NkM3LjI2MDU1IDIuNTgxOTMgNy4yNjAwOSAyLjU2Njc3IDcuMjYwMDkgMi41NTE1MVYyLjI3MjEyWiIgZmlsbD0iIzFBMUExQSIvPgo8cGF0aCBkPSJNMy45MzM2NyAzLjEzMjUxQzMuNzEyMzcgMi45MTEyMSAzLjM1MzU4IDIuOTExMjEgMy4xMzIyOCAzLjEzMjUxQzIuOTEwOTggMy4zNTM4IDIuOTEwOTggMy43MTI2IDMuMTMyMjggMy45MzM4OUwxMi40NjU2IDEzLjI2NzJDMTIuNjg2OSAxMy40ODg1IDEzLjA0NTcgMTMuNDg4NSAxMy4yNjcgMTMuMjY3MkMxMy40ODgzIDEzLjA0NTkgMTMuNDg4MyAxMi42ODcxIDEzLjI2NyAxMi40NjU4TDMuOTMzNjcgMy4xMzI1MVoiIGZpbGw9IiMxQTFBMUEiLz4KPHBhdGggZD0iTTUuOTIxMTQgMTMuNDE4NEM1Ljg3OTczIDEzLjMyNTQgNS45NTIwMiAxMy4yMjY2IDYuMDUzNzUgMTMuMjI2Nkg5Ljk0NzYyQzEwLjA0OTQgMTMuMjI2NiAxMC4xMjE2IDEzLjMyNTQgMTAuMDgwMiAxMy40MTg0QzkuNzU1OTMgMTQuMTQ2MSA4Ljk0NzEyIDE0LjY2MTcgOC4wMDA2OSAxNC42NjE3QzcuMDU0MjUgMTQuNjYxNyA2LjI0NTQ1IDE0LjE0NjEgNS45MjExNCAxMy40MTg0WiIgZmlsbD0iIzFBMUExQSIvPgo8cGF0aCBkPSJNMy42NzI0OSA3LjEwMzM5QzMuNjcyNDkgNi42MzcyNiAzLjczNDQyIDYuMTg0NjQgMy44NTIyNCA1Ljc1N0w0LjgyMzI5IDYuNzIxMTFDNC44MTE3MiA2Ljg0NjMxIDQuODA1ODIgNi45NzM4NCA0LjgwNTgyIDcuMTAzMzlWOS41MDY4N0M0LjgwNTgyIDkuNjMxNzMgNC43NjQ1OCA5Ljc1MzEgNC42ODg1IDkuODUyMTJMMy4zNDIwOCAxMS42MDQ1SDkuNzQxODJMMTAuODgzMyAxMi43Mzc4SDMuMjgwNjZDMi40Nzc5MSAxMi43Mzc4IDEuOTMwMDIgMTEuOTExNSAyLjI2NDgyIDExLjE3MUMyLjI4Mjc4IDExLjEzMTMgMy4zMDUyNiAxMS4wOTM4IDIuMzMxODEgMTEuMDU5MkwzLjY3MjQ5IDkuMzE0MzFWNy4xMDMzOVoiIGZpbGw9IiMxQTFBMUEiLz4KPC9zdmc+Cg==");
+            mask-image: url("data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTYiIGhlaWdodD0iMTYiIHZpZXdCb3g9IjAgMCAxNiAxNiIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPHBhdGggZD0iTTcuMjYwMDkgMi4yNzIxMkM3LjI2MDA5IDEuODY0MDMgNy41OTA5MiAxLjUzMzIgNy45OTkwMSAxLjUzMzJDOC40MDcxIDEuNTMzMiA4LjczNzkyIDEuODY0MDMgOC43Mzc5MiAyLjI3MjEyVjIuNTUxNTFDOC43Mzc5MiAyLjU2Njg0IDguNzM3NDYgMi41ODIwNiA4LjczNjU0IDIuNTk3MTVDMTAuOTA3OSAyLjk1MzkgMTIuMzI0MyA0Ljg3NDIgMTIuMzI0MyA3LjEwMzM5TDEyLjMyNDkgOS4zMTI2TDEzLjY2NjUgMTEuMDU5M0MxMy42OTMxIDExLjA5MzggMTMuNzE1NSAxMS4xMzEzIDEzLjczMzUgMTEuMTcxQzEzLjg0MDkgMTEuNDA4NyAxMy44NTc0IDExLjY1NTIgMTMuODAzOCAxMS44ODA0QzEzLjc5NTIgMTEuODcxNCAxMy43ODY1IDExLjg2MjUgMTMuNzc3NiAxMS44NTM3TDExLjE5MTYgOS4yODYxNEwxMS4xOTEgNy4xMDMzOUMxMS4xOTEgNS4xNTkxOCA5Ljg2MjM3IDMuNjcxMTggNy45OTg0MSAzLjY3MTE4QzcuMjg0NjUgMy42NzExOCA2LjY0OTM5IDMuODg5MzcgNi4xMzcxNyA0LjI2NzgxTDUuMzI0NTcgMy40NjEwM0M1Ljg2NDI2IDMuMDIzNTQgNi41MTg3MiAyLjcxODc4IDcuMjYxNDcgMi41OTY5NkM3LjI2MDU1IDIuNTgxOTMgNy4yNjAwOSAyLjU2Njc3IDcuMjYwMDkgMi41NTE1MVYyLjI3MjEyWiIgZmlsbD0iIzFBMUExQSIvPgo8cGF0aCBkPSJNMy45MzM2NyAzLjEzMjUxQzMuNzEyMzcgMi45MTEyMSAzLjM1MzU4IDIuOTExMjEgMy4xMzIyOCAzLjEzMjUxQzIuOTEwOTggMy4zNTM4IDIuOTEwOTggMy43MTI2IDMuMTMyMjggMy45MzM4OUwxMi40NjU2IDEzLjI2NzJDMTIuNjg2OSAxMy40ODg1IDEzLjA0NTcgMTMuNDg4NSAxMy4yNjcgMTMuMjY3MkMxMy40ODgzIDEzLjA0NTkgMTMuNDg4MyAxMi42ODcxIDEzLjI2NyAxMi40NjU4TDMuOTMzNjcgMy4xMzI1MVoiIGZpbGw9IiMxQTFBMUEiLz4KPHBhdGggZD0iTTUuOTIxMTQgMTMuNDE4NEM1Ljg3OTczIDEzLjMyNTQgNS45NTIwMiAxMy4yMjY2IDYuMDUzNzUgMTMuMjI2Nkg5Ljk0NzYyQzEwLjA0OTQgMTMuMjI2NiAxMC4xMjE2IDEzLjMyNTQgMTAuMDgwMiAxMy40MTg0QzkuNzU1OTMgMTQuMTQ2MSA4Ljk0NzEyIDE0LjY2MTcgOC4wMDA2OSAxNC42NjE3QzcuMDU0MjUgMTQuNjYxNyA2LjI0NTQ1IDE0LjE0NjEgNS45MjExNCAxMy40MTg0WiIgZmlsbD0iIzFBMUExQSIvPgo8cGF0aCBkPSJNMy42NzI0OSA3LjEwMzM5QzMuNjcyNDkgNi42MzcyNiAzLjczNDQyIDYuMTg0NjQgMy44NTIyNCA1Ljc1N0w0LjgyMzI5IDYuNzIxMTFDNC44MTE3MiA2Ljg0NjMxIDQuODA1ODIgNi45NzM4NCA0LjgwNTgyIDcuMTAzMzlWOS41MDY4N0M0LjgwNTgyIDkuNjMxNzMgNC43NjQ1OCA5Ljc1MzEgNC42ODg1IDkuODUyMTJMMy4zNDIwOCAxMS42MDQ1SDkuNzQxODJMMTAuODgzMyAxMi43Mzc4SDMuMjgwNjZDMi40Nzc5MSAxMi43Mzc4IDEuOTMwMDIgMTEuOTExNSAyLjI2NDgyIDExLjE3MUMyLjI4Mjc4IDExLjEzMTMgMy4zMDUyNiAxMS4wOTM4IDIuMzMxODEgMTEuMDU5MkwzLjY3MjQ5IDkuMzE0MzFWNy4xMDMzOVoiIGZpbGw9IiMxQTFBMUEiLz4KPC9zdmc+Cg==");
+        }
+
         /* --- List Component Styles --- */
         .list-row {
             display: flex;
@@ -190,13 +317,19 @@
             position: relative;
             background: var(--bg-item);
         }
+        .list-selection { flex-shrink:0; margin-right:12px; cursor:pointer; }
+        .list-selection img { width:24px; height:24px; display:block; }
         .list-row.c1 { height: 52px; }
         .list-row.c2, .list-row.c3 { height: 72px; }
         .list-row .left-area { margin-right: 12px; display: flex; align-items: center; flex-shrink: 0; }
-        .list-row .content-area { flex: 1; display: flex; flex-direction: column; justify-content: center; overflow: hidden; }
+        .list-row .content-area { flex: 1; min-width: 0; display: flex; flex-direction: column; justify-content: center; overflow: hidden; }
         .list-row .right-area { margin-left: 12px; display: flex; align-items: center; flex-shrink: 0; }
         .list-row .title { font-size: 17px; line-height: 24px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-        .list-row .desc { font-size: 14px; color: var(--text-secondary); line-height: 20px; display: flex; align-items: center; }
+        .list-row .desc { font-size: 14px; color: var(--text-secondary); line-height: 20px; height: 20px; display: flex; align-items: center; overflow: hidden; }
+        .list-row .desc-text { flex-shrink: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+        .list-row .desc img { width: 16px; height: 16px; flex-shrink: 0; }
+        .list-row .desc .text-link { flex-shrink: 0; white-space: nowrap; }
+        .list-row .helper-text { max-width: 120px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
         .list-row .text-link { color: var(--text-link); cursor: pointer; }
         
         /* List Specific Right Areas */
@@ -208,7 +341,7 @@
         .list-row .amount { font-family: "DIN Alternate", sans-serif; font-weight: 700; font-size: 20px; }
 
         /* Icon/Avatar Classes */
-        .icon-36 { width: 36px; height: 36px; }
+        .icon-24 { width: 24px; height: 24px; }
         .icon-52 { width: 52px; height: 52px; }
         .avatar-32 { width: 32px; height: 32px; border-radius: 50%; }
         .avatar-40 { width: 40px; height: 40px; border-radius: 50%; }
@@ -315,60 +448,6 @@
         .navbar-row .nav-icon {
             width: 24px;
             height: 24px;
-        }
-
-        /* NavBar Specific: Profile */
-        .nav-profile {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-        .nav-profile-avatar {
-            width: 32px;
-            height: 32px;
-            border-radius: 50%;
-            border: 1px solid rgba(0,0,0,0.05);
-        }
-        .nav-profile-info {
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-        }
-        .nav-profile-name {
-            font-size: 14px;
-            font-weight: 500;
-            line-height: 1.2;
-        }
-        .nav-profile-desc {
-            font-size: 10px;
-            color: var(--text-tertiary);
-            display: flex;
-            align-items: center;
-        }
-
-        /* NavBar Specific: Badge */
-        .nav-badge {
-            background: rgba(0, 0, 0, 0.1);
-            color: var(--text-primary);
-            font-size: 12px;
-            padding: 2px 6px;
-            border-radius: 10px;
-            margin-left: 4px;
-            font-weight: 500;
-        }
-
-        /* NavBar Specific: Search Bar */
-        .nav-search-bar {
-            flex: 1;
-            height: 32px;
-            background: rgba(0,0,0,0.05);
-            border-radius: 8px;
-            display: flex;
-            align-items: center;
-            padding: 0 10px;
-            color: var(--text-tertiary);
-            font-size: 14px;
-            margin: 0 8px;
         }
 
         /* NavBar Specific: Tabs (Updated to Segmented Control C5 per 1_10231) */
@@ -483,113 +562,10 @@
             display: inline-block;
         }
 
-        /* --- Apple Style Modal --- */
-        .modal-overlay {
-            position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: var(--overlay-dialog);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            z-index: 2000;
-            opacity: 0;
-            visibility: hidden;
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-        }
-
-        .modal-overlay.active {
-            opacity: 1;
-            visibility: visible;
-        }
-
-        .modal-container {
-            background: var(--bg-item);
-            width: 95%; /* 增加基础宽度占比 */
-            max-width: 1200px; /* 从 800px 放大 1.5 倍至 1200px */
-            max-height: 95vh; /* 适当增加高度限制，确保大图展示 */
-            border-radius: 20px;
-            box-shadow: 0 20px 40px rgba(0,0,0,0.2);
-            overflow: hidden;
-            position: relative;
-            transform: scale(0.9) translateY(20px);
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-        }
-
-        .modal-overlay.active .modal-container {
-            transform: scale(1) translateY(0);
-        }
-
-        .modal-close-floating {
-            position: absolute;
-            top: 16px;
-            right: 16px;
-            width: 32px;
-            height: 32px;
-            border-radius: 50%;
-            background: rgba(0,0,0,0.2);
-            backdrop-filter: blur(10px);
-            -webkit-backdrop-filter: blur(10px);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            cursor: pointer;
-            z-index: 20;
-            color: var(--text-allwhite);
-            transition: background 0.2s;
-        }
-
-        .modal-close-floating:hover {
-            background: rgba(0,0,0,0.4);
-        }
-
-        .modal-content {
-            width: 100%;
-            height: 100%;
-            overflow-y: auto;
-            display: block;
-        }
-
-        .modal-image {
-            width: 100%;
-            display: block;
-            height: auto;
-        }
-
-        .spec-button {
-            position: absolute;
-            bottom: 24px;
-            right: 24px;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            background: var(--brand-blue);
-            color: var(--text-allwhite);
-            padding: 10px 20px;
-            border-radius: 12px;
-            text-decoration: none;
-            font-size: 14px;
-            font-weight: 600;
-            box-shadow: 0 8px 16px rgba(0,153,255,0.3);
-            transition: transform 0.2s, opacity 0.2s;
-            z-index: 10;
-        }
-
-        .spec-button:hover {
-            opacity: 0.9;
-            transform: translateY(-2px);
-        }
-
-        .spec-button:active {
-            transform: translateY(0);
-        }
-
         /* --- Form Component Styles --- */
         .form-container {
             width: 428px;
-            background: var(--bg-page); /* 保持与 Web 底色一致 */
+            background: transparent;
             padding: 12px 16px;
             display: flex;
             flex-direction: column;
@@ -610,9 +586,17 @@
 
         .form-row .left-area {
             flex: 1;
+            min-width: 0;
             display: flex;
             align-items: center;
             gap: 12px;
+            overflow: hidden;
+        }
+        .form-row .left-area .text-group {
+            flex: 1;
+            min-width: 0;
+            display: flex;
+            flex-direction: column;
             overflow: hidden;
         }
         .form-row .right-area {
@@ -634,10 +618,17 @@
             color: var(--text-tertiary);
             line-height: 1.2;
             margin-top: 1px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
         }
         .form-row .helper-text {
             font-size: 17px;
             color: var(--text-secondary);
+            max-width: 120px;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
         }
         .form-switch {
             width: 44px;
@@ -679,7 +670,7 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            padding: 16px 24px;
+            padding: 0 16px;
             background: transparent;
             width: 428px;
             box-sizing: border-box;
@@ -758,14 +749,15 @@
         }
         .action-btn-secondary {
             height: 52px;
-            background: var(--透明填充色-Tertiary, rgba(118, 118, 128, 0.12));
+            background: transparent;
+            border: 1px solid var(--border-stroke);
             border-radius: 14px;
             display: flex;
             align-items: center;
             justify-content: center;
             font-size: 17px;
             font-weight: 600;
-            color: var(--文本色-text_primary, rgba(0, 0, 0, 0.90));
+            color: var(--text-primary);
             flex: 1;
             min-width: 0;
         }
@@ -932,15 +924,9 @@
         .hs-overlay-close-btn-a3 {
             width: 30px;
             height: 30px;
-            border-radius: 50%;
-            background: var(--fill-pressed);
             display: flex;
             align-items: center;
             justify-content: center;
-        }
-        .hs-overlay-close-btn-a3 svg {
-            width: 16px;
-            height: 16px;
         }
         /* 把手型把手条 */
         .hs-overlay-handle-bar {
@@ -1718,6 +1704,10 @@
             width: 428px;
             background: transparent;
             position: relative;
+            display: flex;
+            padding-left: 16px;
+            padding-right: 16px;
+            box-sizing: border-box;
         }
         .text-block-container .text-block-title {
             font-family: 'PingFang SC', sans-serif;
@@ -1774,7 +1764,7 @@
             font-size: 12px;
             font-weight: 400;
             color: var(--text-primary);
-            line-height: 20px;
+            line-height: 17px;
             word-wrap: break-word;
         }
         .text-block-container .text-block-hint.center { text-align: center; }
@@ -1796,6 +1786,10 @@
         .grid-container.scroll-mode::-webkit-scrollbar {
             display: none;
         }
+        /* E 类复合输入框图片行：隐藏滚动条 */
+        .atf-img-row::-webkit-scrollbar {
+            display: none;
+        }
         .grid-inner {
             display: flex;
             flex-wrap: wrap;
@@ -1815,9 +1809,6 @@
             background: var(--fill-standard);
         }
         .grid-item-thumb.rounded {
-            border-radius: 16px;
-        }
-        .grid-item-thumb.rounded-sm {
             border-radius: 12px;
         }
         .grid-item-thumb.circle {
@@ -1899,15 +1890,9 @@
         .hs-navbar-row .hs-close-btn {
             width: 30px;
             height: 30px;
-            border-radius: 50%;
-            background: var(--fill-pressed);
             display: flex;
             align-items: center;
             justify-content: center;
-        }
-        .hs-navbar-row .hs-close-btn svg {
-            width: 16px;
-            height: 16px;
         }
         .hs-navbar-row .hs-action-text {
             font-size: 17px;
@@ -2549,10 +2534,10 @@
         .msg-outer {
             width: 428px;
             position: relative;
-            padding: 4px 0;
+            padding: 8px 0;
         }
         .msg-row {
-            width: 364px;
+            width: 404px;
             position: relative;
             display: flex;
             overflow: hidden;
@@ -2596,7 +2581,7 @@
             border-radius: 10px;
             padding: 9px;
             display: inline-block;
-            max-width: 308px;
+            max-width: 340px;
         }
         .msg-bubble-text.guest-bubble {
             background: var(--bg-item);
@@ -2864,40 +2849,41 @@
     <div class="top-nav">
         <div class="header-title">
             <div class="header-main">
-                <a id="spec-link" href="#" onclick="openModal(event)" title="点击查看组件说明">
                     <h1 id="main-title">通栏式列表 Plain List · 变体矩阵</h1>
-                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="margin-top:2px; opacity:0.5;"><polyline points="9 18 15 12 9 6"></polyline></svg>
-                </a>
             </div>
             <p id="subheader">正在加载变体...</p>
         </div>
         <div class="dropdown-container">
-            <select id="component-selector" onchange="switchComponent(this.value)">
-                <!-- 导航 -->
-                <option value="navbar">导航栏 NavBar</option>
-                <option value="hs_navbar">半屏导航栏 HalfScreen NavBar</option>
-                <!-- 数据 -->
-                <option value="list">通栏式列表 Plain List</option>
-                <option value="form" selected>卡片式列表 Grouped List</option>
-                <option value="text_block">文本块 TextBlock</option>
-                <option value="image_block">图片块 ImageBlock</option>
-                <option value="data_filter">数据筛选 DataFilter</option>
-                <option value="grid">宫格 Grid</option>
-                <option value="divider_spacing">分隔与间距 Divider & Spacing</option>
-                <option value="card">卡片 Card</option>
-                <option value="message">消息 Message</option>
-                <!-- 操作 -->
-                <option value="button">按钮 Button</option>
-                <option value="action">操作组合 ActionCombo</option>
-                <option value="menu">菜单 Menu</option>
-                <option value="search">搜索框 Search</option>
-                <option value="textfield">输入框 Textfield</option>
-                <option value="aio_input">AIO 输入框 AIOInput</option>
-                <!-- 模态 -->
-                <option value="action_sheet">操作面板 ActionSheet</option>
-                <option value="dialog">对话框 Dialog</option>
-                <option value="half_screen_overlay">半屏浮层 HalfScreenOverlay</option>
-            </select>
+            <div class="custom-select-wrapper" id="customSelectWrapper">
+                <button class="custom-select-trigger" id="customSelectTrigger">选择组件<img src="icons/chevron_down.svg" class="trigger-arrow" alt=""></button>
+                <div class="custom-select-dropdown" id="customSelectDropdown">
+                    <div class="custom-select-group-label">导航</div>
+                    <div class="custom-select-option" data-value="navbar">导航栏 NavBar</div>
+                    <div class="custom-select-option" data-value="hs_navbar">半屏导航栏 HalfScreen NavBar</div>
+                    <div class="custom-select-group-label">数据</div>
+                    <div class="custom-select-option" data-value="list">通栏式列表 Plain List</div>
+                    <div class="custom-select-option" data-value="form">卡片式列表 Grouped List</div>
+                    <div class="custom-select-option" data-value="text_block">文本块 TextBlock</div>
+                    <div class="custom-select-option" data-value="image_block">图片块 ImageBlock</div>
+                    <div class="custom-select-option" data-value="data_filter">数据筛选 DataFilter</div>
+                    <div class="custom-select-option" data-value="grid">宫格 Grid</div>
+                    <div class="custom-select-option" data-value="divider_spacing">分隔与间距 Divider & Spacing</div>
+                    <div class="custom-select-option" data-value="card">卡片 Card</div>
+                    <div class="custom-select-option" data-value="message">消息 Message</div>
+                    <div class="custom-select-group-label">操作</div>
+                    <div class="custom-select-option" data-value="button">按钮 Button</div>
+                    <div class="custom-select-option" data-value="action">操作组合 ActionCombo</div>
+                    <div class="custom-select-option" data-value="menu">菜单 Menu</div>
+                    <div class="custom-select-option" data-value="search">搜索框 Search</div>
+                    <div class="custom-select-option" data-value="textfield">输入框 Textfield</div>
+                    <div class="custom-select-option" data-value="aio_input">AIO 输入框 AIOInput</div>
+                    <div class="custom-select-option" data-value="toast">轻提示 Toast</div>
+                    <div class="custom-select-group-label">模态</div>
+                    <div class="custom-select-option" data-value="action_sheet">操作面板 ActionSheet</div>
+                    <div class="custom-select-option" data-value="dialog">对话框 Dialog</div>
+                    <div class="custom-select-option" data-value="half_screen_overlay">半屏浮层 HalfScreenOverlay</div>
+                </div>
+            </div>
         </div>
     </div>
 
@@ -2921,21 +2907,7 @@
         </div>
     </div>
 
-    <!-- Apple Style Modal -->
-    <div class="modal-overlay" id="modal-overlay" onclick="closeModal(event)">
-        <div class="modal-container" onclick="event.stopPropagation()">
-            <div class="modal-close-floating" onclick="closeModal()">
-                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
-            </div>
-            <div class="modal-content">
-                <img id="modal-image" src="" alt="组件说明图" class="modal-image">
-            </div>
-            <a id="modal-spec-link" href="#" target="_blank" class="spec-button">
-                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline></svg>
-                查看完整规范文档 (MD)
-            </a>
-        </div>
-    </div>
+
 
     <script>
         // --- Shared Assets ---
@@ -2950,160 +2922,173 @@
                 title: '通栏式列表 Plain List · 变体矩阵',
                 spec: 'md/LIST_COMPONENT_SPEC.md',
                 image: '',
-                anatomy: '由 左侧区域(8种) × 内容行数(3种) × 右侧区域(10种) 排列组合生成，并基于业务逻辑、设计规范进行约束，过滤了错误的组合类型。',
+                anatomy: '横向撑满屏幕，适合数据驱动型界面，快速扫描大量同类信息。',
+                tooltip: '左侧(8种) × 内容行数(3种) × 右侧(10种) 排列组合，约束过滤后共 67 种默认态 + 43 种多选态 = 110 种变体。',
                 render: renderList
             },
             navbar: {
                 title: '顶部导航栏NavBar · 变体矩阵',
                 spec: 'md/NAVBAR_COMPONENT_SPEC.md',
                 image: '',
-                anatomy: '由 左侧区域(6种) × 中间内容(6种) × 右侧区域(7种) 排列组合生成，并基于业务逻辑、设计规范进行约束，过滤了错误的组合类型。',
+                anatomy: '固定于页面顶部的全局导航容器，承载页面标题、返回操作与功能入口，建立层级导航与快捷操作的统一框架。',
+                tooltip: '左侧(6种) × 中间(6种) × 右侧(7种) 排列组合，过滤无效组合。',
                 render: renderNavBar
             },
             form: {
                 title: '卡片式列表 Grouped List · 变体矩阵',
                 spec: 'md/GROUPED_LIST_COMPONENT_SPEC.md',
                 image: '',
-                anatomy: '由 左侧区域(7种) × 右侧区域(6种) 排列组合生成，并基于"左侧+右侧"母组件嵌套逻辑设计，严格遵循 Figma 属性约束。',
+                anatomy: '左右缩进且以圆角容器封装，适合任务驱动型界面，在复杂信息中快速定位功能或操作。',
+                tooltip: '左侧(11种) × 右侧(6种) 排列组合生成。',
                 render: renderForm
             },
             action: {
                 title: '操作组合 ActionCombo · 变体矩阵',
                 spec: 'md/ACTION_COMPONENT_SPEC.md',
                 image: '',
-                anatomy: '由 操作组合(A1-A8, Button 按钮型) + 辅助操作组合(B1-B5, Action 文字链型) 共 13 种子组件构成，严格还原 Figma 设计稿。',
+                anatomy: '位于页面底部或内容尾部的操作触发区域，聚合主要行动按钮与辅助文字链，引导用户完成关键决策。分为操作行（Button 按钮型）和辅助操作行（Action 文字链型）两类。',
+                tooltip: '操作行 A(按钮型 8种) + 辅助操作行 B(文字链型 7种)，共 15 种。',
                 render: renderAction
             },
             action_sheet: {
                 title: '操作面板 ActionSheet · 变体矩阵',
                 spec: 'md/ACTION_SHEET_COMPONENT_SPEC.md',
                 image: '',
-                anatomy: '底部弹出的操作面板组件，由 操作数量(0-5) × 操作提示(有/无) × 警示操作(有/无) 排列组合生成，排除无操作且无警示的无效组合，共 22 种子组件。',
+                anatomy: '从底部弹出的模态操作面板，提供一组可选操作与取消按钮，用于上下文操作选择与确认。支持操作提示、常规操作、警示操作三种行类型。',
+                tooltip: '由 操作数量(0-5) × 操作提示(有/无) × 警示操作(有/无) 排列组合生成，排除无操作且无警示的无效组合，共 22 种子组件。',
                 render: renderActionSheet
             },
             image_block: {
                 title: '图片块 ImageBlock · 变体矩阵',
                 spec: 'md/IMAGE_BLOCK_COMPONENT_SPEC.md',
                 image: '',
-                anatomy: '由 通栏(A1-A5, 图片撑满宽度) + 嵌入(B1-B5, 带内边距) 共 10 种子组件构成，含单图轮播(3种比例)、四宫格、九宫格。',
+                anatomy: '以图片为核心内容的展示区域，支持单图、轮播与多图宫格，用于承载视觉化信息或媒体浏览场景。',
+                tooltip: '通栏(5种) + 嵌入(5种)，共 10 种，含轮播、四宫格、九宫格。',
                 render: renderImageBlock
             },
             data_filter: {
                 title: '数据筛选 DataFilter · 变体矩阵',
                 spec: 'md/DATA_FILTER_COMPONENT_SPEC.md',
                 image: '',
-                anatomy: '由 A.页签(4种: 等分4/5/6个+横滑8个) + B.分段选择(4种: 2/3/4/5项) + C.下拉筛选(1种: 1个按钮) + D.标签(5种: 单行横滑+单行4个+单行3个+单行2个+双行2个) + E.面包屑(2种: 标准+超限渐隐) 共 16 种子组件构成。分段选择与下拉筛选支持同行组合排列。',
+                anatomy: '页面中用于分类切换、条件筛选与层级导航的组合组件族，包含页签、分段选择、下拉筛选、标签、面包屑五种子组件类型。',
+                tooltip: '页签(4) + 分段选择(4) + 下拉筛选(1) + 标签(5) + 面包屑(2)，共 16 种。',
                 render: renderDataFilter
             },
             text_block: {
                 title: '文本块 TextBlock · 变体矩阵',
                 spec: 'md/TEXT_BLOCK_COMPONENT_SPEC.md',
                 image: '',
-                anatomy: '由 H.居左(H1大标题+H2一级标题+H3二级标题+H4正文段落+H5前缀正文+H6摘要文本+H7提示文本) + C.居中(C1大标题+C2一级标题+C3二级标题+C4正文段落+C5摘要文本+C6提示文本) 共 13 种子组件构成。',
+                anatomy: '纯文本内容的排版区域，涵盖标题、正文、摘要、提示等层级，支持居左与居中两种对齐方式，用于构建页面的信息层次与阅读节奏。',
+                tooltip: '由 H.居左(H1-H7) + C.居中(C1-C6) 共 13 种子组件构成。',
                 render: renderTextBlock
             },
             grid: {
                 title: '宫格 Grid · 变体矩阵',
                 spec: 'md/GRID_COMPONENT_SPEC.md',
                 image: '',
-                anatomy: '由 A平铺(A1-A9) + B横滑(B1-B8) 共 17 种子组件构成，覆盖横版、竖版、正方形、圆形 4 类形状，横滑支持左右滑动交互。',
+                anatomy: '将多个同类内容项以网格形式排列的区域，支持平铺与横滑两种交互方式，适合入口导航与分类展示。',
+                tooltip: '由 A平铺(A1-A9) + B横滑(B1-B8) 共 17 种子组件构成，覆盖横版、竖版、正方形、圆形 4 类形状。',
                 render: renderGrid
             },
             hs_navbar: {
                 title: '半屏导航栏 HalfScreen NavBar · 变体矩阵',
                 spec: 'md/HS_NAVBAR_COMPONENT_SPEC.md',
                 image: '',
-                anatomy: '由 A一级(A1-A4) + B二级(B1-B3) 共 7 种子组件构成，覆盖标题型、副标题型、纯关闭型、图标标题型等半屏浮层顶部导航场景。',
+                anatomy: '专用于半屏浮层顶部的导航组件，承载标题展示、层级返回与关闭操作，为浮层内容提供统一的导航框架。',
+                tooltip: 'A一级(4种) + B二级(3种)，共 7 种。',
                 render: renderHsNavbar
             },
             divider_spacing: {
                 title: '分隔与间距 Divider & Spacing · 变体矩阵',
                 spec: 'md/DIVIDER_SPACING_COMPONENT_SPEC.md',
                 image: '',
-                anatomy: '由 A分割线(A1, 1种) + B间距(B1-B6, 6种: 4/8/12/16/24/32px) 共 7 种子组件构成。分割线基础样式统一，通栏/缩进/方向为使用参数。',
+                anatomy: '用于分隔内容层级与控制视觉节奏的基础布局组件，通过分割线与间距两类子组件组织页面结构。',
+                tooltip: '分割线(1种) + 间距(6种: 4~32px)，共 7 种。',
                 render: renderDividerSpacing
             },
             search: {
                 title: '搜索框 Search · 变体矩阵',
                 spec: 'md/SEARCH_COMPONENT_SPEC.md',
                 image: '',
-                anatomy: '由 A.一级(无返回按钮) + B.二级(有返回按钮) 共 2 组子组件构成，每组支持多种交互状态切换。',
+                anatomy: '用于内容检索的搜索输入组件，支持多种交互状态与布局形式，引导用户快速定位目标内容。',
+                tooltip: '由 A.一级(无返回按钮) + B.二级(有返回按钮) 共 2 组子组件构成，每组支持多种交互状态切换。',
                 render: renderSearch
             },
             textfield: {
                 title: '输入框 Textfield · 变体矩阵',
                 spec: 'md/TEXTFIELD_COMPONENT_SPEC.md',
                 image: '',
-                anatomy: '由 A单行无标题(5态) + B单行有标题(5态) + C电话号码(5态) + D多行文本(5态) 共 20 种子组件构成，支持交互切换默认/激活/输入/完成/错误 5 种状态。',
+                anatomy: '表单场景中最基础的信息录入组件，支持多种输入类型与交互状态，满足不同数据采集需求。',
+                tooltip: '单行无标题/有标题/电话/多行文本(各5态) + 复合输入框(6种×5态)，共 50 种。',
                 render: renderTextField
             },
             dialog: {
                 title: '对话框 Dialog · 变体矩阵',
                 spec: 'md/DIALOG_COMPONENT_SPEC.md',
                 image: '',
-                anatomy: '由 标题(2类：有标题/无标题) × 正文区域(3类：纯文本/文本+勾选/输入框) × 操作(3类：单按钮/双按钮/三按钮) 排列组合生成，其中输入框类必须搭配标题，共 15 种子组件。',
+                anatomy: '居中显示的模态弹窗组件，用于传达重要信息并请求用户确认或决策，支持多种正文与操作按钮布局。',
+                tooltip: '标题(有/无) × 正文(文本/勾选/输入框) × 操作(1-3按钮)，输入框类必须有标题，共 15 种。',
                 render: renderDialog
             },
             menu: {
                 title: '菜单 Menu · 变体矩阵',
                 spec: 'md/MENU_COMPONENT_SPEC.md',
                 image: '',
-                anatomy: '由 3 种子组件类型（有图标 / 无图标 / 有勾选）× 选项数量（2-6）排列组合生成，共 15 种子组件。菜单为伴随式非模态组件，出现在触发元素上方或下方 6px 位置。',
+                anatomy: '伴随式非模态浮层菜单，出现在触发元素上方或下方 6px 位置，提供一组可选操作项。支持有图标、无图标和有勾选三种样式。',
+                tooltip: '由 3 种子组件类型（有图标/无图标/有勾选）× 选项数量（2-6）排列组合生成，共 15 种子组件。',
                 render: renderMenu
             },
             half_screen_overlay: {
                 title: '半屏浮层 HalfScreenOverlay · 变体矩阵',
                 spec: 'md/HALF_SCREEN_OVERLAY_COMPONENT_SPEC.md',
                 image: '',
-                anatomy: '由 标准型（半屏导航栏，默认A3，可按需替换）和 把手型（拖拽把手条，不使用导航栏）2 种子组件构成，为从底部弹出的模态半屏浮层容器。',
+                anatomy: '从屏幕底部弹出、约占半屏高度的模态容器组件，用于承载二级内容、表单、选择器等场景，分为标准型与把手型两种形式。',
+                tooltip: '由 标准型 和 把手型 共 2 种子组件构成，为从底部弹出的模态半屏浮层容器。',
                 render: renderHalfScreenOverlay
             },
             button: {
                 title: '按钮 Button · 变体矩阵',
                 spec: 'md/BUTTON_COMPONENT_SPEC.md',
                 image: '',
-                anatomy: '由 4 种尺寸（大/中/小/mini）× 3 种类型（一级/二级/警示）排列组合生成，共 12 种子组件。每种子组件支持默认、按下、加载（仅大&中尺寸的一级&二级）、不可点击 4 种状态。',
+                anatomy: '移动端最基础的操作触发组件，通过视觉层级（一级/二级/警示）和尺寸变化适配不同交互场景。',
+                tooltip: '4种尺寸(大/中/小/mini) × 3种类型(一级/二级/警示)，共 12 种。',
                 render: renderButton
             },
             aio_input: {
                 title: 'AIO 输入框 AIOInput · 变体矩阵',
                 spec: 'md/AIO_INPUT_COMPONENT_SPEC.md',
                 image: '',
-                anatomy: '由 I1默认态 / I2生成中态 / I3输入态 共 3 种子组件构成。组件为底部固定的输入栏，支持文字输入和语音输入切换，包含左右图标按钮。',
+                anatomy: '聊天场景中固定于页面底部的综合输入栏（All-in-One），集成文字输入与语音输入，覆盖待输入、生成中、输入中三种状态。',
+                tooltip: 'I1 默认态 / I2 生成中态 / I3 输入态，共 3 种。',
                 render: renderAioInput
+            },
+            toast: {
+                title: '轻提示 Toast · 变体矩阵',
+                spec: 'md/TOAST_COMPONENT_SPEC.md',
+                image: '',
+                anatomy: '短暂性的非阻断式反馈提示组件，用于告知用户操作结果或当前状态，自动消失无需交互。',
+                tooltip: 'T1-T4 出现在页面正中央，T5 出现在页面底部上方 64px，均带渐显渐隐动画。',
+                render: renderToast
             },
             card: {
                 title: '卡片 Card · 变体矩阵',
                 spec: 'md/CARD_COMPONENT_SPEC.md',
                 image: '',
-                anatomy: '由 C1头像+短图 / C2头像+长图 / C3短图+标题描述+辅助 / C4长图+标题描述+辅助 / C5九宫格+列表按钮 / C6头像+大标题+大按钮 / C7头像+大标题+键值对+箭头列表 / C8标题描述+辅助 / C9头像+图标列表×2 / C10头像+标题+Markdown 共 10 种子组件构成，每个卡片均为圆角 24px 白色容器。',
+                anatomy: '承载结构化内容的圆角容器组件，用于在信息流、详情页等场景中展示多种组合形式的内容块，支持头像行、图片区、标题描述区、操作行等区块自由组合。',
+                tooltip: 'C1-C5 富媒体类(头像+图/九宫格/操作) / C6-C10 文本信息类(大标题/键值对/Markdown)，共 10 种。',
                 render: renderCard
             },
             message: {
                 title: '消息 Message · 变体矩阵',
                 spec: 'md/MESSAGE_COMPONENT_SPEC.md',
                 image: '',
-                anatomy: '由 4 种内容类型（A通用文本 / B图文长描述 / C图文短标题 / D图标消息）× 2 种态（主态/客态）排列组合生成，共 8 种子组件。主/客态通过统一分段选择器切换，主态头像在右+蓝色气泡，客态头像在左+白色气泡。',
+                anatomy: '聊天对话场景中的消息气泡组件，支持通用文本、图文、图标消息等内容类型，分为主态与客态两种布局形式。',
+                tooltip: '主/客态通过统一分段选择器切换，D类图标消息使用 Avatar_52.svg 占位。',
                 render: renderMessage
             }
         };
 
         let currentComponent = 'form';
-
-        // --- Modal Logic ---
-        function openModal(e) {
-            if (e) e.preventDefault();
-            const config = COMPONENTS[currentComponent];
-            document.getElementById('modal-image').src = config.image;
-            document.getElementById('modal-spec-link').href = config.spec;
-            document.getElementById('modal-overlay').classList.add('active');
-            document.body.style.overflow = 'hidden'; // Prevent scroll
-        }
-
-        function closeModal() {
-            document.getElementById('modal-overlay').classList.remove('active');
-            document.body.style.overflow = '';
-        }
 
         // --- List Component Implementation ---
         function renderList() {
@@ -3168,8 +3153,8 @@
                         const content = document.createElement('div');
                         content.className = 'content-area';
                         content.innerHTML = `<div class="title">列表文本</div>` + 
-                            (C.lines >= 2 ? `<div class="desc"><img src="icons/empty_icon.svg" style="width:16px;height:16px;margin-right:2px;">描述文本<span style="margin:0 2px">・</span>描述文本<span class="text-link">textlink</span><img src="icons/chevron_right.svg" style="width:16px;height:16px;margin-left:2px;"></div>` : '') +
-                            (C.lines >= 3 ? `<div class="desc"><img src="icons/empty_icon.svg" style="width:16px;height:16px;margin-right:2px;">描述文本<span style="margin:0 2px">・</span>描述文本<span class="text-link">textlink</span><img src="icons/chevron_right.svg" style="width:16px;height:16px;margin-left:2px;"></div>` : '');
+                            (C.lines >= 2 ? `<div class="desc"><span class="desc-text">描述文本・描述文本<span style="color:var(--text-link)">textlink</span></span></div>` : '') +
+                            (C.lines >= 3 ? `<div class="desc"><span class="desc-text">描述文本・描述文本<span style="color:var(--text-link)">textlink</span></span></div>` : '');
                         row.appendChild(content);
 
                         // Right
@@ -3177,15 +3162,15 @@
                         right.className = 'right-area';
                         let rightHtml = '';
                         switch(R.id) {
-                            case 'R1': rightHtml = `<span style="font-size:17px;color:var(--text-secondary);margin-right:4px">辅助信息</span><img src="icons/chevron_right.svg">`; break;
-                            case 'R2': rightHtml = `<span style="font-size:17px;color:var(--text-secondary);margin-right:4px">辅助信息</span><img src="icons/Avatar_32.svg" class="avatar-32" style="margin-right:8px;"><img src="icons/chevron_right.svg">`; break;
-                            case 'R3': rightHtml = `<span style="font-size:17px;color:var(--text-secondary);margin-right:4px">辅助信息</span><img src="icons/Thumbnail_32.svg" style="width:32px;height:32px;border-radius:4px;margin-right:8px;"><img src="icons/chevron_right.svg">`; break;
+                            case 'R1': rightHtml = `<span style="font-size:17px;color:var(--text-secondary);margin-right:4px;max-width:120px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">辅助信息</span><div class="icon-indicator chevron-right"></div>`; break;
+                            case 'R2': rightHtml = `<span style="font-size:17px;color:var(--text-secondary);margin-right:4px;max-width:120px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">辅助信息</span><img src="icons/Avatar_32.svg" class="avatar-32" style="margin-right:8px;"><div class="icon-indicator chevron-right"></div>`; break;
+                            case 'R3': rightHtml = `<span style="font-size:17px;color:var(--text-secondary);margin-right:4px;max-width:120px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">辅助信息</span><img src="icons/Thumbnail_32.svg" style="width:32px;height:32px;border-radius:4px;margin-right:8px;"><div class="icon-indicator chevron-right"></div>`; break;
                             case 'R4': rightHtml = `<div class="btn-secondary">按钮</div>`; break;
                             case 'R5': rightHtml = `<span class="text-link" style="font-size:17px">Action</span>`; break;
                             case 'R6': rightHtml = `<img src="icons/empty_icon.svg">`; break;
                             case 'R7': rightHtml = `<span class="amount">-258.00</span>`; break;
-                            case 'R8': rightHtml = `<div style="display:flex;align-items:center;"><span class="amount" style="font-size:20px;">2630</span><div style="display:flex;flex-direction:column;align-items:center;margin-left:4px;"><span style="font-size:12px;color:var(--text-tertiary);line-height:1;margin-bottom:2px">6</span><img src="icons/heart.svg" style="width:16px"></div></div>`; break;
-                            case 'R9': rightHtml = `<div style="display:flex;flex-direction:column;align-items:flex-end;"><span style="font-size:12px;color:var(--text-tertiary);margin-bottom:4px">17:53</span><img src="icons/remind_mute.svg"></div>`; break;
+                            case 'R8': rightHtml = `<div style="display:flex;align-items:center;"><span class="amount" style="font-size:20px;">2630</span><div style="display:flex;flex-direction:column;align-items:center;margin-left:4px;"><span style="font-size:12px;color:var(--text-tertiary);line-height:1;margin-bottom:2px">6</span><div class="icon-indicator heart"></div></div></div>`; break;
+                            case 'R9': rightHtml = `<div style="display:flex;flex-direction:column;align-items:flex-end;"><span style="font-size:12px;color:var(--text-tertiary);margin-bottom:4px">17:53</span><div class="icon-indicator remind-mute"></div></div>`; break;
                         }
                         right.innerHTML = rightHtml;
                         row.appendChild(right);
@@ -3195,7 +3180,84 @@
                     });
                 });
             });
-            updateSubheader(count, COMPONENTS.list.anatomy);
+
+            // === 多选态 S1：L0-L7 × C × {R0,R1,R2,R3,R6,R7} ===
+            const MULTI_SELECT_R = ['R0/Empty', 'R1', 'R2', 'R3', 'R6', 'R7'];
+            L_OPTIONS.forEach(L => {
+                C_OPTIONS.forEach(C => {
+                    R_OPTIONS.forEach(R => {
+                        if (!MULTI_SELECT_R.includes(R.id)) return;
+                        // 复用原有约束
+                        if (L.type !== 'any' && L.type !== C.type) return;
+                        if (L.id === 'L0/Empty') {
+                            if (C.id === 'C3') return;
+                            if (!['R1', 'R6', 'R0/Empty'].includes(R.id)) return;
+                        }
+                        if (R.id === 'R2' && (C.id !== 'C1' || L.id !== 'L1')) return;
+                        if (R.id === 'R3' && C.id !== 'C1') return;
+                        if (L.id === 'L2' && R.id !== 'R6') return;
+                        if (R.id === 'R7' && L.id !== 'L4') return;
+
+                        count++;
+                        const card = createCard(count, `S1+${L.id}+${C.id}+${R.id}`);
+                        const row = document.createElement('div');
+                        row.className = `list-row ${C.id.toLowerCase()}`;
+
+                        // 多选控件
+                        const sel = document.createElement('div');
+                        sel.className = 'list-selection';
+                        sel.innerHTML = `<img src="icons/Checkbox.svg">`;
+                        row.appendChild(sel);
+
+                        // Left
+                        const left = document.createElement('div');
+                        left.className = 'left-area';
+                        if (L.id !== 'L0/Empty') left.innerHTML = `<img src="${L.asset}" class="${L.class}">`;
+                        else { left.style.width = '0px'; left.style.marginRight = '0px'; }
+                        row.appendChild(left);
+
+                        // Content
+                        const content = document.createElement('div');
+                        content.className = 'content-area';
+                        content.innerHTML = `<div class="title">列表文本</div>` +
+                            (C.lines >= 2 ? `<div class="desc"><span class="desc-text">描述文本・描述文本<span style="color:var(--text-link)">textlink</span></span></div>` : '') +
+                            (C.lines >= 3 ? `<div class="desc"><span class="desc-text">描述文本・描述文本<span style="color:var(--text-link)">textlink</span></span></div>` : '');
+                        row.appendChild(content);
+
+                        // Right
+                        const right = document.createElement('div');
+                        right.className = 'right-area';
+                        let rightHtml = '';
+                        switch(R.id) {
+                            case 'R1': rightHtml = `<span style="font-size:17px;color:var(--text-secondary);margin-right:4px;max-width:120px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">辅助信息</span><div class="icon-indicator chevron-right"></div>`; break;
+                            case 'R2': rightHtml = `<span style="font-size:17px;color:var(--text-secondary);margin-right:4px;max-width:120px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">辅助信息</span><img src="icons/Avatar_32.svg" class="avatar-32" style="margin-right:8px;"><div class="icon-indicator chevron-right"></div>`; break;
+                            case 'R3': rightHtml = `<span style="font-size:17px;color:var(--text-secondary);margin-right:4px;max-width:120px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">辅助信息</span><img src="icons/Thumbnail_32.svg" style="width:32px;height:32px;border-radius:4px;margin-right:8px;"><div class="icon-indicator chevron-right"></div>`; break;
+                            case 'R6': rightHtml = `<img src="icons/empty_icon.svg">`; break;
+                            case 'R7': rightHtml = `<span class="amount">-258.00</span>`; break;
+                        }
+                        right.innerHTML = rightHtml;
+                        row.appendChild(right);
+
+                        card.appendChild(row);
+                        matrix.appendChild(card);
+                    });
+                });
+            });
+
+            // 多选控件交互
+            matrix.addEventListener('click', function(e) {
+                const selImg = e.target.closest('.list-selection img');
+                if (selImg) {
+                    e.stopPropagation();
+                    if (selImg.src.includes('Checkbox_filled')) {
+                        selImg.src = selImg.src.replace('Checkbox_filled', 'Checkbox');
+                    } else {
+                        selImg.src = selImg.src.replace('Checkbox.svg', 'Checkbox_filled.svg');
+                    }
+                }
+            });
+
+            updateSubheader(count, COMPONENTS.list.anatomy, COMPONENTS.list.tooltip);
         }
 
         // --- NavBar Component Implementation ---
@@ -3366,7 +3428,7 @@
                     });
                 });
             });
-            updateSubheader(count, COMPONENTS.navbar.anatomy);
+            updateSubheader(count, COMPONENTS.navbar.anatomy, COMPONENTS.navbar.tooltip);
         }
 
         // --- Form Component Implementation ---
@@ -3378,14 +3440,18 @@
                 { id: 'L4', name: '图标+双行标题 / Icon + Double-line Title', icon: 'icons/empty_icon.svg', title: '标题文本', subtitle: '辅助说明文字', lines: 2 },
                 { id: 'L5', name: '二级+单行标题 / Secondary + Single-line Title', icon: 'icons/secondary.svg', title: '标题文本', lines: 1 },
                 { id: 'L6', name: '二级+双行标题 / Secondary + Double-line Title', icon: 'icons/secondary.svg', title: '标题文本', subtitle: '辅助说明文字', lines: 2 },
-                { id: 'L7', name: '头像+双行标题 / Avatar + Double-line Title', icon: 'icons/Avatar_40.svg', title: '标题文本', subtitle: '辅助说明文字', lines: 2, isAvatar: true }
+                { id: 'L7', name: '头像+双行标题 / Avatar + Double-line Title', icon: 'icons/Avatar_40.svg', title: '标题文本', subtitle: '辅助说明文字', lines: 2, isAvatar: true },
+                { id: 'L8', name: '已勾选+单行标题', icon: 'icons/tick.svg', title: '标题文本', lines: 1, isTick: true },
+                { id: 'L9', name: '未勾选+单行标题', title: '标题文本', lines: 1, isTick: true, unchecked: true },
+                { id: 'L10', name: '已勾选+双行标题', icon: 'icons/tick.svg', title: '标题文本', subtitle: '辅助说明文字', lines: 2, isTick: true },
+                { id: 'L11', name: '未勾选+双行标题', title: '标题文本', subtitle: '辅助说明文字', lines: 2, isTick: true, unchecked: true }
             ];
 
             const R_OPTIONS = [
                 { id: 'R0/Empty', name: '为空 / None' },
                 { id: 'R1', name: '跳转 / Detail', text: '辅助信息', icon: 'icons/chevron_right.svg' },
                 { id: 'R2', name: '辅助信息+下拉菜单 / Auxiliary Info + Dropdown', text: '辅助信息', icon: 'icons/expand_list.svg' },
-                { id: 'R3', name: '头像 / Avatar', avatar: 'icons/Avatar_32.svg', icon: 'icons/chevron_right.svg' },
+                { id: 'R3', name: '辅助信息+头像+箭头 / Avatar', text: '辅助信息', avatar: 'icons/Avatar_32.svg', icon: 'icons/chevron_right.svg' },
                 { id: 'R4', name: '开关 / Switch', switch: true },
                 { id: 'R5', name: '勾选 / Checkbox', icon: 'icons/tick.svg' }
             ];
@@ -3399,30 +3465,47 @@
                     // 1. [L5/二级+单行标题] 与 [L6/二级+双行标题] 只能与 [R1/跳转]、[R2/下拉菜单]、[R4/开关] 组合
                     if ((L.id === 'L5' || L.id === 'L6') && R.id !== 'R1' && R.id !== 'R2' && R.id !== 'R4') return;
 
-                    // 2. [R3/头像] 只能与 [L3/图标+单行标题]、[L4/图标+双行标题] 组合
-                    if (R.id === 'R3' && L.id !== 'L3' && L.id !== 'L4') return;
+                    // 2. [R3/头像] 只能与 [L3/图标+单行标题]、[L4/图标+双行标题]、[L8-L11] 组合
+                    if (R.id === 'R3' && !['L3', 'L4', 'L8', 'L9', 'L10', 'L11'].includes(L.id)) return;
 
                     // 3. [L7/头像+双行标题] 只能与 [R0/为空]、[R5/勾选] 组合
                     if (L.id === 'L7' && R.id !== 'R0/Empty' && R.id !== 'R5') return;
 
-                    // 4. [R0/为空] 只能与 [L1/单行标题]、[L7/头像+双行标题] 组合
-                    if (R.id === 'R0/Empty' && L.id !== 'L1' && L.id !== 'L7') return;
+                    // 4. [R0/为空] 与 [R5/勾选] 可与左侧任意类型搭配（受其他约束限制除外）
 
                     // 5. [R4/开关] 不能与 [L7/头像+双行标题] 组合
                     if (R.id === 'R4' && L.id === 'L7') return;
+
+                    // 6. [L8/L9/L10/L11] 不能与 [R4/开关] 或 [R5/勾选] 组合
+                    if (['L8', 'L9', 'L10', 'L11'].includes(L.id) && (R.id === 'R4' || R.id === 'R5')) return;
 
                     count++;
                     const card = createCard(count, `${L.id}+${R.id}`);
                     const container = document.createElement('div');
                     container.className = 'form-container';
 
+                    const isDouble = ['L2', 'L4', 'L6', 'L7', 'L10', 'L11'].includes(L.id);
                     const row = document.createElement('div');
-                    row.className = `form-row ${L.lines === 1 ? 'single-line' : 'double-line'}`;
+                    row.className = `form-row ${isDouble ? 'double-line' : 'single-line'}`;
 
                     // Left Area
                     const left = document.createElement('div');
                     left.className = 'left-area';
-                    if (L.icon) {
+                    if (L.isTick) {
+                        // L8/L9/L10/L11: tick 图标占位（L9/L11 未勾选时用透明占位保持对齐）
+                        if (!L.unchecked) {
+                            const img = document.createElement('img');
+                            img.src = 'icons/tick.svg';
+                            img.style.width = '24px';
+                            img.style.height = '24px';
+                            left.appendChild(img);
+                        } else {
+                            // 未勾选：空白占位保持左侧缩进对齐
+                            const placeholder = document.createElement('div');
+                            placeholder.style.cssText = 'width:24px; height:24px; flex-shrink:0;';
+                            left.appendChild(placeholder);
+                        }
+                    } else if (L.icon) {
                         const img = document.createElement('img');
                         img.src = L.icon;
                         img.style.width = L.isAvatar ? '40px' : '24px';
@@ -3431,8 +3514,7 @@
                         left.appendChild(img);
                     }
                     const textGroup = document.createElement('div');
-                    textGroup.style.display = 'flex';
-                    textGroup.style.flexDirection = 'column';
+                    textGroup.className = 'text-group';
                     textGroup.innerHTML = `<div class="title">${L.title}</div>` + (L.subtitle ? `<div class="subtitle">${L.subtitle}</div>` : '');
                     left.appendChild(textGroup);
                     row.appendChild(left);
@@ -3450,8 +3532,13 @@
                         right.innerHTML += `<div class="form-switch"></div>`;
                     }
                     if (R.icon) {
-                        const iconSize = (R.icon.includes('chevron_right') || R.icon.includes('expand_list')) ? 16 : 24;
-                        right.innerHTML += `<img src="${R.icon}" style="width:${iconSize}px; height:${iconSize}px">`;
+                        if (R.icon.includes('chevron_right')) {
+                            right.innerHTML += `<div class="icon-indicator chevron-right"></div>`;
+                        } else if (R.icon.includes('expand_list')) {
+                            right.innerHTML += `<div class="icon-indicator expand-list"></div>`;
+                        } else {
+                            right.innerHTML += `<img src="${R.icon}" style="width:24px; height:24px">`;
+                        }
                     }
                     if (R.id !== 'R0/Empty') {
                         row.appendChild(right);
@@ -3462,7 +3549,7 @@
                     matrix.appendChild(card);
                 });
             });
-            updateSubheader(count, COMPONENTS.form.anatomy);
+            updateSubheader(count, COMPONENTS.form.anatomy, COMPONENTS.form.tooltip);
             renderFormCombinations();
         }
 
@@ -3470,11 +3557,11 @@
             const matrix = document.getElementById('matrix');
             let count = 0;
 
-            // 严格还原 Figma 设计稿的 12 种变体
-            // Frame 1_9731 (468×844px) = A. 操作组合 (7种 Button)
-            // Frame 1_9746 (468×380px) = B. 辅助操作组合 (5种 Action)
+            // 严格还原 Figma 设计稿的 15 种变体
+            // Frame 1_9731 (468×844px) = A. 操作组合 (8种 Button)
+            // Frame 1_9746 (468×380px) = B. 辅助操作组合 (7种 Action)
             const ACTION_VARIANTS = [
-                // === A. 操作组合 (7种) — Button 按钮型，来自 Frame 1_9731 ===
+                // === A. 操作组合 (8种) — Button 按钮型，来自 Frame 1_9731 ===
                 { id: 'A1', group: '操作组合', name: '双按钮（二级+一级）', layout: 'dual-btn' },
                 { id: 'A2', group: '操作组合', name: '三按钮（二级+二级+一级）', layout: 'triple-btn' },
                 { id: 'A3', group: '操作组合', name: '单按钮（一级满宽）', layout: 'single-primary' },
@@ -3483,12 +3570,14 @@
                 { id: 'A6', group: '操作组合', name: '六图标横排', layout: 'icon-6-row' },
                 { id: 'A7', group: '操作组合', name: '四图标文字行', layout: 'icon-text-4' },
                 { id: 'A8', group: '操作组合', name: '操作+勾选+按钮', layout: 'mixed-check-btn' },
-                // === B. 辅助操作组合 (5种) — Action 文字链型，来自 Frame 1_9746 ===
-                { id: 'B1', group: '辅助操作组合', name: '勾选+文案+文字链', hasCheckbox: true, text: '勾选文案，可配置', textLink: '文字链接' },
-                { id: 'B2', group: '辅助操作组合', name: '辅助文案+文字链', text: '辅助说明文案，可配置', textLink: '文字链接' },
-                { id: 'B3', group: '辅助操作组合', name: '单Action', actions: 1 },
-                { id: 'B4', group: '辅助操作组合', name: '双Action', actions: 2 },
-                { id: 'B5', group: '辅助操作组合', name: '三Action', actions: 3 }
+                // === B. 辅助操作组合 (7种) — Action 文字链型，来自 Frame 1_9746 ===
+                { id: 'B1', group: '辅助操作组合', name: '居左勾选', hasCheckbox: true, checkboxAlign: 'left', text: '勾选文案，可配置', textLink: '文字链接', height: 36 },
+                { id: 'B2', group: '辅助操作组合', name: '居左辅助信息', checkboxAlign: 'left', text: '辅助说明文案，可配置', textLink: '文字链接', height: 36 },
+                { id: 'B3', group: '辅助操作组合', name: '居中勾选', hasCheckbox: true, checkboxAlign: 'center', text: '勾选文案，可配置', textLink: '文字链接', height: 36 },
+                { id: 'B4', group: '辅助操作组合', name: '居中辅助信息', checkboxAlign: 'center', text: '辅助说明文案，可配置', textLink: '文字链接', height: 36 },
+                { id: 'B5', group: '辅助操作组合', name: '单Action', actions: 1, height: 36 },
+                { id: 'B6', group: '辅助操作组合', name: '横排双Action', actions: 2, height: 36 },
+                { id: 'B7', group: '辅助操作组合', name: '横排三Action', actions: 3, height: 36 }
             ];
 
             ACTION_VARIANTS.forEach(v => {
@@ -3575,7 +3664,7 @@
                     }
                     container.appendChild(row);
                 } else if (v.actions) {
-                    // B. 辅助操作行 — 纯 Action 链接型
+                    // B5-B7. 辅助操作行 — 纯 Action 链接型
                     const row = document.createElement('div');
                     row.className = 'action-row';
                     for (let i = 0; i < v.actions; i++) {
@@ -3591,13 +3680,16 @@
                     }
                     container.appendChild(row);
                 } else {
-                    // B. 辅助操作行 — 勾选/文案/文字链型
+                    // B1-B4. 辅助操作行 — 勾选/文案/文字链型，全部 36px 单行
+                    const isLeft = v.checkboxAlign === 'left';
                     const row = document.createElement('div');
                     row.className = 'action-row';
+                    row.style.height = '36px';
+                    row.style.justifyContent = isLeft ? 'flex-start' : 'center';
                     if (v.hasCheckbox) {
                         const cb = document.createElement('img');
-                        cb.src = 'icons/Checkbox.svg';
-                        cb.className = 'action-checkbox';
+                        cb.src = 'icons/Checkbox_filled.svg';
+                        cb.style.cssText = 'width:16px; height:16px; flex-shrink:0; margin-right:4px;';
                         row.appendChild(cb);
                     }
                     if (v.text) {
@@ -3619,7 +3711,7 @@
                 matrix.appendChild(card);
             });
 
-            updateSubheader(count, COMPONENTS.action.anatomy);
+            updateSubheader(count, COMPONENTS.action.anatomy, COMPONENTS.action.tooltip);
         }
 
         function renderActionSheet() {
@@ -3726,7 +3818,7 @@
                     card.appendChild(outer);
                     matrix.appendChild(card);
                 });
-                updateSubheader(count, COMPONENTS.action_sheet.anatomy);
+                updateSubheader(getAllVariants().length, COMPONENTS.action_sheet.anatomy, COMPONENTS.action_sheet.tooltip);
             }
 
             // 构建控件栏
@@ -3942,7 +4034,7 @@
                 matrix.appendChild(card);
             });
 
-            updateSubheader(count, COMPONENTS.image_block.anatomy);
+            updateSubheader(count, COMPONENTS.image_block.anatomy, COMPONENTS.image_block.tooltip);
         }
 
         function renderDataFilter() {
@@ -3971,7 +4063,7 @@
                         if (i > 0) {
                             const sep = document.createElement('div');
                             sep.className = 'df-breadcrumb-sep';
-                            sep.innerHTML = '<img src="icons/chevron_right.svg" width="12" height="12">';
+                            sep.innerHTML = '<div class="icon-indicator chevron-right" style="width:12px;height:12px;"></div>';
                             inner.appendChild(sep);
                         }
                         const item = document.createElement('span');
@@ -3991,7 +4083,7 @@
                         if (i > 0) {
                             const sep = document.createElement('div');
                             sep.className = 'df-breadcrumb-sep';
-                            sep.innerHTML = '<img src="icons/chevron_right.svg" width="12" height="12">';
+                            sep.innerHTML = '<div class="icon-indicator chevron-right" style="width:12px;height:12px;"></div>';
                             inner.appendChild(sep);
                         }
                         const item = document.createElement('span');
@@ -4282,7 +4374,7 @@
                 matrix.appendChild(card);
             });
 
-            updateSubheader(count, COMPONENTS.data_filter.anatomy);
+            updateSubheader(count, COMPONENTS.data_filter.anatomy, COMPONENTS.data_filter.tooltip);
         }
 
 
@@ -4299,20 +4391,20 @@
 
             const TEXT_BLOCK_VARIANTS = [
                 // === H.居左 ===
-                { id: 'H1', name: '大标题', group: 'H.居左', textAlign: 'left', textContent: '大标题\u00a0Semibold\u00a026/34', containerHeight: 50, textTop: 8, textWidth: 388, textLeft: 20, textType: 'title' },
-                { id: 'H2', name: '一级标题', group: 'H.居左', textAlign: 'left', textContent: '一级标题\u00a0Medium\u00a022/28', containerHeight: 44, textTop: 8, textWidth: 388, textLeft: 20, textType: 'subtitle' },
-                { id: 'H3', name: '二级标题', group: 'H.居左', textAlign: 'left', textContent: '二级标题\u00a0Medium\u00a018/26', containerHeight: 42, textTop: 8, textWidth: 388, textLeft: 20, textType: 'aux-title' },
-                { id: 'H4', name: '正文段落', group: 'H.居左', textAlign: 'left', textContent: '这是正文文本，Regular\u00a017/24。这是正文文本，Regular\u00a017/24。这是正文文本，Regular\u00a017/24。', containerHeight: 56, textTop: 4, textWidth: 388, textLeft: 20, textType: 'body' },
-                { id: 'H5', name: '前缀正文', group: 'H.居左', textAlign: 'left', textContent: '这是前缀正文，Regular\u00a017/24。这是前缀正文，Regular\u00a017/24。这是前缀正文。', containerHeight: 56, textTop: 4, textWidth: 388, textLeft: 20, textType: 'body' },
-                { id: 'H6', name: '摘要文本', group: 'H.居左', textAlign: 'left', textContent: '这是摘要文本，Regular\u00a014/20，这是摘要文本，Regular\u00a014/20，这是摘要文本，Regular\u00a014/20。', containerHeight: 48, textTop: 4, textWidth: 388, textLeft: 20, textType: 'summary' },
-                { id: 'H7', name: '提示文本', group: 'H.居左', textAlign: 'left', textContent: '这是提示文本，Regular\u00a012/20，这是提示文本，Regular\u00a012/20，这是提示文本，Regular\u00a012/20，这是提示文本，Regular\u00a012/20。', containerHeight: 42, textTop: 4, textWidth: 388, textLeft: 20, textType: 'hint' },
+                { id: 'H1', name: '大标题', group: 'H.居左', textAlign: 'left', textContent: '大标题\u00a0Semibold\u00a026/34', paddingY: 8, textType: 'title' },
+                { id: 'H2', name: '一级标题', group: 'H.居左', textAlign: 'left', textContent: '一级标题\u00a0Medium\u00a022/28', paddingY: 4, textType: 'subtitle' },
+                { id: 'H3', name: '二级标题', group: 'H.居左', textAlign: 'left', textContent: '二级标题\u00a0Medium\u00a018/26', paddingY: 4, textType: 'aux-title' },
+                { id: 'H4', name: '正文段落', group: 'H.居左', textAlign: 'left', textContent: '这是正文文本，Regular\u00a017/24。这是正文文本，Regular\u00a017/24。这是正文文本，Regular\u00a017/24。', paddingY: 0, textType: 'body' },
+                { id: 'H5', name: '前缀正文', group: 'H.居左', textAlign: 'left', textContent: '这是前缀正文，Regular\u00a017/24。这是前缀正文，Regular\u00a017/24。这是前缀正文。', paddingY: 0, textType: 'body' },
+                { id: 'H6', name: '摘要文本', group: 'H.居左', textAlign: 'left', textContent: '这是摘要文本，Regular\u00a014/20，这是摘要文本，Regular\u00a014/20，这是摘要文本，Regular\u00a014/20。', paddingY: 0, textType: 'summary' },
+                { id: 'H7', name: '提示文本', group: 'H.居左', textAlign: 'left', textContent: '这是提示文本，Regular\u00a012/17，这是提示文本，Regular\u00a012/17，这是提示文本，Regular\u00a012/17，这是提示文本，Regular\u00a012/17。', paddingY: 0, textType: 'hint' },
                 // === C.居中 ===
-                { id: 'C1', name: '大标题', group: 'C.居中', textAlign: 'center', textContent: '大标题\u00a0Semibold\u00a026/34', containerHeight: 50, textTop: 8, textWidth: 388, textLeft: 20, textType: 'title' },
-                { id: 'C2', name: '一级标题', group: 'C.居中', textAlign: 'center', textContent: '一级标题\u00a0Medium\u00a022/28', containerHeight: 44, textTop: 8, textWidth: 388, textLeft: 20, textType: 'subtitle' },
-                { id: 'C3', name: '二级标题', group: 'C.居中', textAlign: 'center', textContent: '二级标题\u00a0Medium\u00a018/26', containerHeight: 42, textTop: 8, textWidth: 388, textLeft: 20, textType: 'aux-title' },
-                { id: 'C4', name: '正文段落', group: 'C.居中', textAlign: 'center', textContent: '这是正文文本，Regular\u00a017/24。这是正文文本，Regular\u00a017/24。这是正文文本，Regular\u00a017/24。', containerHeight: 56, textTop: 4, textWidth: 388, textLeft: 20, textType: 'body' },
-                { id: 'C5', name: '摘要文本', group: 'C.居中', textAlign: 'center', textContent: '这是摘要文本，Regular\u00a014/20，这是摘要文本，Regular\u00a014/20，这是摘要文本，Regular\u00a014/20。', containerHeight: 48, textTop: 4, textWidth: 388, textLeft: 20, textType: 'summary' },
-                { id: 'C6', name: '提示文本', group: 'C.居中', textAlign: 'center', textContent: '这是提示文本，Regular\u00a012/20，这是提示文本，Regular\u00a012/20，这是提示文本，Regular\u00a012/20，这是提示文本，Regular\u00a012/20。', containerHeight: 42, textTop: 4, textWidth: 388, textLeft: 20, textType: 'hint' }
+                { id: 'C1', name: '大标题', group: 'C.居中', textAlign: 'center', textContent: '大标题\u00a0Semibold\u00a026/34', paddingY: 8, textType: 'title' },
+                { id: 'C2', name: '一级标题', group: 'C.居中', textAlign: 'center', textContent: '一级标题\u00a0Medium\u00a022/28', paddingY: 4, textType: 'subtitle' },
+                { id: 'C3', name: '二级标题', group: 'C.居中', textAlign: 'center', textContent: '二级标题\u00a0Medium\u00a018/26', paddingY: 4, textType: 'aux-title' },
+                { id: 'C4', name: '正文段落', group: 'C.居中', textAlign: 'center', textContent: '这是正文文本，Regular\u00a017/24。这是正文文本，Regular\u00a017/24。这是正文文本，Regular\u00a017/24。', paddingY: 0, textType: 'body' },
+                { id: 'C5', name: '摘要文本', group: 'C.居中', textAlign: 'center', textContent: '这是摘要文本，Regular\u00a014/20，这是摘要文本，Regular\u00a014/20，这是摘要文本，Regular\u00a014/20。', paddingY: 0, textType: 'summary' },
+                { id: 'C6', name: '提示文本', group: 'C.居中', textAlign: 'center', textContent: '这是提示文本，Regular\u00a012/17，这是提示文本，Regular\u00a012/17，这是提示文本，Regular\u00a012/17，这是提示文本，Regular\u00a012/17。', paddingY: 0, textType: 'hint' }
             ];
 
             TEXT_BLOCK_VARIANTS.forEach(v => {
@@ -4320,14 +4412,13 @@
                 const card = createCard(count, v.id);
                 const container = document.createElement('div');
                 container.className = 'text-block-container';
-                container.style.width = '428px';
-                container.style.height = v.containerHeight + 'px';
+                container.style.paddingTop = v.paddingY + 'px';
+                container.style.paddingBottom = v.paddingY + 'px';
+                container.style.alignItems = 'center';
 
                 const textDiv = document.createElement('div');
-                textDiv.style.position = 'absolute';
-                textDiv.style.width = v.textWidth + 'px';
-                textDiv.style.left = v.textLeft + 'px';
-                textDiv.style.top = v.textTop + 'px';
+                textDiv.style.flex = '1';
+                textDiv.style.minWidth = '0';
 
                 if (v.textType === 'title') {
                     textDiv.className = 'text-block-title ' + v.textAlign;
@@ -4337,16 +4428,10 @@
                     textDiv.className = 'text-block-aux-title ' + v.textAlign;
                 } else if (v.textType === 'body') {
                     textDiv.className = 'text-block-body ' + v.textAlign;
-                    textDiv.style.display = 'inline-block';
-                    textDiv.style.verticalAlign = 'middle';
                 } else if (v.textType === 'summary') {
                     textDiv.className = 'text-block-summary ' + v.textAlign;
-                    textDiv.style.display = 'inline-block';
-                    textDiv.style.verticalAlign = 'middle';
                 } else if (v.textType === 'hint') {
                     textDiv.className = 'text-block-hint ' + v.textAlign;
-                    textDiv.style.display = 'inline-block';
-                    textDiv.style.verticalAlign = 'middle';
                 }
 
                 textDiv.innerHTML = v.textContent;
@@ -4356,7 +4441,7 @@
                 matrix.appendChild(card);
             });
 
-            updateSubheader(count, COMPONENTS.text_block.anatomy);
+            updateSubheader(count, COMPONENTS.text_block.anatomy, COMPONENTS.text_block.tooltip);
         }
 
         // --- Grid Component Implementation ---
@@ -4367,123 +4452,123 @@
             const GRID_VARIANTS = [
                 // === A 平铺 ===
                 {
-                    id: 'A1', name: '平铺/横版/2个', mode: 'tile',
+                    id: 'A1', name: '平铺/横版/2列', mode: 'tile',
                     containerWidth: 428, containerHeight: 168, containerPadding: 16,
-                    cols: 2, itemWidth: 190, thumbWidth: 192, thumbHeight: 108, thumbRadius: 16,
+                    cols: 2, itemWidth: 190, thumbWidth: 192, thumbHeight: 108, thumbRadius: 12,
                     thumbShape: 'rect', labelSize: 14, labelGap: 8,
                     itemGapX: 16, itemGapY: 0, thumbOffsetX: -1
                 },
                 {
-                    id: 'A2', name: '平铺/竖版/2个', mode: 'tile',
+                    id: 'A2', name: '平铺/竖版/2列', mode: 'tile',
                     containerWidth: 428, containerHeight: 252, containerPadding: 16,
-                    cols: 2, itemWidth: 190, thumbWidth: 192, thumbHeight: 192, thumbRadius: 16,
+                    cols: 2, itemWidth: 190, thumbWidth: 192, thumbHeight: 192, thumbRadius: 12,
                     thumbShape: 'rect', labelSize: 14, labelGap: 8,
                     itemGapX: 16, itemGapY: 0, thumbOffsetX: -1
                 },
                 {
-                    id: 'A3', name: '平铺/正方形/3个', mode: 'tile',
+                    id: 'A3', name: '平铺/横版(高)/2列', mode: 'tile',
+                    containerWidth: 428, containerHeight: 328, containerPadding: 16,
+                    cols: 2, itemWidth: 190, thumbWidth: 190, thumbHeight: 268, thumbRadius: 12,
+                    thumbShape: 'rect', labelSize: 14, labelGap: 8,
+                    itemGapX: 16, itemGapY: 0
+                },
+                {
+                    id: 'A4', name: '平铺/竖版/3列', mode: 'tile',
+                    containerWidth: 428, containerHeight: 228, containerPadding: '16px 18px',
+                    cols: 3, itemWidth: 120, thumbWidth: 120, thumbHeight: 168, thumbRadius: 12,
+                    thumbShape: 'rect', labelSize: 14, labelGap: 8,
+                    itemGapX: 16, itemGapY: 0
+                },
+                {
+                    id: 'A5', name: '平铺/正方形/3列', mode: 'tile',
                     containerWidth: 428, containerHeight: 180, containerPadding: '16px 18px',
-                    cols: 3, itemWidth: 120, thumbWidth: 120, thumbHeight: 120, thumbRadius: 16,
+                    cols: 3, itemWidth: 120, thumbWidth: 120, thumbHeight: 120, thumbRadius: 12,
                     thumbShape: 'square', labelSize: 14, labelGap: 8,
                     itemGapX: 16, itemGapY: 0
                 },
                 {
-                    id: 'A4', name: '平铺/正方形/4个', mode: 'tile',
+                    id: 'A6', name: '平铺/正方形/4列', mode: 'tile',
                     containerWidth: 428, containerHeight: 145, containerPadding: '16px 14px',
-                    cols: 4, itemWidth: 88, thumbWidth: 88, thumbHeight: 88, thumbRadius: 16,
+                    cols: 4, itemWidth: 88, thumbWidth: 88, thumbHeight: 88, thumbRadius: 12,
                     thumbShape: 'square', labelSize: 12, labelGap: 8, labelHeight: 17,
                     itemGapX: 16, itemGapY: 0
                 },
                 {
-                    id: 'A5', name: '平铺/圆形/4个', mode: 'tile',
+                    id: 'A7', name: '平铺/圆形/4列', mode: 'tile',
                     containerWidth: 428, containerHeight: 109, containerPadding: '12px 24px',
                     cols: 4, itemWidth: 64, thumbWidth: 64, thumbHeight: 64, thumbRadius: 32,
                     thumbShape: 'circle', labelSize: 12, labelGap: 4, labelHeight: 17,
                     itemGapX: 41.33, itemGapY: 0
                 },
                 {
-                    id: 'A6', name: '平铺/圆形/5个', mode: 'tile',
+                    id: 'A8', name: '平铺/圆形(宽)/5列', mode: 'tile',
                     containerWidth: 428, containerHeight: 121, containerPadding: '16px 20px',
-                    cols: 5, itemWidth: 64, thumbWidth: 64, thumbHeight: 64, thumbRadius: 32,
-                    thumbShape: 'circle', labelSize: 12, labelGap: 8, labelHeight: 17,
+                    cols: 5, itemWidth: 64, thumbWidth: 64, thumbHeight: 64, thumbRadius: 12,
+                    thumbShape: 'square', labelSize: 12, labelGap: 8, labelHeight: 17,
                     itemGapX: 17, itemGapY: 0
                 },
                 {
-                    id: 'A7', name: '平铺/圆形/5个', mode: 'tile',
+                    id: 'A9', name: '平铺/圆形(紧)/5列', mode: 'tile',
                     containerWidth: 428, containerHeight: 109, containerPadding: '12px 20px',
                     cols: 5, itemWidth: 64, thumbWidth: 64, thumbHeight: 64, thumbRadius: 32,
                     thumbShape: 'circle', labelSize: 12, labelGap: 4, labelHeight: 17,
                     itemGapX: 17, itemGapY: 0
                 },
-                {
-                    id: 'A8', name: '平铺/横版/2个', mode: 'tile',
-                    containerWidth: 428, containerHeight: 329, containerPadding: 16,
-                    cols: 2, itemWidth: 190, thumbWidth: 190, thumbHeight: 269, thumbRadius: 16,
-                    thumbShape: 'rect', labelSize: 14, labelGap: 8,
-                    itemGapX: 16, itemGapY: 0
-                },
-                {
-                    id: 'A9', name: '平铺/竖版/3个', mode: 'tile',
-                    containerWidth: 428, containerHeight: 228, containerPadding: '16px 18px',
-                    cols: 3, itemWidth: 120, thumbWidth: 120, thumbHeight: 168, thumbRadius: 16,
-                    thumbShape: 'rect', labelSize: 14, labelGap: 8,
-                    itemGapX: 16, itemGapY: 0
-                },
                 // === B 横滑 ===
                 {
-                    id: 'B1', name: '横滑/正方形', mode: 'scroll',
+                    id: 'B1', name: '横滑/竖版/2列', mode: 'scroll',
+                    containerWidth: 428, containerHeight: 316, containerPadding: 16,
+                    visibleCols: 2, totalCols: 6, itemWidth: 172, thumbWidth: 172, thumbHeight: 256, thumbRadius: 12,
+                    thumbShape: 'rect', labelSize: 14, labelGap: 8,
+                    itemGapX: 16, itemGapY: 0
+                },
+                {
+                    id: 'B2', name: '横滑/竖版/3列', mode: 'scroll',
+                    containerWidth: 428, containerHeight: 212, containerPadding: 16,
+                    visibleCols: 3, totalCols: 8, itemWidth: 108, thumbWidth: 108, thumbHeight: 152, thumbRadius: 12,
+                    thumbShape: 'rect', labelSize: 14, labelGap: 8,
+                    itemGapX: 16, itemGapY: 0
+                },
+                {
+                    id: 'B3', name: '横滑/正方形/3列', mode: 'scroll',
                     containerWidth: 428, containerHeight: 172, containerPadding: 16,
-                    visibleCols: 3, totalCols: 8, itemWidth: 112, thumbWidth: 112, thumbHeight: 112, thumbRadius: 16,
+                    visibleCols: 3, totalCols: 8, itemWidth: 112, thumbWidth: 112, thumbHeight: 112, thumbRadius: 12,
                     thumbShape: 'square', labelSize: 14, labelGap: 8,
                     itemGapX: 16, itemGapY: 0
                 },
                 {
-                    id: 'B2', name: '横滑/正方形', mode: 'scroll',
+                    id: 'B4', name: '横滑/正方形/4列', mode: 'scroll',
                     containerWidth: 428, containerHeight: 137, containerPadding: 16,
                     visibleCols: 4, totalCols: 10, itemWidth: 80, thumbWidth: 80, thumbHeight: 80, thumbRadius: 12,
                     thumbShape: 'square', labelSize: 12, labelGap: 8, labelHeight: 17,
                     itemGapX: 16, itemGapY: 0
                 },
                 {
-                    id: 'B3', name: '横滑/圆形', mode: 'scroll',
+                    id: 'B5', name: '横滑/圆形(矩)/6列', mode: 'scroll',
                     containerWidth: 428, containerHeight: 114, containerPadding: '16px',
-                    visibleCols: 6, totalCols: 12, itemWidth: 60, thumbWidth: 60, thumbHeight: 60, thumbRadius: 30,
-                    thumbShape: 'circle', labelSize: 10, labelGap: 8, labelHeight: 14,
+                    visibleCols: 6, totalCols: 12, itemWidth: 60, thumbWidth: 60, thumbHeight: 60, thumbRadius: 12,
+                    thumbShape: 'square', labelSize: 10, labelGap: 8, labelHeight: 14,
                     itemGapX: 16, itemGapY: 0
                 },
                 {
-                    id: 'B4', name: '横滑/圆形', mode: 'scroll',
+                    id: 'B6', name: '横滑/圆形(圆)/6列', mode: 'scroll',
                     containerWidth: 428, containerHeight: 112, containerPadding: '16px',
                     visibleCols: 6, totalCols: 12, itemWidth: 60, thumbWidth: 60, thumbHeight: 60, thumbRadius: 30,
                     thumbShape: 'circle', labelSize: 10, labelGap: 6, labelHeight: 14,
                     itemGapX: 16, itemGapY: 0
                 },
                 {
-                    id: 'B5', name: '横滑/圆形', mode: 'scroll',
+                    id: 'B7', name: '横滑/圆形(矩)/7列', mode: 'scroll',
                     containerWidth: 428, containerHeight: 106, containerPadding: '16px 12px',
-                    visibleCols: 7, totalCols: 14, itemWidth: 52, thumbWidth: 52, thumbHeight: 52, thumbRadius: 26,
-                    thumbShape: 'circle', labelSize: 10, labelGap: 8, labelHeight: 14,
+                    visibleCols: 7, totalCols: 14, itemWidth: 52, thumbWidth: 52, thumbHeight: 52, thumbRadius: 12,
+                    thumbShape: 'square', labelSize: 10, labelGap: 8, labelHeight: 14,
                     itemGapX: 16, itemGapY: 0
                 },
                 {
-                    id: 'B6', name: '横滑/圆形', mode: 'scroll',
+                    id: 'B8', name: '横滑/圆形(圆)/7列', mode: 'scroll',
                     containerWidth: 428, containerHeight: 104, containerPadding: '16px 12px',
                     visibleCols: 7, totalCols: 14, itemWidth: 52, thumbWidth: 52, thumbHeight: 52, thumbRadius: 26,
                     thumbShape: 'circle', labelSize: 10, labelGap: 6, labelHeight: 14,
-                    itemGapX: 16, itemGapY: 0
-                },
-                {
-                    id: 'B7', name: '横滑/竖版', mode: 'scroll',
-                    containerWidth: 428, containerHeight: 316, containerPadding: 16,
-                    visibleCols: 2, totalCols: 6, itemWidth: 172, thumbWidth: 172, thumbHeight: 256, thumbRadius: 15.2,
-                    thumbShape: 'rect', labelSize: 14, labelGap: 8,
-                    itemGapX: 16, itemGapY: 0
-                },
-                {
-                    id: 'B8', name: '横滑/竖版', mode: 'scroll',
-                    containerWidth: 428, containerHeight: 212, containerPadding: 16,
-                    visibleCols: 3, totalCols: 8, itemWidth: 108, thumbWidth: 108, thumbHeight: 152, thumbRadius: 16,
-                    thumbShape: 'rect', labelSize: 14, labelGap: 8,
                     itemGapX: 16, itemGapY: 0
                 }
             ];
@@ -4575,15 +4660,15 @@
                 matrix.appendChild(card);
             });
 
-            updateSubheader(count, COMPONENTS.grid.anatomy);
+            updateSubheader(count, COMPONENTS.grid.anatomy, COMPONENTS.grid.tooltip);
         }
 
         // --- Half-Screen Navbar Component Implementation ---
         function renderHsNavbar() {
             const hsAssetPath = 'icons/';
 
-            // Close button SVG (X icon inside 30px circle)
-            const closeBtnSvg = `<svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M12.2426 3.75736C12.5858 4.10051 12.5858 4.65685 12.2426 5L9.24264 8L12.2426 11C12.5858 11.3431 12.5858 11.8995 12.2426 12.2426C11.8995 12.5858 11.3431 12.5858 11 12.2426L8 9.24264L5 12.2426C4.65685 12.5858 4.10051 12.5858 3.75736 12.2426C3.41421 11.8995 3.41421 11.3431 3.75736 11L6.75736 8L3.75736 5C3.41421 4.65685 3.41421 4.10051 3.75736 3.75736C4.10051 3.41421 4.65685 3.41421 5 3.75736L8 6.75736L11 3.75736C11.3431 3.41421 11.8995 3.41421 12.2426 3.75736Z" fill="var(--icon_primary, #1A1A1A)"/></svg>`;
+            // Close button — 直接使用 Close_HalfScreen.svg（已自带30px灰底圆）
+            const closeBtnImg = `<img src="${hsAssetPath}Close_HalfScreen.svg" width="30" height="30" style="display:block;">`;
 
             // Back arrow SVG
             const backArrowSvg = `<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" clip-rule="evenodd" d="M15.6013 2.39886C15.9332 2.73081 15.9332 3.269 15.6013 3.60094L7.73265 11.4696C7.52472 11.6775 7.40539 11.7978 7.32481 11.8927C7.29186 11.9315 7.27547 11.9548 7.26844 11.9656C7.26312 11.9881 7.26312 12.0117 7.26844 12.0343C7.27547 12.045 7.29186 12.0683 7.32481 12.1071C7.4054 12.202 7.52473 12.3223 7.73265 12.5302L15.6013 20.3989C15.9332 20.7308 15.9332 21.269 15.6013 21.6009C15.2693 21.9329 14.7311 21.9329 14.3992 21.6009L6.51032 13.7121C6.32975 13.5315 6.15991 13.3617 6.02883 13.2073C5.88642 13.0396 5.74058 12.835 5.655 12.5716C5.53427 12.2 5.53427 11.7998 5.655 11.4282C5.74058 11.1648 5.88642 10.9602 6.02883 10.7925C6.15991 10.6381 6.32976 10.4683 6.51033 10.2877L14.3992 2.39886C14.7311 2.06692 15.2693 2.06692 15.6013 2.39886Z" fill="var(--icon_primary, #1A1A1A)"/></svg>`;
@@ -4644,8 +4729,8 @@
                         // A4 uses a different close icon (QR code style)
                         right.innerHTML = `<img src="${hsAssetPath}empty_icon.svg" class="hs-icon-24">`;
                     } else {
-                        // A1, A2, A3 use circle close button
-                        right.innerHTML = `<div class="hs-close-btn">${closeBtnSvg}</div>`;
+                        // A1, A2, A3 use Close_HalfScreen.svg
+                        right.innerHTML = `<div class="hs-close-btn">${closeBtnImg}</div>`;
                     }
                     row.appendChild(right);
 
@@ -4681,7 +4766,7 @@
                 matrix.appendChild(card);
             });
 
-            updateSubheader(count, COMPONENTS.hs_navbar.anatomy);
+            updateSubheader(count, COMPONENTS.hs_navbar.anatomy, COMPONENTS.hs_navbar.tooltip);
         }
 
         // --- Divider & Spacing Component Implementation ---
@@ -4804,7 +4889,7 @@
                 matrix.appendChild(card);
             });
 
-            updateSubheader(count, COMPONENTS.divider_spacing.anatomy);
+            updateSubheader(count, COMPONENTS.divider_spacing.anatomy, COMPONENTS.divider_spacing.tooltip);
         }
 
         // --- Search Component Implementation ---
@@ -4931,7 +5016,7 @@
                 matrix.appendChild(card);
             });
 
-            updateSubheader(count, COMPONENTS.search.anatomy);
+            updateSubheader(count, COMPONENTS.search.anatomy, COMPONENTS.search.tooltip);
         }
 
         // --- Textfield Component Implementation ---
@@ -5227,67 +5312,199 @@
                 { key: 'D', label: '多行文本', builder: buildMultiLine, ids: 'D1/D2/D3/D4/D5' }
             ];
 
+            // ============================================================
+            // 全局分段选择器（所有类型共用）
+            // ============================================================
+            const globalSegWrap = document.createElement('div');
+            globalSegWrap.style.cssText = 'width:428px;margin-bottom:8px;';
+            const globalSegBar = document.createElement('div');
+            globalSegBar.className = 'state-segmented-bar';
+            STATES.forEach((s, i) => {
+                if (i > 0) {
+                    const d = document.createElement('div');
+                    d.className = 'state-segment-divider';
+                    globalSegBar.appendChild(d);
+                }
+                const tab = document.createElement('div');
+                tab.className = 'state-segment-tab' + (i === 0 ? ' active' : '');
+                tab.textContent = STATE_LABELS[s];
+                tab.dataset.state = s;
+                globalSegBar.appendChild(tab);
+            });
+            const firstGlobalDiv = globalSegBar.querySelector('.state-segment-divider');
+            if (firstGlobalDiv) firstGlobalDiv.style.opacity = '0';
+            globalSegWrap.appendChild(globalSegBar);
+            matrix.appendChild(globalSegWrap);
+
+            // 所有卡片的 previewWrap 集合，供全局切换时统一刷新
+            const allPreviewWraps = []; // { previewWrap, buildFn, typeInfo }
+
+            // A/B/C/D 卡片（无独立分段栏）
             TYPES.forEach(typeInfo => {
                 count++;
                 const card = document.createElement('div');
                 card.className = 'grouped-card';
-
                 const header = document.createElement('div');
                 header.className = 'grouped-card-header';
                 header.innerHTML = `<span>#${count}</span><span>${typeInfo.ids} · ${typeInfo.label}</span>`;
                 card.appendChild(header);
-
-                // 分段选择标签栏
-                const segBar = document.createElement('div');
-                segBar.className = 'state-segmented-bar';
-
-                STATES.forEach((s, i) => {
-                    if (i > 0) {
-                        const divider = document.createElement('div');
-                        divider.className = 'state-segment-divider';
-                        divider.dataset.divider = String(i);
-                        segBar.appendChild(divider);
-                    }
-                    const tab = document.createElement('div');
-                    tab.className = 'state-segment-tab' + (i === 0 ? ' active' : '');
-                    tab.textContent = STATE_LABELS[s];
-                    tab.dataset.state = s;
-                    segBar.appendChild(tab);
-                });
-                card.appendChild(segBar);
-
-                // 预览区域
                 const previewWrap = document.createElement('div');
                 previewWrap.className = 'grouped-card-body';
                 previewWrap.appendChild(typeInfo.builder('default'));
                 card.appendChild(previewWrap);
-
-                // Tab 点击事件
-                const currentBuilder = typeInfo.builder;
-                segBar.querySelectorAll('.state-segment-tab').forEach(tab => {
-                    tab.addEventListener('click', () => {
-                        segBar.querySelectorAll('.state-segment-tab').forEach(st => st.classList.remove('active'));
-                        tab.classList.add('active');
-                        // 隐藏相邻分隔线
-                        segBar.querySelectorAll('.state-segment-divider').forEach(d => d.style.opacity = '1');
-                        const activeIdx = Array.from(segBar.querySelectorAll('.state-segment-tab')).indexOf(tab);
-                        segBar.querySelectorAll('.state-segment-divider').forEach((d, di) => {
-                            if (di === activeIdx - 1 || di === activeIdx) d.style.opacity = '0';
-                        });
-
-                        const newState = tab.dataset.state;
-                        previewWrap.innerHTML = '';
-                        previewWrap.appendChild(currentBuilder(newState));
-                    });
-                });
-                // 初始隐藏第一个tab左侧的分隔线
-                const firstDivider = segBar.querySelector('.state-segment-divider');
-                if (firstDivider) firstDivider.style.opacity = '0';
-
+                allPreviewWraps.push({ previewWrap, buildFn: typeInfo.builder, typeInfo: null });
                 matrix.appendChild(card);
             });
 
-            updateSubheader(count, COMPONENTS.textfield.anatomy);
+            updateSubheader(50, COMPONENTS.textfield.anatomy, COMPONENTS.textfield.tooltip);
+
+            // ========== E. Advanced Textfield 复合输入框 ==========
+            const dividerCard = document.createElement('div');
+            dividerCard.style.cssText = 'width:428px;padding:16px 0;display:flex;align-items:center;gap:12px;';
+            dividerCard.innerHTML = '<div style="flex:1;height:0.5px;background:rgba(0,0,0,0.10);"></div><span style="font-size:12px;font-weight:500;color:var(--text-tertiary);white-space:nowrap;">E. Advanced Textfield 复合输入框</span><div style="flex:1;height:0.5px;background:rgba(0,0,0,0.10);"></div>';
+            matrix.appendChild(dividerCard);
+
+            const ATF_CURSOR_24 = `<span style="display:inline-block;width:1px;height:1.2em;background:var(--brand-blue);vertical-align:text-bottom;margin-left:1px;"></span>`;
+            const ATF_ADD_ICON = `<svg width="24" height="24" viewBox="0 0 24 24" fill="none"><path fill-rule="evenodd" clip-rule="evenodd" d="M12 3.5C12.5523 3.5 13 3.94772 13 4.5V11H19.5C20.0523 11 20.5 11.4477 20.5 12C20.5 12.5523 20.0523 13 19.5 13H13V19.5C13 20.0523 12.5523 20.5 12 20.5C11.4477 20.5 11 20.0523 11 19.5V13H4.5C3.94772 13 3.5 12.5523 3.5 12C3.5 11.4477 3.94772 11 4.5 11H11V4.5C11 3.94772 11.4477 3.5 12 3.5Z" fill="rgba(60,60,67,0.56)"/></svg>`;
+            const ATF_OP_ICON = `<img src="icons/empty_icon.svg" width="24" height="24" style="display:block;">`;
+
+            // E类精简命名
+            const ATF_TYPES = [
+                { key: 'E1', label: '卡片·基础',     ids: 'E1-1~E1-5', layout: 'card', hasImage: false, hasFinish: false },
+                { key: 'E2', label: '卡片·图片',     ids: 'E2-1~E2-5', layout: 'card', hasImage: true,  hasFinish: false },
+                { key: 'E3', label: '卡片·完成',     ids: 'E3-1~E3-5', layout: 'card', hasImage: false, hasFinish: true  },
+                { key: 'E4', label: '卡片·图片+完成', ids: 'E4-1~E4-5', layout: 'card', hasImage: true,  hasFinish: true  },
+                { key: 'E5', label: '通栏·基础',     ids: 'E5-1~E5-5', layout: 'full', hasImage: false, hasFinish: false },
+                { key: 'E6', label: '通栏·图片',     ids: 'E6-1~E6-5', layout: 'full', hasImage: true,  hasFinish: false }
+            ];
+
+            function buildActionBtn(text) {
+                return `<div style="display:flex;align-items:center;gap:6px;padding:8px 12px;background:rgba(13,16,49,0.04);border-radius:24px;flex-shrink:0;">${ATF_OP_ICON}<span style="font-size:17px;color:var(--text-primary);white-space:nowrap;">${text}</span></div>`;
+            }
+
+            function buildAdvancedTextField(typeInfo, state) {
+                const isCard = typeInfo.layout === 'card';
+                const outerW = 428;
+                const contentW = isCard ? 396 : 428;
+                const innerPadX = 16;
+                const textAreaW = contentW - innerPadX * 2;
+                // 文字字号：有完成操作=20px，其余=17px；行高分别28/24px
+                const fontSize = typeInfo.hasFinish ? 20 : 17;
+                const lineH = typeInfo.hasFinish ? 28 : 24;
+                // 操作按钮：有完成操作=2个，其余=3个（hasImage不影响按钮数量）
+                const numBtns = typeInfo.hasFinish ? 2 : 3;
+
+                const el = document.createElement('div');
+                el.style.cssText = `width:${outerW}px;height:420px;position:relative;font-family:"PingFang SC",sans-serif;${isCard ? 'padding:0 16px;box-sizing:border-box;' : ''}`;
+
+                const content = document.createElement('div');
+                content.style.cssText = `width:${contentW}px;height:420px;display:flex;flex-direction:column;gap:16px;padding:24px ${innerPadX}px 16px;box-sizing:border-box;overflow:hidden;${isCard ? 'background:white;border-radius:24px;' : ''}`;
+
+                const textWrap = document.createElement('div');
+                textWrap.style.cssText = 'flex:1;min-height:0;overflow:hidden;';
+                const textLine = document.createElement('div');
+                textLine.style.cssText = `width:${textAreaW}px;font-size:${fontSize}px;font-weight:400;line-height:${lineH}px;word-break:break-all;`;
+
+                const PRESET_TXT = '这是一行输入的文本这是一行输入的文本';
+                const PRESET_ERR = '这是一行输入的文本超出字数限制这是一行输入的文本超出字数';
+                if (state === 'default') {
+                    textLine.innerHTML = `<span style="color:rgba(60,60,67,0.26);">输入文本</span>`;
+                } else if (state === 'focused') {
+                    textLine.innerHTML = `${ATF_CURSOR_24}<span style="color:rgba(60,60,67,0.26);">输入文本</span>`;
+                } else if (state === 'typing') {
+                    textLine.innerHTML = `<span style="color:rgba(0,0,0,0.9);">${PRESET_TXT}</span>${ATF_CURSOR_24}`;
+                } else if (state === 'completed') {
+                    textLine.innerHTML = `<span style="color:rgba(0,0,0,0.9);">${PRESET_TXT}</span>`;
+                } else if (state === 'error') {
+                    textLine.innerHTML = `<span style="color:rgba(0,0,0,0.9);">${PRESET_ERR}</span>${ATF_CURSOR_24}`;
+                }
+                textWrap.appendChild(textLine);
+                content.appendChild(textWrap);
+
+                // ② 图片行（+按钮始终在左，圆角16px；typing/error态追加3张图）
+                if (typeInfo.hasImage) {
+                    const imgRow = document.createElement('div');
+                    imgRow.style.cssText = `display:flex;align-items:center;gap:12px;flex-shrink:0;width:${textAreaW}px;overflow-x:auto;overflow-y:hidden;scrollbar-width:none;-webkit-overflow-scrolling:touch;`;
+                    imgRow.className = 'atf-img-row';
+                    imgRow.innerHTML = `<div style="width:88px;height:88px;border-radius:16px;background:rgba(13,16,49,0.04);display:flex;align-items:center;justify-content:center;flex-shrink:0;">${ATF_ADD_ICON}</div>`;
+                    if (state === 'typing' || state === 'completed' || state === 'error') {
+                        for (let i = 0; i < 3; i++) {
+                            imgRow.innerHTML += `<img src="icons/Thumbnail_88.svg" style="width:88px;height:88px;border-radius:12px;flex-shrink:0;object-fit:cover;display:block;">`;
+                        }
+                    }
+                    content.appendChild(imgRow);
+                }
+
+                // ③ 底部操作栏（仅卡片式）
+                if (isCard) {
+                    const bottomBar = document.createElement('div');
+                    bottomBar.style.cssText = `display:flex;align-items:center;justify-content:space-between;flex-shrink:0;width:${textAreaW}px;`;
+
+                    const leftBtns = document.createElement('div');
+                    leftBtns.style.cssText = 'display:flex;align-items:center;gap:12px;';
+                    for (let i = 0; i < numBtns; i++) leftBtns.innerHTML += buildActionBtn('操作');
+                    bottomBar.appendChild(leftBtns);
+
+                    const rightArea = document.createElement('div');
+                    rightArea.style.cssText = 'display:flex;align-items:center;gap:12px;justify-content:flex-end;';
+                    // 字数统计：error 态红色
+                    const charTxt = state === 'typing' ? '9/100字' : state === 'error' ? '120/100字' : '0/100字';
+                    const charColor = state === 'error' ? 'var(--feedback-error,#F74C30)' : 'rgba(60,60,67,0.56)';
+                    rightArea.innerHTML = `<span style="font-size:12px;color:${charColor};text-align:right;white-space:nowrap;">${charTxt}</span>`;
+
+                    if (typeInfo.hasFinish) {
+                        // done.svg；默认/激活态 30% 透明度，其余正常
+                        const opacity = (state === 'default' || state === 'focused') ? '0.3' : '1';
+                        rightArea.innerHTML += `<img src="icons/done.svg" width="40" height="40" style="display:block;flex-shrink:0;opacity:${opacity};">`;
+                    }
+                    bottomBar.appendChild(rightArea);
+                    content.appendChild(bottomBar);
+                }
+
+                el.appendChild(content);
+                return el;
+            }
+
+            ATF_TYPES.forEach(typeInfo => {
+                count++;
+                const card = document.createElement('div');
+                card.className = 'grouped-card';
+                const header = document.createElement('div');
+                header.className = 'grouped-card-header';
+                header.innerHTML = `<span>#${count}</span><span>${typeInfo.ids} · ${typeInfo.label}</span>`;
+                card.appendChild(header);
+                const previewWrap = document.createElement('div');
+                previewWrap.className = 'grouped-card-body';
+                previewWrap.appendChild(buildAdvancedTextField(typeInfo, 'default'));
+                card.appendChild(previewWrap);
+                allPreviewWraps.push({ previewWrap, buildFn: null, typeInfo });
+                matrix.appendChild(card);
+            });
+
+            // 全局分段选择器点击事件（控制所有 A-D + E1-E6）
+            globalSegBar.addEventListener('click', (e) => {
+                const clickedTab = e.target.closest('.state-segment-tab');
+                if (!clickedTab) return;
+                globalSegBar.querySelectorAll('.state-segment-tab').forEach(t => t.classList.remove('active'));
+                clickedTab.classList.add('active');
+                globalSegBar.querySelectorAll('.state-segment-divider').forEach(d => d.style.opacity = '1');
+                const activeIdx = Array.from(globalSegBar.querySelectorAll('.state-segment-tab')).indexOf(clickedTab);
+                globalSegBar.querySelectorAll('.state-segment-divider').forEach((d, di) => {
+                    if (di === activeIdx - 1 || di === activeIdx) d.style.opacity = '0';
+                });
+                const newState = clickedTab.dataset.state;
+                allPreviewWraps.forEach(({ previewWrap, buildFn, typeInfo }) => {
+                    previewWrap.innerHTML = '';
+                    if (buildFn) {
+                        previewWrap.appendChild(buildFn(newState));
+                    } else {
+                        previewWrap.appendChild(buildAdvancedTextField(typeInfo, newState));
+                    }
+                });
+            });
+
+            // 更新总计数
+            updateSubheader(50, COMPONENTS.textfield.anatomy, COMPONENTS.textfield.tooltip);
         }
 
         function renderFormCombinations() {
@@ -5381,7 +5598,7 @@
             // 通用：构建 Dialog DOM（与 builder 的 buildDialogRow 使用完全一致的内联样式）
             function buildDialogInline(hasTitle, bodyType, actionKey, buttons) {
                 const outer = document.createElement('div');
-                outer.style.cssText = 'width: 296px; background: var(--bg-item); border-radius: 14px; overflow: hidden; box-shadow: 0 8px 32px rgba(0,0,0,0.12);';
+                outer.style.cssText = 'width: 296px; background: var(--bg-item); border-radius: 14px; overflow: hidden;';
 
                 // 标题
                 if (hasTitle) {
@@ -5504,7 +5721,7 @@
                         });
                     });
                 });
-                updateSubheader(count, COMPONENTS.dialog.anatomy);
+                updateSubheader(15, COMPONENTS.dialog.anatomy, COMPONENTS.dialog.tooltip);
             }
 
             // 构建控件栏
@@ -5689,7 +5906,7 @@
                         matrix.appendChild(card);
                     });
                 });
-                updateSubheader(count, COMPONENTS.menu.anatomy);
+                updateSubheader(TYPES.length * COUNTS.length, COMPONENTS.menu.anatomy, COMPONENTS.menu.tooltip);
             }
 
             // 构建控件栏
@@ -5815,7 +6032,7 @@
                     navbar.className = 'hs-overlay-navbar-a3';
                     const closeBtn = document.createElement('div');
                     closeBtn.className = 'hs-overlay-close-btn-a3';
-                    closeBtn.innerHTML = `<svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M12.2426 3.75736C12.5858 4.10051 12.5858 4.65685 12.2426 5L9.24264 8L12.2426 11C12.5858 11.3431 12.5858 11.8995 12.2426 12.2426C11.8995 12.5858 11.3431 12.5858 11 12.2426L8 9.24264L5 12.2426C4.65685 12.5858 4.10051 12.5858 3.75736 12.2426C3.41421 11.8995 3.41421 11.3431 3.75736 11L6.75736 8L3.75736 5C3.41421 4.65685 3.41421 4.10051 3.75736 3.75736C4.10051 3.41421 4.65685 3.41421 5 3.75736L8 6.75736L11 3.75736C11.3431 3.41421 11.8995 3.41421 12.2426 3.75736Z" fill="var(--text-primary)"/></svg>`;
+                    closeBtn.innerHTML = `<img src="icons/Close_HalfScreen.svg" width="30" height="30" style="display:block;">`;
                     navbar.appendChild(closeBtn);
                     sheet.appendChild(navbar);
 
@@ -5850,8 +6067,172 @@
                 matrix.appendChild(card);
             });
 
-            updateSubheader(count, COMPONENTS.half_screen_overlay.anatomy);
+            updateSubheader(count, COMPONENTS.half_screen_overlay.anatomy, COMPONENTS.half_screen_overlay.tooltip);
         }
+        // ========== Toast 轻提示 ==========
+        function renderToast() {
+            const matrix = document.getElementById('matrix');
+            let count = 0;
+
+            // Toast 公共样式
+            // 背景：rgba(0,0,0,0.6) + backdrop-filter:blur(20px)，圆角16px
+            const TOAST_BG = 'background:var(--qq-bg-toast-nonopaque,rgba(0,0,0,0.6));backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);border-radius:16px;';
+            const TOAST_TEXT_COLOR = 'color:var(--color-text-allwhite,white);';
+
+            // 加载图标：loading.svg 旋转动画，白色 filter（Toast 深色背景上显示）
+            const LOADING_ICON = `<img src="icons/loading.svg" width="24" height="24" style="display:block;filter:brightness(0) invert(1);animation:toast-spin 1s linear infinite;">`;
+            const SUCCESS_ICON = `<img src="icons/QUI_24_icons/tick_circle.svg" width="24" height="24" style="display:block;filter:brightness(0) invert(1);">`;
+            const FAIL_ICON    = `<img src="icons/QUI_24_icons/caution_filled.svg" width="24" height="24" style="display:block;filter:brightness(0) invert(1);">`;
+
+            // 注入旋转动画 keyframes（只注入一次）
+            if (!document.getElementById('toast-spin-style')) {
+                const style = document.createElement('style');
+                style.id = 'toast-spin-style';
+                style.textContent = `
+                    @keyframes toast-spin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+                    @keyframes toast-fadein { 0%{opacity:0;transform:translate(-50%,-50%) scale(0.92);} 100%{opacity:1;transform:translate(-50%,-50%) scale(1);} }
+                    @keyframes toast-fadein-bottom { 0%{opacity:0;transform:translateX(-50%) translateY(8px);} 100%{opacity:1;transform:translateX(-50%) translateY(0);} }
+                `;
+                document.head.appendChild(style);
+            }
+
+            // 5 种子组件定义
+            const VARIANTS = [
+                {
+                    id: 'T1', name: '加载中',
+                    build: () => {
+                        const el = document.createElement('div');
+                        el.style.cssText = `${TOAST_BG}display:inline-flex;align-items:center;gap:4px;padding:12px 16px;height:44px;box-sizing:border-box;`;
+                        el.innerHTML = `${LOADING_ICON}<span style="font-family:'PingFang SC',sans-serif;font-size:16px;font-weight:400;line-height:20px;${TOAST_TEXT_COLOR}white-space:nowrap;">加载中</span>`;
+                        return el;
+                    }
+                },
+                {
+                    id: 'T2', name: '成功',
+                    build: () => {
+                        const el = document.createElement('div');
+                        el.style.cssText = `${TOAST_BG}display:inline-flex;align-items:center;gap:4px;padding:12px 16px;height:44px;box-sizing:border-box;`;
+                        el.innerHTML = `${SUCCESS_ICON}<span style="font-family:'PingFang SC',sans-serif;font-size:16px;font-weight:400;line-height:20px;${TOAST_TEXT_COLOR}white-space:nowrap;">成功提示文案</span>`;
+                        return el;
+                    }
+                },
+                {
+                    id: 'T3', name: '失败',
+                    build: () => {
+                        const el = document.createElement('div');
+                        el.style.cssText = `${TOAST_BG}display:inline-flex;align-items:center;gap:4px;padding:12px 16px;height:44px;box-sizing:border-box;`;
+                        el.innerHTML = `${FAIL_ICON}<span style="font-family:'PingFang SC',sans-serif;font-size:16px;font-weight:400;line-height:20px;${TOAST_TEXT_COLOR}white-space:nowrap;">失败提示文案</span>`;
+                        return el;
+                    }
+                },
+                {
+                    id: 'T4', name: '中性文字',
+                    build: () => {
+                        const el = document.createElement('div');
+                        el.style.cssText = `${TOAST_BG}display:inline-flex;align-items:center;padding:12px 16px;height:44px;box-sizing:border-box;`;
+                        el.innerHTML = `<span style="font-family:'PingFang SC',sans-serif;font-size:16px;font-weight:400;line-height:20px;${TOAST_TEXT_COLOR}white-space:nowrap;">Toast中性提示文案</span>`;
+                        return el;
+                    }
+                },
+                {
+                    id: 'T5', name: '带操作',
+                    build: () => {
+                        const el = document.createElement('div');
+                        el.style.cssText = `${TOAST_BG}display:flex;align-items:center;justify-content:space-between;padding:12px 16px;height:52px;width:396px;box-sizing:border-box;`;
+                        el.innerHTML = `
+                            <div style="display:flex;align-items:center;gap:4px;">
+                                ${SUCCESS_ICON}
+                                <span style="font-family:'PingFang SC',sans-serif;font-size:16px;font-weight:400;line-height:22px;${TOAST_TEXT_COLOR}white-space:nowrap;">带操作Toast提示文案</span>
+                            </div>
+                            <span style="font-family:'PingFang SC',sans-serif;font-size:14px;font-weight:400;line-height:22px;color:#4db8ff;white-space:nowrap;">撤销</span>
+                        `;
+                        return el;
+                    }
+                }
+            ];
+
+            // 展示位置说明
+            const POSITION_LABELS = {
+                'T1': '出现位置：页面正中央　出现时间：2秒',
+                'T2': '出现位置：页面正中央　出现时间：2秒',
+                'T3': '出现位置：页面正中央　出现时间：2秒',
+                'T4': '出现位置：页面正中央　出现时间：2秒',
+                'T5': '出现位置：页面底部上方 64px　出现时间：3秒（点击操作立即消失）'
+            };
+
+            VARIANTS.forEach(v => {
+                count++;
+                const card = document.createElement('div');
+                card.className = 'grouped-card';
+
+                const header = document.createElement('div');
+                header.className = 'grouped-card-header';
+                // 动画演示按钮：弱化样式，放在 header 最右侧
+                const demoTrigger = `<span data-toast-demo="${v.id}" style="margin-left:auto;font-size:11px;color:var(--text-tertiary);cursor:pointer;opacity:0.6;user-select:none;white-space:nowrap;">▶ 动画</span>`;
+                header.innerHTML = `<span>#${count}</span><span>${v.id} · ${v.name}</span>${demoTrigger}`;
+                card.appendChild(header);
+
+                // 位置说明
+                const posNote = document.createElement('div');
+                posNote.style.cssText = 'font-size:11px;color:var(--text-tertiary);margin-bottom:6px;padding:0 2px;';
+                posNote.textContent = POSITION_LABELS[v.id];
+                card.appendChild(posNote);
+
+                // 预览容器（无底色，直接展示）
+                const preview = document.createElement('div');
+                preview.style.cssText = 'width:428px;border-radius:8px;display:flex;align-items:center;justify-content:center;padding:24px 0;position:relative;';
+
+                // T5 靠底部展示
+                if (v.id === 'T5') {
+                    preview.style.cssText = 'width:428px;height:120px;border-radius:8px;position:relative;overflow:hidden;';
+                    const posWrap = document.createElement('div');
+                    posWrap.style.cssText = 'position:absolute;bottom:64px;left:50%;transform:translateX(-50%);';
+                    posWrap.appendChild(v.build());
+                    preview.appendChild(posWrap);
+                } else {
+                    preview.appendChild(v.build());
+                }
+
+                card.appendChild(preview);
+
+                // 动画演示逻辑（无模态遮罩）
+                header.querySelector(`[data-toast-demo="${v.id}"]`).addEventListener('click', () => {
+                    const toastEl = v.build();
+                    const isT5 = v.id === 'T5';
+
+                    if (isT5) {
+                        toastEl.style.cssText += `position:fixed;left:50%;bottom:64px;transform:translateX(-50%) translateY(8px);opacity:0;z-index:9999;pointer-events:none;transition:opacity 0.3s ease,transform 0.3s ease;`;
+                        document.body.appendChild(toastEl);
+                        requestAnimationFrame(() => requestAnimationFrame(() => {
+                            toastEl.style.opacity = '1';
+                            toastEl.style.transform = 'translateX(-50%) translateY(0)';
+                        }));
+                        setTimeout(() => {
+                            toastEl.style.opacity = '0';
+                            toastEl.style.transform = 'translateX(-50%) translateY(8px)';
+                            setTimeout(() => toastEl.remove(), 300);
+                        }, 3000);
+                    } else {
+                        toastEl.style.cssText += `position:fixed;left:50%;top:50%;transform:translate(-50%,-50%) scale(0.92);opacity:0;z-index:9999;pointer-events:none;transition:opacity 0.25s ease,transform 0.25s ease;`;
+                        document.body.appendChild(toastEl);
+                        requestAnimationFrame(() => requestAnimationFrame(() => {
+                            toastEl.style.opacity = '1';
+                            toastEl.style.transform = 'translate(-50%,-50%) scale(1)';
+                        }));
+                        setTimeout(() => {
+                            toastEl.style.opacity = '0';
+                            toastEl.style.transform = 'translate(-50%,-50%) scale(0.92)';
+                            setTimeout(() => toastEl.remove(), 250);
+                        }, 2000);
+                    }
+                });
+
+                matrix.appendChild(card);
+            });
+
+            updateSubheader(count, COMPONENTS.toast.anatomy, COMPONENTS.toast.tooltip);
+        }
+
         // ========== 按钮 Button 组件渲染 ==========
         function renderButton() {
             const matrix = document.getElementById('matrix');
@@ -5877,26 +6258,13 @@
             const STATE_LABELS = { default: '默认态', pressed: '按下态', loading: '加载态', disabled: '不可点击' };
             const STATE_LABELS_SHORT = { default: '默认', pressed: '按下', loading: '加载', disabled: '不可' };
 
-            // spinner SVG — 使用渐变圆环还原 Figma 设计稿
-            let _spinUid = 0;
+            // 加载图标：使用 loading.svg，颜色通过 filter 控制
             function getSpinnerSVG(typeKey) {
-                const uid = typeKey + '_' + (++_spinUid);
-                const color = typeKey === 'primary' ? '255,255,255' : '0,0,0';
-                const opacity = typeKey === 'primary' ? '0.90' : '0.40';
-                return `<svg class="btn-spinner" width="19" height="19" viewBox="0 0 19 19" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    <defs>
-                        <linearGradient id="spinGrad_${uid}_a" x1="9.5" y1="0" x2="9.5" y2="9.5" gradientUnits="userSpaceOnUse">
-                            <stop stop-color="rgba(${color},${opacity})"/>
-                            <stop offset="1" stop-color="rgba(${color},${opacity})" stop-opacity="0.6"/>
-                        </linearGradient>
-                        <linearGradient id="spinGrad_${uid}_b" x1="9.5" y1="19" x2="9.5" y2="9.5" gradientUnits="userSpaceOnUse">
-                            <stop stop-color="rgba(${color},0.05)"/>
-                            <stop offset="1" stop-color="rgba(${color},${opacity})" stop-opacity="0.3"/>
-                        </linearGradient>
-                    </defs>
-                    <path d="M9.5 1C5.08 1 1.5 4.58 1.5 9s3.58 8.5 8 8.5" stroke="url(#spinGrad_${uid}_a)" stroke-width="2" stroke-linecap="round"/>
-                    <path d="M9.5 18C13.92 18 17.5 14.42 17.5 10s-3.58-8.5-8-8.5" stroke="url(#spinGrad_${uid}_b)" stroke-width="2" stroke-linecap="round"/>
-                </svg>`;
+                const isWhite = typeKey === 'primary';
+                const filterStyle = isWhite
+                    ? 'filter:brightness(0) invert(1);opacity:0.9;'
+                    : 'filter:brightness(0);opacity:0.4;';
+                return `<img class="btn-spinner" src="icons/loading.svg" width="19" height="19" style="display:block;${filterStyle}">`;
             }
 
             // 获取按钮文字：大/中尺寸用长文案，小/mini用短文案
@@ -6024,7 +6392,7 @@
                     card.appendChild(outer);
                     matrix.appendChild(card);
                 });
-                updateSubheader(count, COMPONENTS.button.anatomy);
+                updateSubheader(SIZES.length * TYPES.length, COMPONENTS.button.anatomy, COMPONENTS.button.tooltip);
             }
 
             // ====== 构建控件栏 ======
@@ -6505,7 +6873,7 @@
                 card.appendChild(cardDom);
                 matrix.appendChild(card);
             });
-            updateSubheader(count, COMPONENTS.card.anatomy);
+            updateSubheader(count, COMPONENTS.card.anatomy, COMPONENTS.card.tooltip);
         }
 
         // ========== Message 消息 ==========
@@ -6683,7 +7051,7 @@
             // 初始隐藏第一个分隔线
             updateSegDividers(modeSeg);
 
-            updateSubheader(count, COMPONENTS.message.anatomy);
+            updateSubheader(count, COMPONENTS.message.anatomy, COMPONENTS.message.tooltip);
         }
 
         function createCard(index, id) {
@@ -6693,19 +7061,21 @@
             return card;
         }
 
-        function updateSubheader(count, description) {
+        function updateSubheader(count, description, tooltip) {
+            const tooltipAttr = tooltip ? ` data-tooltip="${tooltip.replace(/"/g, '&quot;')}"` : '';
             document.getElementById('subheader').innerHTML = `
-                <span class="variant-count-badge">总计 ${count} 个变体</span>
+                <span class="variant-count-badge"${tooltipAttr}>总计 ${count} 个变体</span>
                 <span>${description}</span>
             `;
         }
 
         function switchComponent(type) {
             currentComponent = type;
+            localStorage.setItem('matrix_component', type);
             const config = COMPONENTS[type];
             document.getElementById('main-title').innerText = config.title;
             
-            document.body.style.backgroundColor = 'var(--bg-page)';
+            document.body.style.backgroundColor = 'var(--bg-canvas)';
 
             const matrix = document.getElementById('matrix');
             matrix.innerHTML = '';
@@ -6734,14 +7104,46 @@
             config.render();
         }
 
-        // Initialize — 支持 hash 定位
+        // Initialize — 优先 localStorage，其次 hash，最后默认第一个组件
         const hashType = window.location.hash.replace('#', '');
-        if (hashType && COMPONENTS[hashType]) {
-            document.getElementById('component-selector').value = hashType;
-            switchComponent(hashType);
-        } else {
-            switchComponent('form');
+        const savedType = localStorage.getItem('matrix_component');
+        const initType = (hashType && COMPONENTS[hashType]) ? hashType
+                       : (savedType && COMPONENTS[savedType]) ? savedType
+                       : 'navbar';
+
+        // 自定义下拉逻辑
+        function setCustomSelect(type) {
+            const trigger = document.getElementById('customSelectTrigger');
+            const options = document.querySelectorAll('.custom-select-option');
+            options.forEach(opt => {
+                const isSelected = opt.dataset.value === type;
+                opt.classList.toggle('selected', isSelected);
+                if (isSelected) trigger.innerHTML = opt.textContent + '<img src="icons/chevron_down.svg" class="trigger-arrow" alt="">';
+            });
         }
+
+        document.getElementById('customSelectTrigger').addEventListener('click', function(e) {
+            e.stopPropagation();
+            document.getElementById('customSelectDropdown').classList.toggle('open');
+        });
+
+        document.querySelectorAll('.custom-select-option').forEach(opt => {
+            opt.addEventListener('click', function() {
+                const val = this.dataset.value;
+                setCustomSelect(val);
+                document.getElementById('customSelectDropdown').classList.remove('open');
+                switchComponent(val);
+            });
+        });
+
+        document.addEventListener('click', function(e) {
+            if (!e.target.closest('#customSelectWrapper')) {
+                document.getElementById('customSelectDropdown').classList.remove('open');
+            }
+        });
+
+        setCustomSelect(initType);
+        switchComponent(initType);
 
         // ========== 全局交互事件委托：可交互组件状态切换 ==========
         document.addEventListener('click', function(e) {

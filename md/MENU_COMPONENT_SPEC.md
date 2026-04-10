@@ -191,7 +191,7 @@
 ```css
 .menu-outer {
     width: 180px;
-    background: var(--bg-item);
+    background: var(--bg_bottom_light);
     border-radius: 12px;
     overflow: hidden;
     box-shadow: 0 8px 32px rgba(0,0,0,0.12);
@@ -229,7 +229,7 @@
     font-size: 17px;
     font-family: 'PingFang SC', sans-serif;
     font-weight: 400;
-    color: var(--text-primary);
+    color: var(--text_primary);
     position: absolute;
     top: 50%;
     transform: translateY(-50%);

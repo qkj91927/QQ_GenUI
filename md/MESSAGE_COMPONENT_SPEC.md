@@ -33,8 +33,8 @@
 | 属性 | 值 |
 |------|-----|
 | 宽度 | 428px |
-| 上下间距 | padding: 4px 0 |
-| 内容行宽度 | 364px（左右各 32px） |
+| 上下间距 | padding: 8px 0（两条消息相邻时视觉间距为 16px）|
+| 内容行宽度 | 404px（左右各 12px） |
 | 布局 | flex，客态 row / 主态 row-reverse |
 
 ### 3.2 头像区域
@@ -63,11 +63,11 @@
 
 | 属性 | 客态 | 主态 |
 |------|------|------|
-| 气泡背景 | white（var(--bg-item)） | #0099FF |
+| 气泡背景 | white（var(--bg_bottom_light)） | #0099FF |
 | 文字颜色 | #1A1C1E | #FFFFFF |
 | 圆角 | 10px | 10px |
 | 内边距 | 9px | 9px |
-| 最大宽度 | 308px | 308px |
+| 最大宽度 | 340px | 340px |
 | 字号/行高 | 17px / 24px | 17px / 24px |
 | 字重 | 400 | 400 |
 
@@ -78,7 +78,7 @@
 | 属性 | 值 |
 |------|-----|
 | 气泡宽度 | 263px |
-| 气泡背景 | white（var(--bg-item)） |
+| 气泡背景 | white（var(--bg_bottom_light)） |
 | 气泡圆角 | 10px |
 | 内容区 padding | 12px |
 | 标题字号/行高 | 17px / 24px，color: rgba(0,0,0,0.90) |
@@ -94,7 +94,7 @@
 | 属性 | 值 |
 |------|-----|
 | 气泡宽度 | 263px |
-| 气泡背景 | white（var(--bg-item)） |
+| 气泡背景 | white（var(--bg_bottom_light)） |
 | 气泡圆角 | 10px |
 | 标题字号/行高 | 17px / 24px，color: #1A1C1E |
 | 描述字号/行高 | 12px / 17px，color: #909094 |
@@ -107,7 +107,7 @@
 | 属性 | 值 |
 |------|-----|
 | 气泡宽度 | 263px |
-| 气泡背景 | white（var(--bg-item)） |
+| 气泡背景 | white（var(--bg_bottom_light)） |
 | 气泡圆角 | 10px |
 | 布局 | flex，align-items: center，gap: 8px |
 | 图标 | 52×52px，border-radius: 12px |
@@ -162,7 +162,7 @@
 4. 所有结构化气泡宽度固定为 263px
 5. 头像固定 40×40px，气泡内图标固定 52×52px（border-radius: 12px）
 6. 统一的分段选择器在 component-matrix.html 和 component-builder.html 中均使用，一个分段选择器同时控制全部 4 个变体的主/客态显示
-7. **页面背景色约束**：当页面包含消息组件时，页面背景色必须使用 AIO 背景色 `--qq-bg-aio-01: #F0F0F2`，不可使用白色背景（`#FFFFFF`）
+7. **页面背景色约束**：当页面包含消息组件时，页面背景色必须使用 AIO 背景色 `--bg_select_aio: #F0F0F2`，不可使用白色背景（`#FFFFFF`）
 
 ---
 

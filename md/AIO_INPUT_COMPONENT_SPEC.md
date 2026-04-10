@@ -189,7 +189,7 @@ AIO Input 与 Message 组件在 AIO 对话场景中紧密配合：
 ### 12.1 布局关系
 - AIO Input **固定在页面底部**（`position: fixed; bottom: 0`）
 - Message 消息列表在上方滚动，底部需留出 AIO Input 高度（72px）的 `padding-bottom` 避免内容遮挡
-- 两者共享页面背景色 `qq-bg-aio-01`（#F0F0F2）
+- 两者共享页面背景色 `--bg_select_aio`（#F0F0F2）
 
 ### 12.2 发送时序
 ```

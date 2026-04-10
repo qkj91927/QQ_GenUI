@@ -15,7 +15,7 @@
 ```
 ┌───────────────────────────────────┐  ← height: 926px (default)
 │  Overlay                          │
-│  var(--color-overlay-dark)        │
+│  var(--overlay_dark)        │
 │                                   │
 │                                   │
 ├───────────────────────────────────┤  ← border-radius: 20px
@@ -35,7 +35,7 @@
 ```
 ┌───────────────────────────────────┐
 │  Overlay                          │
-│  var(--color-overlay-dark)        │
+│  var(--overlay_dark)        │
 │                                   │
 │                                   │
 ├───────────────────────────────────┤  ← border-radius: 20px
@@ -88,8 +88,7 @@ Transition: triggered when top < 100px
 | 把手型高度 | 75vh（屏幕高度的 75%） | 默认定高，支持上滑吸附至 100vh 全屏模态 |
 | 顶部圆角 | 20px | 仅左上、右上 |
 | 半屏导航栏高度（标准型） | 54px（A2副标题型为65px） | 取决于所用的 HS_NavBar 变体 |
-| 关闭按钮尺寸 | 30 × 30px | 圆角 50%（正圆），右对齐，水平内边距 16px |
-| 关闭图标尺寸 | 16 × 16px | `icons/Close_HalfScreen.svg` |
+| 关闭按钮 | `icons/Close_HalfScreen.svg`（30×30px） | SVG **自带灰底圆**（rgba(0,0,0,0.04)）和 X 图标，**直接使用，不需要外层容器** |
 | 把手区域高度（把手型） | 20px | 垂直居中 |
 | 把手指示条尺寸 | 36 × 5px | 圆角 2.5px |
 
@@ -99,29 +98,19 @@ Transition: triggered when top < 100px
 |------|------|-------|
 | 遮罩层 | rgba(0, 0, 0, 0.50) | 叠加色-overlay_dark |
 | 面板背景 | #FFFFFF | 背景色-Primary |
-| 关闭按钮背景 | rgba(0, 0, 0, 0.04) | — |
+| 关闭按钮背景 | rgba(0, 0, 0, 0.04) | 来自 `Close_HalfScreen.svg` 内部，无需代码设置 |
 | 把手指示条 | rgba(60, 60, 67, 0.30) | — |
-
-### 3.3 关闭按钮（A3 半屏导航栏样式）
-
-| 属性 | 值 |
-|------|-----|
-| 位置 | 导航栏右侧，水平内边距 16px，垂直居中 |
-| 尺寸 | 30 × 30px |
-| 背景 | rgba(0, 0, 0, 0.04) |
-| 圆角 | 50%（正圆） |
-| 图标 | `icons/Close_HalfScreen.svg`（16×16px） |
-| 图标颜色 | rgba(0, 0, 0, 0.90) |
 
 ## 4. 子组件类型定义
 
 ### 4.1 标准型（HSO-A）
 
-- **导航区域**: 半屏导航栏组件（默认 A3 仅关闭按钮，可按业务替换为 A1标题+关闭 / A2标题+副标题+关闭 / A4图标+标题+关闭 或 B1-B3 二级导航）
-- **面板高度范围**: 360px ~ 720px，默认 420px
-- **内容区高度**: `sheetHeight - navbarHeight - 34(HomeBar)`，其中 navbarHeight 取决于所用的半屏导航栏变体（A1/A3/A4/B1-B3 = 54px，A2 = 65px）。默认 420px 时（A3）为 **332px**，超出内容区可滚动
-- **适用场景**: 需要明确关闭操作的内容展示、表单填写
-- **关闭方式**: 点击关闭按钮、点击蒙层、下滑手势
+- **导航区域**：使用 **HS_NavBar** 组件（详见 `HS_NAVBAR_COMPONENT_SPEC.md`），默认 **A3**，可按业务替换为 **A1 / A2 / A4**（一级导航）或 **B1 / B2 / B3**（二级导航）
+- **HS_NavBar → 内容区间距**：**B2（8px）**（A3 叠在图片上时为 0px）
+- **面板高度范围**：360px ~ 720px，默认 420px
+- **内容区高度**：`sheetHeight - navbarHeight - 34(HomeBar)`，其中 navbarHeight：A1/A3/A4/B1-B3 = 54px，A2 = 65px。默认 420px 时（A3）为 **332px**，超出内容区可滚动
+- **适用场景**：需要明确关闭操作的内容展示、表单填写
+- **关闭方式**：点击关闭按钮、点击蒙层、下滑手势
 
 ### 4.2 把手型（HSO-B）
 
@@ -226,7 +215,7 @@ Transition: triggered when top < 100px
     width: 428px;
     height: 926px;               /* iPhone 屏幕高度 */
     position: relative;
-    background: var(--叠加色-overlay_dark, var(--color-overlay-dark));  /* 遮罩色 */
+    background: var(--叠加色-overlay_dark, var(--overlay_dark));  /* 遮罩色 */
     overflow: hidden;
 }
 ```
@@ -240,7 +229,7 @@ Transition: triggered when top < 100px
     left: 0;
     width: 428px;
     height: /* sheetHeight */;
-    background: var(--color-bg-item);
+    background: var(--bg_bottom_light);
     border-top-left-radius: 20px;
     border-top-right-radius: 20px;
     overflow: hidden;
@@ -255,7 +244,7 @@ Transition: triggered when top < 100px
     width: 428px;  /* 或 100% */
     min-height: 360px;   /* 标准型最小高度 */
     max-height: 720px;
-    background: var(--color-bg-item);
+    background: var(--bg_bottom_light);
     border-top-left-radius: 20px;
     border-top-right-radius: 20px;
     overflow: hidden;
@@ -275,14 +264,14 @@ Transition: triggered when top < 100px
     align-items: center;
     justify-content: flex-end;
     padding: 0 16px;
-    background: var(--color-bg-item);
+    background: var(--bg_bottom_light);
     box-sizing: border-box;
 }
 .hs-overlay-close-btn-a3 {
     width: 30px;
     height: 30px;
     border-radius: 50%;
-    background: var(--color-fill-pressed);
+    background: var(--fill_standard_primary);
     display: flex;
     align-items: center;
     justify-content: center;
@@ -302,7 +291,7 @@ Transition: triggered when top < 100px
 .hs-overlay-handle-indicator {
     width: 36px;
     height: 5px;
-    background: var(--color-handle);
+    background: var(--text_tertiary);
     border-radius: 2.5px;
 }
 ```
@@ -314,7 +303,7 @@ Transition: triggered when top < 100px
     width: 428px;
     height: 34px;
     position: relative;
-    background: var(--color-bg-item);
+    background: var(--bg_bottom_light);
 }
 .hs-overlay-homebar {
     width: 144px;
@@ -323,7 +312,7 @@ Transition: triggered when top < 100px
     left: 50%;
     transform: translateX(-50%);
     bottom: 8px;
-    background: var(--color-text-primary);
+    background: var(--text_primary);
     border-radius: 2.5px;
 }
 ```
@@ -342,9 +331,9 @@ Transition: triggered when top < 100px
 
 | 内嵌组件 | 内容区背景色 | Token | 说明 |
 |----------|------------|-------|------|
-| Grouped List（卡片式列表） | `#F0F0F2` | `bg_bottom_standard` | 白色卡片需灰底形成层级分离 |
-| Card（卡片） | `#F0F0F2` | `bg_bottom_standard` | 同上 |
-| Message（消息） | `#F0F0F2` | `qq-bg-aio-01` | AIO 背景色 |
+| Grouped List（卡片式列表） | `#F0F0F2` | `bg_middle_standard` | 白色卡片需灰底形成层级分离 |
+| Card（卡片） | `#F0F0F2` | `bg_middle_standard` | 同上 |
+| Message（消息） | `#F0F0F2` | `--bg_select_aio` | AIO 背景色 |
 | 其他组件（List/Textfield/Button 等） | `#FFFFFF` | `bg_bottom_light` | 默认白底 |
 
-> **实现方式**：修改内容区容器 `.hs-overlay-drop-content` 的 `background` 属性即可。导航栏、底部安全区的底色也需同步调整为与内容区一致的背景色。
+> **常用场景模版**：见 `md/HALF_SCREEN_OVERLAY_TEMPLATES.md`。执行半屏浮层相关设计任务时，请优先查阅该文档，判断是否可直接使用或小幅修改已有模版。

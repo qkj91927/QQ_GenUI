@@ -38,7 +38,7 @@
 - **组件宽度**：跟随半屏浮层宽度（默认 100%）
 - **基准高度**：54px（A2 副标题型为 65px）
 - **水平内边距**：左右各 16px
-- **关闭按钮**：30×30px 圆形，背景 rgba(0,0,0,0.04)，`icons/Close_HalfScreen.svg`（16×16px）
+- **关闭按钮**：直接使用 `icons/Close_HalfScreen.svg`（30×30px，SVG 自带灰底圆 `rgba(0,0,0,0.04)` + X 图标，**不需要外层容器包裹**）
 - **返回箭头**：`icons/chevron_left.svg`（24×24px）
 - **App图标**：`icons/Thumbnail_24.svg`（24×24px 占位，实际任务中替换），与标题间距 8px
 
@@ -136,7 +136,7 @@ B3  返回+标题           → [←]      [二级标题]
     font-size: 17px;
     font-family: 'PingFang SC', sans-serif;
     font-weight: 500;
-    color: var(--color-text-primary);
+    color: var(--text_primary);
     line-height: 24px;
     text-align: center;
 }
@@ -154,34 +154,26 @@ B3  返回+标题           → [←]      [二级标题]
     font-size: 17px;
     font-family: 'PingFang SC', sans-serif;
     font-weight: 500;
-    color: var(--color-text-primary);
+    color: var(--text_primary);
     line-height: 24px;
 }
 .hs-navbar-row .hs-subtitle {
     font-size: 12px;
     font-family: 'PingFang SC', sans-serif;
     font-weight: 400;
-    color: var(--color-text-secondary);
+    color: var(--text_primary_light);
     line-height: 17px;
 }
+/* 关闭按钮：直接使用 Close_HalfScreen.svg（自带30px灰底圆，不需要外层样式） */
 .hs-navbar-row .hs-close-btn {
     width: 30px;
     height: 30px;
-    border-radius: 50%;
-    background: var(--color-fill-pressed);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
-.hs-navbar-row .hs-close-btn svg {
-    width: 16px;
-    height: 16px;
 }
 .hs-navbar-row .hs-action-text {
     font-size: 17px;
     font-family: 'PingFang SC', sans-serif;
     font-weight: 400;
-    color: var(--color-text-primary);
+    color: var(--text_primary);
     line-height: 24px;
 }
 .hs-navbar-row .hs-back-icon {
@@ -203,15 +195,12 @@ B3  返回+标题           → [←]      [二级标题]
 
 ## 7. 与浮层内部组件的间距衔接
 
-半屏导航栏固定在半屏浮层顶部，与浮层内部内容区之间的间距规则如下：
+半屏导航栏固定在半屏浮层顶部，与浮层内部内容区之间插入 **B2（8px）间距组件**：
 
 | 导航栏类型 | 下方组件 | 间距 | 说明 |
 |-----------|----------|------|------|
-| A1/A2/A4（一级导航） | Grouped List / List / Textfield 等 | **8px** | 导航栏底部与内容区间隔 8px |
-| A3（单关闭，叠在图片上） | ImageBlock | **0px** | A3 绝对定位叠在图片上方，不占据内容流高度 |
-| B1/B2/B3（二级导航） | 任意内容组件 | **8px** | 二级导航底部与内容区间隔 8px |
-
-> **设计意图**：半屏浮层内部空间有限，导航栏与内容区之间不插入间距组件。内容区的内边距由内容组件自身控制（如 Grouped List 的 `padding: 12px 16px`）。
+| A1 / A2 / A3 / A4 / B1 / B2 / B3 | 任意内容组件 | **B2（8px）** | 统一紧凑间距，半屏浮层内空间有限 |
+| A3（叠在图片上） | ImageBlock | **0px** | A3 绝对定位叠在图片上方，不占据内容流高度 |
 
 ---
 

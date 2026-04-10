@@ -44,6 +44,7 @@ description: This skill should be used when the user wants to switch, apply, or 
 ### Step 2：读取品牌 DESIGN.md
 
 - 使用 `read_file` 读取 `awesomedesign/<brand>/DESIGN.md`
+- 可参考同目录下的 `preview.html`（亮色预览）和 `preview-dark.html`（暗色预览）作为该品牌的交互式 Token 目录与视觉效果参考
 - 重点提取以下章节并内化为当前上下文的设计约束：
   1. **Color Palette & Roles** — 颜色映射规则
   2. **Typography Rules** — 字体、字号、字重、行高、字间距

@@ -21,10 +21,11 @@
 
   "layout": {
     "outerWidth": 428,
-    "contentRowWidth": 364,
+    "contentRowWidth": 404,
     "guestMarginLeft": 12,
     "hostMarginRight": 12,
-    "verticalPadding": "4px 0",
+    "verticalPadding": "8px 0",
+    "messageGap": "16px（8px×2，两条消息相邻时合计）",
     "avatarSize": 40,
     "avatarPaddingTop": 8,
     "bubbleGap": 8,
@@ -34,7 +35,7 @@
   "bubbleStyles": {
     "text": {
       "description": "纯文字气泡，主/客态颜色不同",
-      "maxWidth": 308,
+      "maxWidth": 340,
       "borderRadius": 10,
       "padding": 9,
       "fontSize": 17,

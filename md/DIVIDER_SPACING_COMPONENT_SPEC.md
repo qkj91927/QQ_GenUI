@@ -64,14 +64,14 @@
 
 ### 间距选择建议规则
 
-| 分类 | 场景 | 建议间距 |
-|------|------|----------|
-| 组件内部 | 紧凑排列的辅助信息之间 | B1（4px） |
-| 组件内部 | 同组内容块之间、标签与内容之间 | B2（8px） |
-| 组件与组件之间 | 同类组件相邻（如卡片与卡片、卡片式列表组与卡片式列表组） | B3（12px） |
-| 组件与组件之间 | 不同组件相邻（默认） | B4（16px） |
-| 组件与组件之间 | 不同功能模块之间（如个人信息区与设置列表区） | B5（24px） |
-| 组件与页面之间 | 页面底部（最后一个组件到页面底部，可滑动场景除外） | B6（32px） |
+| ID | 高度 | 定义 | 典型使用场景 |
+|----|------|------|------------|
+| B1 | 4px | **同组件之间·紧凑** | 标题+副标题（H2+H6 / H2+H7）；辅助信息并列 |
+| B2 | 8px | **同组件之间·标准** / **同类组件相邻** | TextBlock 与 TextBlock；ImageBlock 与 ImageBlock；Message 与 Message；HS_NavBar → 任意内容组件 |
+| B3 | 12px | **同类卡片容器相邻** | Card 与 Card；Grouped List 组与组 |
+| B4 | 16px | **不同组件相邻（默认）** | DataFilter/Search/TextBlock 与 List/Card/Grid；Textfield 与 Grouped List；其他不同组件的默认间距 |
+| B5 | 24px | **不同功能模块之间** | 内容区 → 操作区（TextBlock → ActionCombo）；个人信息区 → 设置列表区 |
+| B6 | 32px | **页面底部留白** | 最后一个组件 → 页面底部/HomeBar；ActionCombo → HomeBar（有 AIOInput 时由其 72px 高度替代） |
 
 ### 设计约束
 
@@ -104,14 +104,14 @@
 ```css
 .divider-container {
     width: 428px;
-    background: var(--color-bg-item);
+    background: var(--bg_bottom_light);
     position: relative;
     display: flex;
     align-items: center;
 }
 .divider-line {
     height: 0.5px;
-    background: var(--color-separator);
+    background: var(--border_light);
 }
 .divider-line.inset-both {
     width: 396px;
@@ -170,17 +170,21 @@
 |----------|----------|------|------|
 | StatusBar | NavBar | **0px** | 状态栏与导航栏紧贴，无间距 |
 | NavBar | 任意内容组件 | **0px** | 导航栏与内容区紧贴 |
-| HS_NavBar | 半屏浮层内容 | **8px** | 半屏导航栏与浮层内容间隔 8px（A3叠在图片上时为0px） |
+| NavBar | DataFilter | **0px** | 筛选器紧贴导航栏（iOS 标准模式） |
+| NavBar | Search | **0px** | 搜索框紧贴导航栏 |
+| HS_NavBar（任意变体） | 任意内容组件 | **B2（8px）** | 半屏浮层内统一紧凑间距；A3 叠在图片上时为 0px |
+| HSO-B 把手条 | 半屏浮层内容 | **16px** | 把手型浮层把手条与内容区顶部间隔 16px |
 | AIOInput | — | **0px** | 固定在页面最底部，不使用间距组件 |
+| ActionCombo | HomeBar | **B6（32px）** | 操作行到页面底部安全区，复用"最后组件→页面底部"规则 |
 
 ### 同类组件相邻
 
 | 组合场景 | 推荐间距 | 说明 |
 |----------|---------|------|
-| Card 与 Card | **B2（8px）** | 卡片间紧凑间隔（灰色背景露出） |
-| Grouped List 组 与 组 | **B2（8px）** | 卡片式列表组间间隔 |
+| Card 与 Card | **B3（12px）** | 卡片间间隔（灰色背景露出） |
+| Grouped List 组 与 组 | **B3（12px）** | 卡片式列表组间间隔 |
 | List 行 与 List 行 | **0px + 分割线** | 通栏列表行间用分割线而非间距 |
-| Message 与 Message | **B2（8px）** | 消息气泡间标准间隔 |
+| Message 与 Message | **B4（16px）** | 消息气泡间间隔（每条消息自身 `padding: 8px 0`，相邻合计 16px） |
 | TextBlock 与 TextBlock | **B2（8px）** | 同级文本块间 |
 | ImageBlock 与 ImageBlock | **B2（8px）** | 同级图片块间 |
 
@@ -188,9 +192,11 @@
 
 | 组合场景 | 推荐间距 | 说明 |
 |----------|---------|------|
-| DataFilter 与 List/Card | **B3（12px）** | 筛选器与内容区之间 |
-| TextBlock 与 List/Card | **B3（12px）** | 标题文本块与列表/卡片之间 |
-| Search 与 List/Card | **B3（12px）** | 搜索框与结果列表之间 |
+| DataFilter 与 List/Card/Grid | **B4（16px）** | 不同组件之间 |
+| TextBlock 与 List/Card | **B4（16px）** | 不同组件之间 |
+| Search 与 List/Card/Grid | **B4（16px）** | 不同组件之间 |
+| Textfield 与 Grouped List | **B4（16px）** | 不同功能模块 |
+| TextBlock 与 ActionCombo | **B5（24px）** | 文本内容区与底部操作区属于不同功能模块 |
 | 其他不同组件相邻（默认） | **B4（16px）** | 无特殊规则时的默认间距 |
 
 ### 功能模块间
@@ -200,4 +206,4 @@
 | 不同功能模块之间 | **B5（24px）** | 如个人信息区 → 设置列表区 |
 | 页面最后一个组件 → 页面底部 | **B6（32px）** | 底部留白（有 AIOInput 时由其 72px 高度替代） |
 
-> **使用原则**：同类紧凑（8px）、异类适中（12-16px）、跨模块宽松（24px）、页面底部最宽松（32px）。
+> **使用原则**：组件内部紧凑（4-8px）→ 同类卡片容器（12px）→ 不同组件（16px）→ 跨功能模块（24px）→ 页面底部（32px），逐层递进。

@@ -13,7 +13,7 @@
 ```
 ┌───────────────────────────────────┐
 │  Overlay                          │
-│  var(--color-overlay-dialog)      │
+│  var(--overlay_dark)      │
 │                                   │
 │  ┌─────────────────────────────┐  │  ← border-radius: 14px
 │  │  Title (optional)           │  │
@@ -205,10 +205,10 @@ Action layouts:
 ```css
 .dialog-outer {
     width: 296px;
-    background: var(--color-bg-item);
+    background: var(--bg_bottom_light);
     border-radius: 14px;
     overflow: hidden;
-    box-shadow: var(--shadow-dialog);
+    box-shadow: var(--overlay_dark);
 }
 ```
 
@@ -223,7 +223,7 @@ Action layouts:
     font-size: 17px;
     font-family: 'PingFang SC', sans-serif;
     font-weight: 600;
-    color: var(--color-text-primary);
+    color: var(--text_primary);
     line-height: 1.35;
 }
 ```
@@ -239,7 +239,7 @@ Action layouts:
     font-size: 14px;          /* 有标题: 14px/22px, 无标题: 17px/24px */
     font-family: 'PingFang SC', sans-serif;
     font-weight: 400;
-    color: var(--color-text-primary);
+    color: var(--text_primary);
     line-height: 22px;
     word-wrap: break-word;
 }
@@ -259,7 +259,7 @@ Action layouts:
 .dialog-check-label {
     font-size: 14px;
     font-weight: 400;
-    color: var(--color-text-tertiary);
+    color: var(--text_secondary);
     white-space: nowrap;
 }
 ```
@@ -273,7 +273,7 @@ Action layouts:
 .dialog-input-box {
     width: 248px;
     height: 48px;
-    background: var(--color-btn-bg);
+    background: var(--fill_standard_secondary);
     border-radius: 12px;
     position: relative;
     overflow: hidden;
@@ -340,7 +340,7 @@ Action layouts:
     font-size: 17px;
     font-family: 'PingFang SC', sans-serif;
     font-weight: 400;
-    color: var(--color-text-link);
+    color: var(--text_link);
 }
 
 /* 分割线 */
@@ -350,7 +350,7 @@ Action layouts:
     top: 0;
     width: 100%;
     height: 0.5px;
-    background: var(--color-border-standard);
+    background: var(--border_standard);
 }
 .dialog-divider-v {
     position: absolute;
@@ -358,7 +358,7 @@ Action layouts:
     top: 0;
     width: 0.5px;
     height: 54px;
-    background: var(--color-border-standard);
+    background: var(--border_standard);
 }
 ```
 

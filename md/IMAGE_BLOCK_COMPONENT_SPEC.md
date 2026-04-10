@@ -55,7 +55,7 @@
 ```css
 .image-block-container {
     width: 428px;
-    background: var(--color-bg-item);
+    background: var(--bg_bottom_light);
     display: flex;
     flex-direction: column;
     position: relative;
@@ -153,8 +153,8 @@
     height: 8px;
     border-radius: 50%;
 }
-.image-block-dots .dot.active { background: var(--color-brand-standard); }     /* 品牌蓝 */
-.image-block-dots .dot.inactive { background: var(--color-fill-standard-primary); }
+.image-block-dots .dot.active { background: var(--brand_standard); }     /* 品牌蓝 */
+.image-block-dots .dot.inactive { background: var(--fill_standard_primary); }
 ```
 
 **图片样式**：
@@ -257,8 +257,8 @@
     cursor: pointer;
     transition: background 200ms ease-out;
 }
-.image-block-dots .dot.active { background: var(--color-brand-standard); }
-.image-block-dots .dot.inactive { background: var(--color-fill-standard-primary); }
+.image-block-dots .dot.active { background: var(--brand_standard); }
+.image-block-dots .dot.inactive { background: var(--fill_standard_primary); }
 ```
 
 **事件委托（全局）**：

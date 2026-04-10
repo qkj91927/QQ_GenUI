@@ -2,7 +2,7 @@
 
 > **组件 ID**：`list`  
 > **大类**：数据  
-> **变体数量**：67 种（8L × 3C × 10R 经约束过滤）
+> **变体数量**：110 种（67 默认态 + 43 多选态）
 
 本文件定义了移动端通栏式列表母组件的系统化构建逻辑、属性约束及 UI 规范。
 
@@ -10,6 +10,7 @@
 
 ## 1. 组件构成 (Anatomy)
 
+- **多选控件 (Selection Control)**：可选前置，位于左侧区域之前，24px 圆形选择器，点击切换选中/未选中态。
 - **左侧区域 (Left Area)**：Icon, Avatar, Thumbnail 等。
 - **列表内容 (Content Area)**：1-3 行文本，包含标题、描述、链接等。
 - **右侧区域 (Right Area)**：辅助信息、按钮、开关、金额、步数、聊天时间等。
@@ -41,7 +42,7 @@
 | 标识 | 属性名 | 视觉特征 |
 | :--- | :--- | :--- |
 | R0/Empty | Empty | 不显示右侧区域 |
-| R1 | 辅助+箭头 | 灰色文本 + `icons/chevron_right.svg`（向右箭头） |
+| R1 | 辅助+箭头 | 灰色文本（**可省略**）+ `icons/chevron_right.svg`（向右箭头） |
 | R2 | 辅助+头像+箭头 | 文本 + `icons/Avatar_32.svg`（32×32 头像）+ `icons/chevron_right.svg`（箭头） |
 | R3 | 辅助+图片+箭头 | 文本 + `icons/Thumbnail_32.svg`（32×32 缩略图，圆角4px）+ `icons/chevron_right.svg`（箭头） |
 | R4 | 按钮 | 次级按钮 (Button) |
@@ -49,7 +50,14 @@
 | R6 | Icon | 基础操作图标 |
 | R7 | 金额 | 粗体数字 (DIN) |
 | R8 | 步数 | 数字 + 步数图标 |
-| R9 | 聊天 | 时间 + 状态图标 |
+| R9 | 聊天 | 时间 + 状态图标（`icons/remind_mute.svg`，可替换为其他业务图标，也可不配置） |
+
+### 2.4 多选状态 (S)
+
+| 标识 | 名称 | 视觉特征 |
+| :--- | :--- | :--- |
+| S0 | 无多选（默认） | 不显示选择控件，行为与原有变体完全一致 |
+| S1 | 多选态 | 左侧前置 24px 圆形选择控件（`padding-right: 12px`）；**未选中**：`1.5px` 灰色边框圆（`rgba(60,60,67,0.25)`）；**已选中**：蓝底（`#0099FF`）白色对勾；点击控件切换两态，不另列两个静态变体 |
 
 ---
 
@@ -64,17 +72,25 @@
 3. **强绑定逻辑**：
    - **R2 (头像+箭头)**：仅限 L1 (Icon) 搭配 C1。
    - **R3 (图片+箭头)**：仅限 C1。
+   - **R2/R3**：仅限 C1（单行），不可与 C2（双行）或 C3（三行）组合。
+   - **R1**：允许与 C1/C2/C3 搭配。
    - **L2 (File Icon)**：右侧仅限匹配 R6。
    - **R8 (步数) / R9 (聊天)**：仅限 C2。
    - **R7 (金额) / R8 (步数)**：强绑定 L4 (Medium Avatar)。
    - **R9 (聊天)**：强绑定 L5 (Large Avatar)。
+4. **多选态约束（S1）**：
+   - 左侧 L0-L7 均支持多选态。
+   - 右侧仅限 **R0、R1、R2、R3、R6、R7**（不支持 R4 按钮、R5 Action、R8 步数、R9 聊天）。
+   - 多选控件点击后在「未选中」与「已选中」之间切换，无需单独列举两个静态变体。
 
 ---
 
 ## 4. 变体矩阵逻辑 (Variants Matrix)
 
 - **理论组合总数**: 8 (L) × 3 (C) × 10 (R) = **240 种**。
-- **约束过滤后有效变体数**: 应用第 3 节属性约束后，实际有效组合为 **67 种变体**。
+- **约束过滤后默认态有效变体数**: **67 种**（S0）。
+- **多选态新增变体数**: 在默认态 67 种中，筛出右侧 R ∈ {R0,R1,R2,R3,R6,R7} 的组合，共 **43 种**（多选态）。
+- **总有效变体数**: **110 种**（67 + 43）。
 - **渲染原则**: HTML 层仅渲染约束过滤后的有效变体，确保三层（HTML / JSON / MD）一致。
 
 ---
@@ -92,7 +108,11 @@
 - **间距**: 
   - 左侧区域右间距: 12px（所有 L 类型统一）
   - 右侧区域左间距: 12px
-- **描述行结构**: 描述行可含 `icons/empty_icon.svg`（16×16px 占位图标，实际任务中替换）+ 描述文本 · 描述文本 + textlink + `icons/chevron_right.svg`（16×16px 链接箭头）的组合
+- **描述行结构（C2/C3）**：默认仅展示描述文本（含可选 textlink），行首 empty.icon 与行尾右箭头**默认不展示**；如需添加，按以下规则可选配：
+  - 行首图标：`icons/empty_icon.svg`（16×16px，`flex-shrink:0`）— 可选添加
+  - 描述文本：必填，与 textlink 合并为 `.desc-text`（`flex-shrink:1`，超出截断）
+  - textlink：可选，嵌套在 `.desc-text` 内，仅以链接色（`var(--text_link)`）区分，与描述文本紧挨 — 可省略
+  - 行尾右箭头：`icons/chevron_right.svg`（16×16px，`flex-shrink:0`）— 可选添加
 
 ### 5.1 左侧区域尺寸类
 
@@ -110,7 +130,7 @@
 | R | 结构 | 样式细节 |
 |---|------|---------|
 | R0/Empty | 无 | 不渲染右侧区域 |
-| R1 辅助+箭头 | 灰色文字 + 箭头 SVG | 文字 17px `rgba(60,60,67,0.76)`，margin-right: 4px |
+| R1 辅助+箭头 | 灰色文字（可省略）+ 箭头 SVG | 文字 17px `rgba(60,60,67,0.76)`，margin-right: 4px；辅助文字可选配，省略时仅显示箭头 |
 | R2 辅助+头像+箭头 | 文字 + 32px 头像 + 箭头 | 头像 margin-right: 8px |
 | R3 辅助+图片+箭头 | 文字 + 32px 图片(圆角4px) + 箭头 | 图片 margin-right: 8px |
 | R4 按钮 | 次级按钮 | padding: 6px 16px, border-radius: 18px, font-size: 14px, font-weight: 500, 背景 `rgba(116,116,128,0.08)` |
@@ -118,7 +138,7 @@
 | R6 Icon | 操作图标 | — |
 | R7 金额 | 粗体数字 | font-family: "DIN Alternate", font-weight: 700, font-size: 20px |
 | R8 步数 | 数字 + 步数图标 | 数字 20px DIN + 图标列（排名 12px + 16px 图标），margin-left: 4px |
-| R9 聊天 | 时间 + 状态图标 | 时间 12px `rgba(60,60,67,0.56)`, 垂直排列 flex-direction: column, align-items: flex-end |
+| R9 聊天 | 时间 + 状态图标（可选） | 时间 12px `rgba(60,60,67,0.56)`, 垂直排列 flex-direction: column, align-items: flex-end；状态图标默认使用 `icons/remind_mute.svg`，可替换为其他业务图标，颜色 token `--color-icon-secondary`，也可不配置 |
 
 ---
 
@@ -133,7 +153,7 @@
 ### 6.3 页面背景色
 通栏式列表的行背景为白色（`#FFFFFF`），与白色页面背景融为一体。因此使用通栏式列表时，页面背景色应使用**默认白色** `#FFFFFF`（Token `bg_bottom_light`）。
 
-> **注意**：如果同一页面还包含卡片式列表（Grouped List），则页面背景色以 `#F0F0F2`（`bg_bottom_standard`）为准。
+> **注意**：如果同一页面还包含卡片式列表（Grouped List），则页面背景色以 `#F0F0F2`（`bg_middle_standard`）为准。
 
 ---
 
@@ -147,11 +167,49 @@
     align-items: center;
     padding: 0 16px;
     width: 428px;
-    background: var(--color-bg-item);
+    background: var(--bg_bottom_light);
     position: relative;
 }
 .list-row.c1 { height: 52px; }
 .list-row.c2, .list-row.c3 { height: 72px; }
+```
+
+### 7.1.1 多选控件
+
+多选控件使用 `icons/` 中的 Checkbox SVG 资源，与其他勾选场景保持一致：
+
+| 状态 | 图标 | 尺寸 |
+|---|---|---|
+| 未选中 | `icons/Checkbox.svg` | 24×24px |
+| 已选中 | `icons/Checkbox_filled.svg` | 24×24px |
+
+```css
+/* 多选控件容器（前置于左侧区域之前） */
+.list-selection {
+    flex-shrink: 0;
+    margin-right: 12px;
+    cursor: pointer;
+}
+.list-selection img {
+    width: 24px;
+    height: 24px;
+    display: block;
+}
+```
+
+**交互实现**：点击控件通过替换 `img.src` 切换状态：
+```javascript
+document.addEventListener('click', function(e) {
+    const selImg = e.target.closest('.list-selection img');
+    if (selImg) {
+        e.stopPropagation();
+        if (selImg.src.includes('Checkbox_filled')) {
+            selImg.src = selImg.src.replace('Checkbox_filled', 'Checkbox');
+        } else {
+            selImg.src = selImg.src.replace('Checkbox.svg', 'Checkbox_filled.svg');
+        }
+    }
+});
 ```
 
 ### 7.2 左侧区域
@@ -175,6 +233,7 @@
 ```css
 .list-row .content-area {
     flex: 1;
+    min-width: 0;           /* 允许 flex 子项被压缩到小于内容自然宽度 */
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -189,10 +248,27 @@
 }
 .list-row .desc {
     font-size: 14px;
-    color: var(--color-text-secondary);
+    color: var(--text_primary_light);
     line-height: 20px;
+    height: 20px;
     display: flex;
-    align-items: center;
+    align-items: center;    /* 图标与文字垂直居中 */
+    overflow: hidden;
+}
+/* 描述行文字节点（含 textlink）：可被压缩，超出截断 */
+.list-row .desc-text {
+    flex-shrink: 1;
+    min-width: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    /* textlink 嵌套在内：<span style="color:var(--text_link)">textlink</span> */
+}
+/* 图标：不压缩，始终完整显示 */
+.list-row .desc img {
+    width: 16px;
+    height: 16px;
+    flex-shrink: 0;
 }
 ```
 
@@ -205,8 +281,39 @@
     align-items: center;
     flex-shrink: 0;
 }
+/* 辅助文字：限制最大宽度，防止挤压内容区 */
+.list-row .helper-text {
+    max-width: 120px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+```
+
+### 5.3 文本截断规则
+
+**通栏式列表采用三段式 Flex 布局**：`[左区 flex-shrink:0] | [内容区 flex:1] | [右区 flex-shrink:0]`
+
+Flex 算法分配顺序：
+1. 先固定左区（图标/头像）和右区（辅助信息+图标）的宽度
+2. 剩余空间全部分配给内容区（`flex:1`）
+3. `min-width:0` 使内容区可被压缩到任意宽度，`overflow:hidden` 才能真正生效
+
+截断规则：
+1. **内容区**：`flex:1; min-width:0`，宽度由 flex 算法自动分配，无需硬编码
+2. **标题**：单行，超出内容区右边界省略（`…`）
+3. **描述行**：`<img>` 设 `flex-shrink:0` 不压缩；描述文本与 textlink 合并为单一 `.desc-text` 节点（`flex-shrink:1; min-width:0`），超长时整体截断，textlink 嵌套其中仅以链接色区分，两者紧挨无额外间距
+4. **右区辅助文字**：`max-width:120px` 防止辅助文字过长挤压内容区，超出省略
+
+```css
+.list-row .right-area {
+    margin-left: 12px;
+    display: flex;
+    align-items: center;
+    flex-shrink: 0;
+}
 .list-row .btn-secondary {
-    background: var(--color-btn-bg);
+    background: var(--fill_standard_secondary);
     padding: 6px 16px;
     border-radius: 18px;
     font-size: 14px;
@@ -220,7 +327,7 @@
 .list-row .switch {
     width: 44px;
     height: 26px;
-    background: var(--color-brand-standard);
+    background: var(--brand_standard);
     border-radius: 13px;
     position: relative;
     transition: background 200ms ease-out;
@@ -232,12 +339,12 @@
     top: 2px;
     width: 22px;
     height: 22px;
-    background: var(--color-bg-item);
+    background: var(--bg_bottom_light);
     border-radius: 50%;
     transition: right 200ms ease-out, left 200ms ease-out;
 }
 .list-row .text-link {
-    color: var(--color-text-link);
+    color: var(--text_link);
     cursor: pointer;
 }
 ```
@@ -258,7 +365,7 @@
 - 列表行之间的分割线由外部列表容器控制
 - 分割线宽度: 距左 16px 到右侧边缘
 - 分割线高度: 0.5px
-- 颜色: `rgba(0,0,0,0.08)`
+- 颜色: `rgba(0,0,0,0.05)`（Token `--color-separator`）
 
 ---
 
@@ -275,4 +382,4 @@
 
 ### 9.3 长列表性能
 - 超长列表（>100 行）建议业务层实现虚拟滚动（仅渲染可视区域内的行）
-- 列表行高度固定（单行 56px / 双行 72px / 三行 88px），适合虚拟滚动计算
+- 列表行高度固定（单行 52px / 双行&三行 72px），适合虚拟滚动计算

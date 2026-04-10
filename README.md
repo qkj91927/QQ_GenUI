@@ -1,4 +1,4 @@
-# 移动端设计系统资源包 v1.3
+# QUI Basic 1.0
 
 > **⚠️ AI 模型必读**：本文件是资源包的入口指南，定义了文件读取流程和生成前的强制检查清单。各组件的**硬性约束规则**定义在 `md/<COMPONENT>_SPEC.md` 中，必须在使用对应组件前读取。
 
@@ -11,26 +11,41 @@
 ### 必读（~10K tokens）
 1. **`README.md`**（本文件）— 全局约束、检查清单、组件索引
 2. **`json/index.json`** — 组件索引、组合规则、背景色约束
+3. **`md/DIVIDER_SPACING_COMPONENT_SPEC.md`** — ⚠️ **强制必读**：页面中组件之间必须添加间距或分割线，不读此文档将无法正确处理组件间的间距与分隔关系
 
 ### 按需读取（每组件 ~6K tokens）
 3. **`md/<COMPONENT>_SPEC.md`** — 使用哪个组件就读哪个，**约束规则在这里**
 4. **`json/components/<component>.json`** — 该组件的结构化数据（精确数值）
+5. **`md/HALF_SCREEN_OVERLAY_TEMPLATES.md`** — 半屏浮层场景模版库（任务涉及半屏浮层时必读）
+
+### 模版匹配机制（半屏浮层场景）
+
+任务涉及半屏浮层时，**在读取组件规范之前，优先查阅 `HALF_SCREEN_OVERLAY_TEMPLATES.md`**，按核心特征判定最匹配的模版：
+
+| 模版 | 核心特征 | 典型场景 |
+|------|---------|---------|
+| T-01 | 大面积图片 + 简短文字 + 操作按钮 | 功能亮点引导、onboarding |
+| T-02 | 纯文字/图文混排长内容 + 无操作按钮 | 帮助说明、变更公告 |
+| T-03 | 用户确认/同意 + 勾选项/权限列表 + 双按钮 | 权限申请、协议确认 |
+| T-04 | 卡片式列表为主体 + 跳转/开关 + 二级导航栏 | 偏好设置、筛选配置 |
+| T-05 | 大状态图标（✓/✗/ℹ） + 居中标题说明 | 操作成功/失败/警告 |
+| T-06 | 文本输入 + 系统键盘 + 小面板 | 表单填写、搜索弹窗 |
 
 ### 可选（上下文充裕时）
-5. **`css/QQ_color_tokens.css`**（11.5K tokens）— 完整颜色 Token 定义，按需查阅
+5. **`css/QQ_color_tokens.css`**（39 QBasicTokens）— 完整颜色 Token 定义，按需查阅
 6. **`css/tokens.css`**（2.2K tokens）— 非颜色 Token，信息已在各 MD 中内联覆盖
 
 ---
 
 ## 一、设备与系统框架
 
-### 1.1 设备基准，生成界面的默认尺寸
+### 1.1 设备基准（生成界面的默认尺寸）
 
 | 属性 | 值 |
 |------|------|
 | 设备平台 | iOS（iPhone 14 Pro Max 基准） |
 | 屏幕宽度 | **428px** |
-| 屏幕高度 | 926px （不能出现整个界面级的滚动条）| 
+| 屏幕高度 | 926px （不能出现整个界面级的滚动条） |
 | 默认字体 | PingFang SC |
 | 网格基准 | 4px（所有间距值必须为 4px 的整数倍） |
 
@@ -73,7 +88,7 @@ iOS 底部小横条，**系统级元素，全局唯一**。
 | 安全区高度 | 34px |
 | 指示条尺寸 | 144 × 5px |
 | 指示条圆角 | 2.5px |
-| 指示条颜色 | `rgba(0, 0, 0, 0.90)`（`--color-text-primary`） |
+| 指示条颜色 | `rgba(0, 0, 0, 0.90)`（`--text_primary`） |
 | 指示条位置 | 水平居中，距底部 8px |
 | 背景色 | 透明（叠加在页面内容之上） |
 
@@ -97,7 +112,7 @@ iOS 底部小横条，**系统级元素，全局唯一**。
 .home-bar-indicator {
     width: 144px;
     height: 5px;
-    background: var(--color-text-primary);
+    background: var(--text_primary);
     border-radius: 2.5px;
 }
 ```
@@ -107,13 +122,13 @@ iOS 底部小横条，**系统级元素，全局唯一**。
 ## 二、组件文件索引
 
 ```
-design-system-v1.3/
+QUI-Basic-1.0/
 ├── README.md                    ← 入口指南（读取流程 + 检查清单 + 全局约束）
 ├── component-matrix.html        ← 组件矩阵（所有子组件变体的可视化预览总览）
 ├── component-builder.html       ← 组件搭建器（拖拽式页面构建，所见即所得）
 ├── css/
 │   ├── tokens.css               ← 全局设计 Token（设备 / 字体 / 间距 / 圆角 / 阴影 / 动效）
-│   └── QQ_color_tokens.css      ← QQ 颜色 Token（qq-light / qq-dark 双主题）
+│   └── QQ_color_tokens.css      ← QUI Basic 颜色 Token（39个 QBasicToken，qq-light / qq-dark 双主题）
 ├── json/
 │   ├── index.json               ← 全局索引 + Token 定义 + 组合规则 + 背景色约束
 │   └── components/              ← 各组件的结构化数据（20 个 JSON 文件）
@@ -140,11 +155,14 @@ design-system-v1.3/
 | `search.svg` | 24px | 搜索图标 |
 | `more_upright.svg` | 24px | 更多操作 |
 | `network.svg` / `wifi.svg` / `battery.svg` | - | 系统状态栏图标（信号/WiFi/电池） |
-| `heart.svg` / `like.svg` / `star.svg` / `doc.svg` / `secondary.svg` / `remind_mute.svg` | 24px | 功能性图标（收藏/点赞/文档/辅助等） |
+| `heart.svg` / `doc.svg` / `secondary.svg` / `remind_mute.svg` | 24px | 功能性图标（收藏/文档/辅助等） |
+| `done.svg` | 24px | 完成/确认图标 |
+| `loading.svg` | 24px | 加载动画（Button/Toast 加载态 spinner） |
+| `Thumbnail_88.svg` | 88px | 大尺寸缩略图占位图 |
 
 ---
 
-## 三、母组件列表（20个）
+## 三、母组件列表（21个）
 
 按 **导航 → 数据 → 操作 → 模态** 四大类排序：
 
@@ -152,8 +170,8 @@ design-system-v1.3/
 |------|----|------|--------|----------|-----------|
 | 导航 | `navbar` | 导航栏 NavBar | 97 | `NAVBAR_COMPONENT_SPEC.md` | `navbar.json` |
 | 导航 | `hs_navbar` | 半屏导航栏 HalfScreen NavBar | 7 | `HS_NAVBAR_COMPONENT_SPEC.md` | `hs-navbar.json` |
-| 数据 | `list` | 通栏式列表 Plain List | 67 | `LIST_COMPONENT_SPEC.md` | `plain-list.json` |
-| 数据 | `form` | 卡片式列表 Grouped List | 33 | `GROUPED_LIST_COMPONENT_SPEC.md` | `grouped-list.json` |
+| 数据 | `list` | 通栏式列表 Plain List | 110 | `LIST_COMPONENT_SPEC.md` | `plain-list.json` |
+| 数据 | `form` | 卡片式列表 Grouped List | 52 | `GROUPED_LIST_COMPONENT_SPEC.md` | `grouped-list.json` |
 | 数据 | `card` | 卡片 Card | 10 | `CARD_COMPONENT_SPEC.md` | `card.json` |
 | 数据 | `message` | 消息 Message | 4×2 | `MESSAGE_COMPONENT_SPEC.md` | `message.json` |
 | 数据 | `text_block` | 文本块 TextBlock | 13 | `TEXT_BLOCK_COMPONENT_SPEC.md` | `text-block.json` |
@@ -162,24 +180,26 @@ design-system-v1.3/
 | 数据 | `grid` | 宫格 Grid | 17 | `GRID_COMPONENT_SPEC.md` | `grid.json` |
 | 数据 | `divider_spacing` | 分隔与间距 Divider & Spacing | 7 | `DIVIDER_SPACING_COMPONENT_SPEC.md` | `divider-spacing.json` |
 | 操作 | `button` | 按钮 Button | 12 | `BUTTON_COMPONENT_SPEC.md` | `button.json` |
-| 操作 | `action` | 操作组合 ActionCombo | 13 | `ACTION_COMPONENT_SPEC.md` | `action-combo.json` |
+| 操作 | `action` | 操作组合 ActionCombo | 15 | `ACTION_COMPONENT_SPEC.md` | `action-combo.json` |
 | 操作 | `menu` | 菜单 Menu | 15 | `MENU_COMPONENT_SPEC.md` | `menu.json` |
 | 操作 | `search` | 搜索框 Search | 6 | `SEARCH_COMPONENT_SPEC.md` | `search.json` |
-| 操作 | `textfield` | 输入框 Textfield | 20 | `TEXTFIELD_COMPONENT_SPEC.md` | `textfield.json` |
+| 操作 | `textfield` | 输入框 Textfield | 50 | `TEXTFIELD_COMPONENT_SPEC.md` | `textfield.json` |
 | 操作 | `aio_input` | AIO 输入框 AIOInput | 3 | `AIO_INPUT_COMPONENT_SPEC.md` | `ai-input.json` |
+| 操作 | `toast` | 轻提示 Toast | 5 | `TOAST_COMPONENT_SPEC.md` | `toast.json` |
 | 模态 | `action_sheet` | 操作面板 ActionSheet | 22 | `ACTION_SHEET_COMPONENT_SPEC.md` | `action-sheet.json` |
 | 模态 | `dialog` | 对话框 Dialog | 15 | `DIALOG_COMPONENT_SPEC.md` | `dialog.json` |
 | 模态 | `half_screen_overlay` | 半屏浮层 HalfScreenOverlay | 2 | `HALF_SCREEN_OVERLAY_COMPONENT_SPEC.md` | `half-screen-overlay.json` |
 
 > **变体数说明**：
-> - **NavBar**（97）和 **Plain List**（67）：采用维度矩阵 × 约束排除方式定义变体，需查阅 MD 文档中的约束规则计算有效组合
-> - **Grouped List**（33）= 27 个基础变体（L×R 矩阵）+ 6 个组合变体（Combo1-6）
+> - **Plain List**（110）= 67 种默认态 + 43 种多选态；R2/R3 仅限 C1（单行）；R1 允许与 C1/C2/C3 搭配；多选态同步此约束
+> - **Grouped List**（52）= 46 个基础变体（L×R 矩阵，含 L8-L11 tick 勾选类）+ 6 个组合变体（Combo1-6）
 > - **Card**（10）= C1-C10，其中 C10 为 Markdown 内容卡片（高度自适应）
 > - **Message**（4×2）= 4 类内容（A通用文本/B图文长描述/C图文短标题/D图标消息）× 2 态（主态/客态）= 8 种子组件，分段选择器默认显示客态
-> - **Textfield**（20）= 4 种类型（单行无标题/单行有标题/电话号码/多行文本）× 5 种状态（默认/激活/输入/完成/错误）
+> - **Textfield**（50）= A-D 4 种类型（单行无标题/单行有标题/电话号码/多行文本）× 5 种状态 = 20 + E 复合输入框 6 种子类型（卡片·基础/卡片·图片/卡片·完成/卡片·图片+完成/通栏·基础/通栏·图片）× 5 种状态 = 30
 > - **AIOInput**（3）= I1默认态 / I2生成中态 / I3输入态，通过分段选择器切换
 > - **ActionSheet**（42）= 操作数量(0-10) × 提示(有/无) × 警示(有/无)，常规+警示≥1
 > - **TextBlock**（13）= H1-H7 居左 + C1-C6 居中
+> - **Toast**（5）= T1加载中 / T2成功 / T3失败 / T4中性文字 / T5带操作
 
 ---
 
@@ -189,9 +209,9 @@ design-system-v1.3/
 
 | 维度 | JSON（`json/components/`） | MD（`md/`） |
 |------|---------------------------|-------------|
-| **定位** | 精确数值源（机器可读） | 设计意图 + 约束规则
-| **包含** | 尺寸、间距、颜色Token、变体列表、状态定义、交互参数 | 组件概述、ASCII结构图、约束规则、交互行为、布局规则、使用场景 |
-| **权威性** | 所有精确数值（px/颜色/字重等）以 JSON 为准 | 变体数量、约束规则、组合合法性以 MD 为准 |
+| **定位** | 精确数值源（机器可读） | 设计意图 + 约束规则（人/AI 可读） |
+| **包含** | 尺寸、间距、变体列表、状态定义、交互参数（**不含颜色**） | 组件概述、ASCII结构图、约束规则、交互行为、布局规则、使用场景 |
+| **权威性** | 所有精确数值（px/字重等）以 JSON 为准；**颜色以 `css/QQ_color_tokens.css` 为准** | 变体数量、约束规则、组合合法性以 MD 为准 |
 | **互引** | 每个 JSON 含 `"spec"` 字段指向对应 MD | MD 尺寸表精简为属性+值两列，颜色/字体引用 JSON |
 
 ### 快速引用规则
@@ -200,7 +220,7 @@ design-system-v1.3/
 2. **查变体数量**：以 MD 文档中的"变体矩阵"为准，JSON `totalVariants` 为辅助校验
 3. **查约束规则**：**仅在 MD 中定义**（JSON 的 `constraints` 为摘要）
 4. **查精确数值**：JSON 的 `layout` / `style` / `states` / `dimensions` 字段
-5. **查颜色 Token**：`css/QQ_color_tokens.css` 为唯一权威源；JSON 中的颜色值为快照引用
+5. **查颜色 Token**：`css/QQ_color_tokens.css` 为**唯一权威来源**，JSON 不再声明颜色
 6. **跳转关联文件**：JSON 的 `"spec"` 字段 → 对应 MD 文档路径
 
 ---
@@ -242,12 +262,12 @@ design-system-v1.3/
 
 | 背景色 | Token | 色值 | 触发条件 |
 |--------|-------|------|----------|
-| 浅灰色 | `bg_bottom_standard` | `#F0F0F2` | 页面包含**卡片式列表（Grouped List）**或**卡片（Card）**时必须使用 |
-| AIO背景色 | `qq-bg-aio-01` | `#F0F0F2` | 页面包含**消息（Message）**组件时必须使用 |
-| 白色 | `bg_bottom_light` | `#FFFFFF` | 默认背景色，仅当页面不包含卡片式列表、卡片和消息组件时使用 |
-| 品牌蓝 | `bg_bottom_brand` | `#EFF4FF` | 品牌定制页面，按业务需要使用 |
+| 浅灰色 | `--bg_middle_standard` | `#F0F0F2` | 页面包含**卡片式列表（Grouped List）**或**卡片（Card）**时必须使用 |
+| AIO背景色 | `--bg_select_aio` | `#F0F0F2` | 页面包含**消息（Message）**组件时必须使用 |
+| 白色 | `--bg_bottom_light` | `#FFFFFF` | 默认背景色，仅当页面不包含卡片式列表、卡片和消息组件时使用 |
+| 品牌蓝 | `--bg_bottom_brand` | `#EFF4FF` | 品牌定制页面，按业务需要使用 |
 
-> **优先级规则**：当页面同时包含需要灰色背景和白色背景的组件时，以灰色背景（`#F0F0F2`）为准。消息组件的 AIO 背景色（`qq-bg-aio-01`）与卡片/卡片式列表的灰色背景（`bg_bottom_standard`）色值相同，可共存。
+> **优先级规则**：当页面同时包含需要灰色背景和白色背景的组件时，以灰色背景（`#F0F0F2`）为准。消息组件的 AIO 背景色（`--bg_select_aio`）与卡片/卡片式列表的灰色背景（`--bg_middle_standard`）色值相同，可共存。
 
 ---
 

@@ -2,11 +2,11 @@
 
 > **组件 ID**：`textfield`  
 > **大类**：操作  
-> **变体数量**：20 种（4类型 × 5状态）
+> **变体数量**：50 种（A-D 4类型 × 5状态 = 20 + E复合输入框 6种 × 5状态 = 30）
 
 ## 1. 组件概述
 
-输入框（Textfield）是表单交互中最基础的信息录入组件，用于接收用户的文字、数字等文本内容输入。组件支持 4 种类型 × 5 种交互状态，共计 20 种子组件变体。
+输入框（Textfield）是表单交互中最基础的信息录入组件，用于接收用户的文字、数字等文本内容输入。组件支持 A-D 共 4 种类型 × 5 种交互状态 = 20 种子组件变体，以及 E 复合输入框 6 种 × 5 种状态 = 30 种子组件变体，总计 50 种。
 
 ---
 
@@ -18,6 +18,7 @@
 | 单行有标题 | B | 左侧带固定宽度标题标签 | 表单填写（姓名、地址等） |
 | 电话号码 | C | 左侧带国家区号前缀 "中国+86" | 手机号/电话号码输入 |
 | 多行文本 | D | 多行文本域，带圆角容器 | 长文本输入（评论、描述等） |
+| 复合输入框 | E | 大面积文本区 + 可选图片附件 + 操作按钮栏 + 可选完成指示器 | 高级编辑场景（发帖、评论配图等） |
 
 ---
 
@@ -33,7 +34,9 @@
 
 ---
 
-## 4. 变体矩阵（4 × 5 = 20）
+## 4. 变体矩阵
+
+### 4.1 A-D 基础输入框（4 × 5 = 20）
 
 | 类型 \ 状态 | 默认态 | 激活态 | 输入态 | 完成态 | 错误态 |
 |-------------|--------|--------|--------|--------|--------|
@@ -41,6 +44,44 @@
 | B 单行有标题 | B1 | B2 | B3 | B4 | B5 |
 | C 电话号码   | C1 | C2 | C3 | C4 | C5 |
 | D 多行文本   | D1 | D2 | D3 | D4 | D5 |
+
+### 4.2 E 复合输入框 Advanced Textfield（6 × 5 = 30）
+
+| 子类型 \ 状态 | 默认态 | 激活态 | 输入态 | 完成态 | 错误态 |
+|-------------|--------|--------|--------|--------|--------|
+| E1 卡片·基础 | E1-1 | E1-2 | E1-3 | E1-4 | E1-5 |
+| E2 卡片·图片 | E2-1 | E2-2 | E2-3 | E2-4 | E2-5 |
+| E3 卡片·完成 | E3-1 | E3-2 | E3-3 | E3-4 | E3-5 |
+| E4 卡片·图片+完成 | E4-1 | E4-2 | E4-3 | E4-4 | E4-5 |
+| E5 通栏·基础 | E5-1 | E5-2 | E5-3 | E5-4 | E5-5 |
+| E6 通栏·图片 | E6-1 | E6-2 | E6-3 | E6-4 | E6-5 |
+
+**E 类三维属性**：
+
+| 维度 | 选项 | 说明 |
+|------|------|------|
+| 容器类型 | 卡片式 / 通栏式 | 卡片式：白色圆角容器（24px），内缩 16px；通栏式：透明背景，跟随页面背景色 |
+| 添加图片 | 支持 / 不支持 | 支持时底部操作栏上方显示图片行，88×88px 占位图，支持横向滚动，**不显示滚动条** |
+| 附带完成操作 | 附带 / 不附带 | 附带时底部操作栏右侧显示圆形完成指示器（40px 圆环 + 对勾图标） |
+
+**E 类五种状态**：
+
+| 状态 | 说明 | 视觉特征 |
+|------|------|----------|
+| 默认态 | 未获得焦点 | 无光标 + placeholder 灰色（`rgba(60,60,67,0.26)`）；完成指示器（如有）`opacity: 0.3` |
+| 激活态 | 获得焦点但未输入 | 蓝色光标在左 + placeholder 灰色；完成指示器（如有）`opacity: 0.3` |
+| 输入态 | 正在输入文字 | 黑色文字 + 光标在末尾；字数统计更新；完成指示器（如有）`opacity: 1` |
+| 完成态 | 输入完成，失去焦点 | 无光标 + 黑色文字；完成指示器（如有）`opacity: 1` |
+| 错误态 | 字数超限 | 黑色文字 + 光标 + 字数统计红色（`var(--feedback_error)`）；完成指示器（如有）`opacity: 1` |
+
+**完成指示器**：使用 `icons/done.svg`（40×40px，含蓝色圆形+白色对勾）；默认态/激活态设 `opacity: 0.3` 表示 disabled，输入态/完成态/错误态设 `opacity: 1`。
+
+**E 类背景色约束**：
+
+| 容器类型 | 组件底色 | 页面背景色约束 |
+|----------|---------|---------------|
+| 通栏式 | transparent（透明） | 跟随页面背景色 |
+| 卡片式 | #FFFFFF（白色） | 需搭配 `bg_middle_standard`（#F0F0F2），与卡片式列表背景色约束一致 |
 
 ---
 
@@ -84,6 +125,93 @@
 | 圆角 | 12px（左上/左下、右上/右下） |
 | 字数统计位置 | 右下角 |
 | 底部附加说明行高度 | 24px |
+
+### 5.5 复合输入框（E 类型）
+
+E 类由 Figma 三个属性变量组合定义，对应 E1-E6 六种子类型：
+
+| Figma 属性 | 变量值 | 说明 |
+|-----------|-------|------|
+| `Layout` | `card` / `full` | 卡片式（圆角白色容器）或通栏式（透明满宽） |
+| `HasImage` | `true` / `false` | 是否包含图片附件行 |
+| `HasFinish` | `true` / `false` | 是否包含完成指示器（仅 card 支持） |
+
+---
+
+#### 属性一：Layout（容器类型）
+
+| | card（卡片式） | full（通栏式） |
+|--|--|--|
+| 宽度 | 396px（左右各 16px margin） | 428px 满宽 |
+| 背景 | `#ffffff` | `transparent`（跟随页面背景） |
+| 圆角 | `24px` | 无 |
+| Padding | `24px 16px 16px` | `24px 16px 16px` |
+| 底部操作栏 | 有 | **无** |
+| 页面背景约束 | 需搭配 `#F0F0F2`（`--color-bg-bottom-standard`） | 跟随页面背景色 |
+
+---
+
+#### 属性二：HasImage（是否含图片行）
+
+**HasImage = false（无图片行）**
+- 底部操作栏按钮数量：**3 个**
+
+**HasImage = true（含图片行）**
+- 文字区下方显示图片行，`margin-top: 16px`
+- 图片行布局：`overflow-x: auto`（横向滚动），**不显示滚动条**（`scrollbar-width: none` / `::-webkit-scrollbar { display: none }`）
+- **添加按钮**：始终在最左侧，88×88px，`background: rgba(13,16,49,0.04)`，`border-radius: 16px`，居中 `+` 图标 24px
+- **图片占位**：`icons/Thumbnail_88.svg`，88×88px，`border-radius: 12px`，间距 12px
+- **不影响底部操作栏按钮数量**
+
+---
+
+#### 属性三：HasFinish（是否含完成指示器）
+
+**HasFinish = false**
+- 操作栏右侧无完成指示器
+
+**HasFinish = true（仅 card 类型支持）**
+- 操作栏最右侧显示完成指示器，占用一个位置，操作栏按钮数量：**2 个**
+- 状态与透明度：
+
+| 状态 | opacity | 含义 |
+|------|---------|------|
+| 默认态 | `0.3` | disabled（灰显） |
+| 激活态 | `0.3` | disabled（灰显） |
+| 输入态 | `1` | 可点击 |
+| 完成态 | `1` | 可点击 |
+| 错误态 | `1` | 可点击 |
+
+---
+
+#### 公共规格（所有 E 类共用）
+
+**文字区域**
+
+| 条件 | 字号 | 行高 |
+|------|------|------|
+| `HasFinish = true`（E3/E4） | 20px | 28px |
+| `HasFinish = false`（E1/E2/E5/E6） | 17px | 24px |
+
+- 颜色：`--color-text-primary`（`rgba(0,0,0,0.90)`）
+- 光标：`inline-block`，1px 宽，`height: 1.2em`，颜色 `--color-brand-standard`（`#0099FF`），`vertical-align: text-bottom`
+- 支持 `word-break: break-all` 换行
+
+**底部操作栏（card 类型）**
+
+操作按钮数量规则（`HasFinish = true` 时完成指示器占位，按钮减为 2 个；`HasImage` 不影响按钮数量）：
+
+| 子类型 | HasFinish | 操作按钮数 |
+|--------|-----------|-----------|
+| E1 卡片·基础 | false | **3 个** |
+| E2 卡片·图片 | false | **3 个** |
+| E3 卡片·完成 | true | **2 个** |
+| E4 卡片·图片+完成 | true | **2 个** |
+
+- 操作按钮：icon 24px + 文字 17px，`padding: 8px 12px`，`background: rgba(13,16,49,0.04)`，`border-radius: 24px`，按钮间距 12px
+- 字数统计：12px，`--color-text-tertiary`（`rgba(60,60,67,0.56)`），超限时变 `--color-feedback-error`（`#F74C30`），位于操作栏右侧
+
+**组件总尺寸**：总宽度 428px，总高度 420px，各元素间距 `margin-top: 16px`
 
 ---
 
@@ -219,7 +347,7 @@
 .textfield-mid {
     width: 364px;
     height: 56px;
-    background: var(--color-bg-item);
+    background: var(--bg_bottom_light);
     position: relative;
 }
 ```
@@ -231,32 +359,32 @@
 .textfield-placeholder {
     font-size: 17px;
     font-weight: 400;
-    color: var(--color-text-quaternary);
+    color: var(--text_tertiary);
 }
 /* 输入文字 */
 .textfield-input-text {
     font-size: 17px;
     font-weight: 400;
-    color: var(--color-text-primary);
+    color: var(--text_primary);
 }
 /* 标题（B类有标题型） */
 .textfield-title {
     font-size: 17px;
     font-weight: 400;
-    color: var(--color-text-primary);
+    color: var(--text_primary);
     width: 90px;
 }
 /* 电话前缀（C类） */
 .textfield-prefix {
     font-size: 17px;
     font-weight: 400;
-    color: var(--color-text-link);
+    color: var(--text_link);
 }
 /* 光标 */
 .textfield-cursor {
     width: 1px;
     height: 18px;
-    background: var(--color-brand-standard);
+    background: var(--brand_standard);
 }
 /* 清除按钮 */
 .textfield-clear {
@@ -278,15 +406,15 @@
 .textfield-helper {
     font-size: 14px;
     font-weight: 400;
-    color: var(--color-text-tertiary);
+    color: var(--text_secondary);
 }
 .textfield-char-count {
     font-size: 14px;
     font-weight: 400;
-    color: var(--color-text-tertiary);
+    color: var(--text_secondary);
 }
 .textfield-char-count.error {
-    color: var(--color-feedback-error);
+    color: var(--feedback_error);
 }
 ```
 
@@ -301,20 +429,20 @@
 .textfield-multiline-left {
     width: 16px;
     height: 197px;
-    background: var(--color-bg-item);
+    background: var(--bg_bottom_light);
     border-top-left-radius: 12px;
     border-bottom-left-radius: 12px;
 }
 .textfield-multiline-mid {
     width: 364px;
     height: 197px;
-    background: var(--color-bg-item);
+    background: var(--bg_bottom_light);
     position: relative;
 }
 .textfield-multiline-right {
     width: 16px;
     height: 197px;
-    background: var(--color-bg-item);
+    background: var(--bg_bottom_light);
     border-top-right-radius: 12px;
     border-bottom-right-radius: 12px;
 }
@@ -332,13 +460,130 @@
     bottom: 16px;
     text-align: right;
     font-size: 12px;
-    color: var(--color-text-tertiary);
+    color: var(--text_secondary);
 }
 ```
 
----
+### 11.6 E 类复合输入框
 
-## 12. 嵌入场景
+```css
+/* 卡片式容器（E1-E4） */
+.atf-card {
+    width: 396px;
+    margin: 0 16px;
+    background: #ffffff;
+    border-radius: 24px;
+    padding: 24px 16px 16px;
+    box-sizing: border-box;
+    font-family: 'PingFang SC', sans-serif;
+}
+/* 通栏式容器（E5-E6） */
+.atf-full {
+    width: 428px;
+    background: transparent;
+    padding: 24px 16px 16px;
+    box-sizing: border-box;
+    font-family: 'PingFang SC', sans-serif;
+}
+/* 文字区域 */
+.atf-text-area {
+    width: 100%;
+    min-height: 60px;
+    word-break: break-all;
+    color: var(--text_primary);
+    line-height: 24px; /* 17px字号 */
+}
+.atf-text-area.has-finish {
+    font-size: 20px;
+    line-height: 28px;
+}
+.atf-text-area:not(.has-finish) {
+    font-size: 17px;
+    line-height: 24px;
+}
+/* 光标 */
+.atf-cursor {
+    display: inline-block;
+    width: 1px;
+    height: 1.2em;
+    background: var(--brand_standard);
+    vertical-align: text-bottom;
+    margin-left: 1px;
+    animation: atf-blink 1s step-end infinite;
+}
+@keyframes atf-blink {
+    50% { opacity: 0; }
+}
+/* 图片行 */
+.atf-image-row {
+    display: flex;
+    gap: 12px;
+    overflow-x: auto;
+    overflow-y: hidden;
+    scrollbar-width: none;
+    -webkit-overflow-scrolling: touch;
+    margin-top: 16px;
+    align-items: center;
+}
+.atf-image-row::-webkit-scrollbar {
+    display: none;
+}
+.atf-add-btn {
+    width: 88px;
+    height: 88px;
+    flex-shrink: 0;
+    background: rgba(13, 16, 49, 0.04);
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.atf-thumbnail {
+    width: 88px;
+    height: 88px;
+    flex-shrink: 0;
+    border-radius: 12px;
+    object-fit: cover;
+}
+/* 操作栏 */
+.atf-action-bar {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-top: 16px;
+}
+.atf-action-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    padding: 8px 12px;
+    background: rgba(13, 16, 49, 0.04);
+    border-radius: 24px;
+    font-size: 17px;
+    color: var(--text_primary);
+    white-space: nowrap;
+}
+/* 字数统计 */
+.atf-char-count {
+    margin-left: auto;
+    font-size: 12px;
+    color: var(--text_secondary);
+    white-space: nowrap;
+}
+.atf-char-count.error {
+    color: var(--feedback_error);
+}
+/* 完成指示器（done.svg，40×40px） */
+.atf-done {
+    width: 40px;
+    height: 40px;
+    flex-shrink: 0;
+    margin-left: auto;
+}
+.atf-done.disabled {
+    opacity: 0.3;
+}
+```
 
 ### 12.1 嵌入 Grouped List（卡片式列表）
 Textfield 常嵌入 Grouped List 行中作为表单输入项：

@@ -35,9 +35,9 @@
       "disabled": { "bg": "rgba(204,204,204,0.30)", "text": "rgba(0,0,0,0.30)", "border": "rgba(60,60,67,0.12) 1px", "opacity": 0.30 }
     },
     "error": {
-      "default": { "bg": "transparent", "text": { "token": "feedback_error", "value": "#F74C30" }, "border": "rgba(60,60,67,0.25) 1px" },
-      "pressed": { "bg": "rgba(204,204,204,0.30)", "text": { "token": "feedback_error", "value": "#F74C30" }, "border": "rgba(60,60,67,0.25) 1px" },
-      "disabled": { "bg": "transparent", "text": "rgba(247,76,48,0.30)", "border": "rgba(60,60,67,0.12) 1px" }
+      "default": { "bg": "transparent", "text": { "token": "feedback_error", "value": "#E0462C" }, "border": "rgba(60,60,67,0.25) 1px" },
+      "pressed": { "bg": "rgba(204,204,204,0.30)", "text": { "token": "feedback_error", "value": "#E0462C" }, "border": "rgba(60,60,67,0.25) 1px" },
+      "disabled": { "bg": "transparent", "text": "rgba(224,70,44,0.30)", "border": "rgba(60,60,67,0.12) 1px" }
     }
   },
 
@@ -47,9 +47,15 @@
   },
 
   "loading": {
-    "spinner": { "size": 19, "strokeWidth": 2.5, "linecap": "round", "animation": "linear rotate 1s/圈" },
-    "primarySpinnerColor": "rgba(255,255,255,0.90)",
-    "secondarySpinnerColor": "rgba(0,0,0,0.40)",
+    "spinner": {
+      "file": "icons/loading.svg",
+      "displaySize": 19,
+      "animation": "btn-spin 1s linear infinite"
+    },
+    "primarySpinnerFilter": "brightness(0) invert(1)",
+    "primarySpinnerOpacity": 0.9,
+    "secondarySpinnerFilter": "brightness(0)",
+    "secondarySpinnerOpacity": 0.4,
     "layout": "spinner 与文案水平排列，间距 4px，整体居中"
   },
 

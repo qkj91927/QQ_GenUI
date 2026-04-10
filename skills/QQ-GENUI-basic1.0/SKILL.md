@@ -187,12 +187,12 @@ description: 当用户生成界面（页面/UI/组件）或局部调整界面（
 通过条件：
 
 - 已成功通过 Knot 检索到 `README.md` 相关内容
-- 已理解 20 个母组件列表、背景色规则、文件读取顺序
+- 已理解 21 个母组件列表、背景色规则、文件读取顺序
 
 ### Gate 2：锁定目标与组件候选
 
 - 明确页面类型、信息层级、关键交互
-- 从 20 个母组件中选择候选
+- 从 21 个母组件中选择候选
 - 标记是否包含 `Grouped List` 或 `Card`
 - 确定需要通过 Knot 检索哪些组件的 SPEC 文档
 
@@ -226,19 +226,22 @@ description: 当用户生成界面（页面/UI/组件）或局部调整界面（
 ### Gate 4：通过 Knot 检索并应用 Token 与主题
 
 - 通过 Knot 检索 `QQ_color_tokens.css` 内容
-  - `query`: "QQ 颜色 Token 定义 color tokens CSS"
-  - `keyword`: "QQ_color_tokens.css;颜色;token"
+  - `query`: "QQ 颜色 Token 定义 color tokens CSS QBasicToken"
+  - `keyword`: "QQ_color_tokens.css;颜色;token;QBasicToken"
 - 通过 Knot 检索 `tokens.css` 内容
   - `query`: "通用 Token 间距 字号 圆角 CSS"
   - `keyword`: "tokens.css;间距;字号;圆角"
 - 在 `<html>` 设置 `data-theme="qq-light"` 或 `data-theme="qq-dark"`
-- 颜色仅使用 `QQ_color_tokens.css` 中定义的值
+- 颜色 Token 共 **39 个 QBasicToken**，命名格式 `--token名`（下划线分隔，如 `--brand_standard`、`--text_primary`）
+- **旧命名已废弃**：`--color-xxx`、`--qq-xxx` 等 151 个旧 token 已在 v1.0.5 中移除，禁止使用
+- 颜色仅使用 `QQ_color_tokens.css` 中定义的 QBasicToken 值
 - 非颜色 Token 使用 `tokens.css` 中定义的值
 - 间距全部为 4px 整数倍
 
 通过条件：
 
 - 不存在自定义颜色值
+- 不存在旧命名 Token（`--color-xxx` / `--qq-xxx`）
 - 不存在非 4px 网格间距
 
 ### Gate 5：背景色强约束

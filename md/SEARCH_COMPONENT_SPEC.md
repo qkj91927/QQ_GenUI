@@ -29,8 +29,8 @@
 ## 3. 视觉规范
 
 ### 3.1 容器
-- **外容器**: 428 × 60px，背景 `var(--bg-item)`（#FFFFFF），水平 padding 16px
-- **输入框**: 高 36px，背景 `var(--fill-standard)`（rgba(13, 16, 49, 0.04)），圆角 12px
+- **外容器**: 428 × 60px，背景 `var(--bg_bottom_light)`（#FFFFFF），水平 padding 16px
+- **输入框**: 高 36px，背景 `var(--fill_standard_primary)`（rgba(13, 16, 49, 0.04)），圆角 12px
 
 ### 3.2 输入框宽度
 
@@ -131,7 +131,7 @@ Search / level=secondary, state=typing, hasBack=true   → B3
 .search-container {
     width: 428px;
     height: 60px;
-    background: var(--bg-item);
+    background: var(--bg_bottom_light);
     display: flex;
     align-items: center;
     padding: 0 16px;
@@ -158,7 +158,7 @@ Search / level=secondary, state=typing, hasBack=true   → B3
 ```css
 .search-box {
     height: 36px;
-    background: var(--fill-standard);
+    background: var(--fill_standard_primary);
     border-radius: 12px;
     overflow: hidden;
     display: flex;
@@ -180,19 +180,19 @@ Search / level=secondary, state=typing, hasBack=true   → B3
 .search-placeholder {
     font-size: 17px;
     font-weight: 400;
-    color: var(--text-tertiary);
+    color: var(--text_secondary);
 }
 /* 输入态文字 */
 .search-input-text {
     font-size: 17px;
     font-weight: 400;
-    color: var(--text-primary);
+    color: var(--text_primary);
 }
 /* 光标 */
 .search-cursor {
     width: 1px;
     height: 18px;
-    background: var(--brand-blue);
+    background: var(--brand_standard);
 }
 /* 清除按钮 */
 .search-clear {
@@ -209,7 +209,7 @@ Search / level=secondary, state=typing, hasBack=true   → B3
     margin-left: auto;
     font-size: 16px;
     font-weight: 400;
-    color: var(--text-link);
+    color: var(--text_link);
     flex-shrink: 0;
     padding-left: 14px;
 }

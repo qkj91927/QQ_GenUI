@@ -5,7 +5,7 @@
   "description": "左右缩进且以圆角容器封装，适合任务驱动型界面，在复杂信息中快速定位功能或操作。",
   "spec": "md/GROUPED_LIST_COMPONENT_SPEC.md",
 
-  "totalVariants": "27 基础变体 + 6 组合变体 = 33",
+  "totalVariants": 52,
 
   "dimensions": {
     "L": [
@@ -15,35 +15,53 @@
       { "id": "L4", "name": "图标+双行标题", "visual": "icons/empty_icon.svg（24px 占位图标）+ 17px 标题 + 14px 辅助说明", "lines": 2, "height": 72 },
       { "id": "L5", "name": "二级+单行标题", "visual": "icons/secondary.svg（二级引导图标）+ 17px 文字（从属层级）", "lines": 1, "height": 56 },
       { "id": "L6", "name": "二级+双行标题", "visual": "icons/secondary.svg（二级引导图标）+ 17px 标题 + 14px 辅助说明", "lines": 2, "height": 72 },
-      { "id": "L7", "name": "头像+双行标题", "visual": "icons/Avatar_40.svg（40px 圆形头像占位）+ 17px 标题 + 14px 辅助说明", "avatarSize": 40, "lines": 2, "height": 72 }
+      { "id": "L7", "name": "头像+双行标题", "visual": "icons/Avatar_40.svg（40px 圆形头像占位）+ 17px 标题 + 14px 辅助说明", "avatarSize": 40, "lines": 2, "height": 72 },
+      { "id": "L8", "name": "已勾选+单行标题", "visual": "icons/tick.svg（24px，var(--color-brand-standard)）+ 17px 标题，间距 12px", "lines": 1, "height": 56, "note": "互斥：同卡片内只能一行为 L8" },
+      { "id": "L9", "name": "未勾选+单行标题", "visual": "无图标 + 17px 标题（左侧缩进与 L8 保持一致）", "lines": 1, "height": 56, "note": "L8/L9 配对使用，互斥" },
+      { "id": "L10", "name": "已勾选+双行标题", "visual": "icons/tick.svg（24px，var(--color-brand-standard)）+ 17px 标题 + 14px 辅助说明，间距 12px", "lines": 2, "height": 72, "note": "互斥：同卡片内只能一行为 L10" },
+      { "id": "L11", "name": "未勾选+双行标题", "visual": "无图标 + 17px 标题 + 14px 辅助说明（与 L10 对应的未选状态）", "lines": 2, "height": 72, "note": "L10/L11 配对使用，互斥" }
     ],
     "R": [
       { "id": "R0", "name": "为空 / None" },
-      { "id": "R1", "name": "跳转 / Detail", "visual": "可选 17px 灰色辅助信息 + icons/chevron_right.svg（16px 右箭头）" },
-      { "id": "R2", "name": "辅助信息+下拉菜单", "visual": "17px 灰色文字 + icons/expand_list.svg（16px 下拉箭头）" },
-      { "id": "R3", "name": "头像 / Avatar", "visual": "icons/Avatar_32.svg（32px 圆形头像占位）+ icons/chevron_right.svg（16px 右箭头），间距 8px" },
-      { "id": "R4", "name": "开关 / Switch", "visual": "44×26px 胶囊开关，开启态 #0099FF" },
-      { "id": "R5", "name": "勾选 / Checkbox", "visual": "icons/Checkbox_filled.svg(选中) / icons/Checkbox.svg(未选中)（20px，蓝色 #0099FF）" }
+      { "id": "R1", "name": "跳转 / Detail", "visual": "可选辅助信息文字（17px，var(--color-text-secondary)）+ icons/chevron_right.svg（16px 右箭头）；辅助信息可隐藏" },
+      { "id": "R2", "name": "辅助信息+下拉菜单", "visual": "可选辅助信息文字（17px，var(--color-text-secondary)）+ icons/expand_list.svg（16px 下拉箭头）；辅助信息可隐藏" },
+      { "id": "R3", "name": "辅助信息+头像+箭头 / Avatar", "visual": "可选辅助信息文字（17px，var(--color-text-secondary)）+ icons/Avatar_32.svg（32px）+ icons/chevron_right.svg（16px）；辅助信息和头像均可独立隐藏" },
+      { "id": "R4", "name": "开关 / Switch", "visual": "44×26px 胶囊开关，开启态 var(--color-brand-standard)" },
+      { "id": "R5", "name": "勾选 / Checkbox", "visual": "icons/Checkbox_filled.svg(选中) / icons/Checkbox.svg(未选中)（20px，var(--color-brand-standard)）" }
     ]
   },
 
   "constraints": [
     { "rule": "L5, L6 → R ∈ {R1, R2, R4}", "reason": "二级缩进变体可搭配跳转、下拉菜单或开关" },
-    { "rule": "R3 → L ∈ {L3, L4}", "reason": "头像右侧仅限搭配图标型左侧" },
+    { "rule": "R3 → L ∈ {L3, L4, L8, L9, L10, L11}", "reason": "头像右侧仅限搭配图标型或 tick 勾选型左侧" },
     { "rule": "L7 → R ∈ {R0, R5}", "reason": "头像型左侧仅限搭配为空或勾选" },
-    { "rule": "R0 → L ∈ {L1, L7}", "reason": "仅这两种左侧可不配置右侧" },
-    { "rule": "L5/L6 需要父级 R4 开关", "reason": "二级缩进依赖父级开关触发" },
+    { "rule": "R0 和 R5 可与左侧任意类型搭配（受其他约束限制除外）", "reason": "改动2：移除 R0 仅限 L1/L7 的限制" },
+    { "rule": "R1/R2/R3 辅助信息文字均可隐藏", "reason": "R1 只保留箭头；R2 只保留下拉箭头；R3 辅助信息和头像可各自独立隐藏" },
+    { "rule": "L8, L9, L10, L11 → R ∈ {R0, R1, R2, R3}，不能与 R4/R5 组合", "reason": "左侧 tick 不支持开关和右侧勾选并用；单纯勾选选择使用 R5" },
+    { "rule": "同一卡片内 L8/L9 互斥：仅一行为 L8", "reason": "单行 tick 左侧互斥" },
+    { "rule": "同一卡片内 L10/L11 互斥：仅一行为 L10", "reason": "双行 tick 左侧互斥" },
+    { "rule": "父子关系触发条件：R4(开关) 或 L8/L10(左侧tick) 或 R5(右侧勾选)", "reason": "父子关系扩展" },
     { "rule": "R4 ≠ L7", "reason": "头像型左侧不支持开关" }
   ],
 
+  "mixingRules": {
+    "typeA": { "members": ["L1", "L2"], "rule": "可相互混排" },
+    "typeB": { "members": ["L5", "L6", "L8", "L9", "L10", "L11"], "rule": "可与同卡片内任意其他左侧类型混排" },
+    "typeC": { "members": ["L7"], "rule": "独占卡片，不与其他左侧类型混排" }
+  },
+
   "validMatrix": {
     "L1": ["R0", "R1", "R2", "R4", "R5"],
-    "L2": ["R1", "R2", "R4", "R5"],
-    "L3": ["R1", "R2", "R3", "R4", "R5"],
-    "L4": ["R1", "R2", "R3", "R4", "R5"],
+    "L2": ["R0", "R1", "R2", "R4", "R5"],
+    "L3": ["R0", "R1", "R2", "R3", "R4", "R5"],
+    "L4": ["R0", "R1", "R2", "R3", "R4", "R5"],
     "L5": ["R1", "R2", "R4"],
     "L6": ["R1", "R2", "R4"],
-    "L7": ["R0", "R5"]
+    "L7": ["R0", "R5"],
+    "L8": ["R0", "R1", "R2", "R3"],
+    "L9": ["R0", "R1", "R2", "R3"],
+    "L10": ["R0", "R1", "R2", "R3"],
+    "L11": ["R0", "R1", "R2", "R3"]
   },
 
   "comboVariants": [
@@ -67,25 +85,34 @@
     "value": "#F0F0F2",
     "reason": "白色卡片容器需要浅灰色页面背景形成视觉层级分离"
   },
-    "sectionGap": "≥8px",
+    "sectionGap": "B3（12px）",
     "rightAreaGap": 4,
     "rightAreaMarginLeft": 12,
     "leftAreaGap": 12
   },
 
   "style": {
-    "title": { "fontSize": 17, "color": { "token": "text_primary", "value": "rgba(0, 0, 0, 0.90)" }, "overflow": "ellipsis" },
-    "subtitle": { "fontSize": 14, "color": { "token": "text_tertiary", "value": "rgba(60, 60, 67, 0.56)" }, "lineHeight": 1.2, "marginTop": 1 },
-    "helperText": { "fontSize": 17, "color": { "token": "text_secondary", "value": "rgba(60, 60, 67, 0.76)" } },
-    "separator": { "height": 0.5, "color": { "token": "separator", "value": "rgba(0, 0, 0, 0.08)" }, "inset": "16px" },
+    "title": { "fontSize": 17, "color": { "token": "text_primary", "value": "rgba(0, 0, 0, 0.90)" }, "overflow": "ellipsis", "whiteSpace": "nowrap" },
+    "subtitle": { "fontSize": 14, "color": { "token": "text_tertiary", "value": "rgba(60, 60, 67, 0.56)" }, "lineHeight": 1.2, "marginTop": 1, "overflow": "ellipsis", "whiteSpace": "nowrap" },
+    "helperText": { "fontSize": 17, "color": { "token": "text_secondary", "value": "rgba(60, 60, 67, 0.76)" }, "maxWidth": 120, "overflow": "hidden", "textOverflow": "ellipsis", "whiteSpace": "nowrap" },
+    "separator": { "height": 0.5, "color": { "token": "separator", "value": "rgba(0, 0, 0, 0.05)" }, "inset": "16px" },
     "groupHeader": { "padding": "8px 0", "fontSize": 14, "color": { "token": "text_tertiary", "value": "rgba(60, 60, 67, 0.56)" } },
     "groupFooter": { "padding": "8px 16px 0", "fontSize": 14, "color": { "token": "text_tertiary", "value": "rgba(60, 60, 67, 0.56)" } }
+  },
+
+  "layoutRules": {
+    "structure": "两段式 Flex：[左区 flex:1 min-width:0] | [右区 flex-shrink:0]",
+    "leftArea": "flex:1; min-width:0 — 吃剩余空间，可被压缩",
+    "leftIcon": "flex-shrink:0 — 图标不被压缩",
+    "textGroup": "flex:1; min-width:0 — 文字容器可被压缩，title/subtitle 截断省略",
+    "rightArea": "flex-shrink:0 — 固定宽度，helperText 加 max-width:120px 约束",
+    "truncationPriority": "左区文字（标题/副标题）优先被压缩截断，图标和右区固定不压缩"
   },
 
   "compositionRelations": {
     "grouping": {
       "description": "同类关系 — 多行聚合为一卡片，允许不同 L×R 混排",
-      "rules": ["同类行必须相邻排列", "组间以页面背景间距(≥8px)区隔"]
+      "rules": ["同类行必须相邻排列", "组间以页面背景间距 B3（12px）区隔"]
     },
     "mutualExclusion": {
       "description": "互斥关系 — R5 勾选触发，组内同一时刻仅一个选中",

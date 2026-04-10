@@ -2,23 +2,23 @@
 
 > **组件 ID**：`form`  
 > **大类**：数据  
-> **变体数量**：33 种（7L × 6R 经约束过滤）
+> **变体数量**：52 种（46 基础变体 + 6 组合变体）
 
 ## 1. 组件概述
 
 卡片式列表（Inset Grouped List）是设置页面的核心布局组件，由背景容器、内容行、左侧区域、右侧区域、分隔线及底部说明文字组成。左右缩进且以圆角容器封装，适合任务驱动型界面，在复杂信息中快速定位功能或操作。
 
-**子组件变体数量：27 个基础变体 + 6 个组合变体 = 33 个**
+**子组件变体数量：46 个基础变体 + 6 个组合变体 = 52 个**
 
 ## 2. 属性定义
 
 ### 2.1 整体属性
 | 属性名 | 标识 | 视觉特征 |
 | :--- | :--- | :--- |
-| 分割线 | Separator | 底部 0.5px `rgba(0, 0, 0, 0.1)` 实线，左右对称缩进 16px |
+| 分割线 | Separator | 底部 0.5px `rgba(0, 0, 0, 0.05)` 实线（Token `--color-separator`），左右对称缩进 16px |
 | 底部说明 | Bottom Hint | 组件下方 14px 辅助文字，颜色 `rgba(60, 60, 67, 0.56)` |
 
-### 2.2 左侧区域 (L) — 7 种
+### 2.2 左侧区域 (L) — 11 种
 | 标识 | 名称 | 视觉特征 |
 | :--- | :--- | :--- |
 | L1 | 单行标题 | 17px 黑色文字 (`rgba(0, 0, 0, 0.9)`) |
@@ -28,16 +28,20 @@
 | L5 | 二级+单行标题 | `icons/secondary.svg`（二级引导图标）+ 17px 文字（从属层级） |
 | L6 | 二级+双行标题 | `icons/secondary.svg`（二级引导图标）+ 17px 标题 + 14px 辅助说明（从属层级） |
 | L7 | 头像+双行标题 | `icons/Avatar_40.svg`（40px 圆形头像占位）+ 17px 标题 + 14px 辅助说明 |
+| L8 | 已勾选+单行标题 | `icons/tick.svg`（24px，`var(--brand_standard)`）+ 17px 标题，间距 12px |
+| L9 | 未勾选+单行标题 | 无图标 + 17px 标题（与 L8 对应的未选状态，左侧缩进与 L8 保持一致） |
+| L10 | 已勾选+双行标题 | `icons/tick.svg`（24px，`var(--brand_standard)`）+ 17px 标题 + 14px 辅助说明，间距 12px |
+| L11 | 未勾选+双行标题 | 无图标 + 17px 标题 + 14px 辅助说明（与 L10 对应的未选状态） |
 
 ### 2.3 右侧区域 (R) — 6 种
 | 标识 | 名称 | 视觉特征 |
 | :--- | :--- | :--- |
 | R0 | 为空 / None | 无右侧内容 |
-| R1 | 跳转 / Detail | 可选 17px 灰色辅助信息文字 (`rgba(60, 60, 67, 0.76)`) + `icons/chevron_right.svg`（16px 右箭头） |
-| R2 | 辅助信息+下拉菜单 / Dropdown | 17px 灰色文字 + `icons/expand_list.svg`（16px 下拉箭头） |
-| R3 | 头像 / Avatar | `icons/Avatar_32.svg`（32px 圆形头像占位）+ `icons/chevron_right.svg`（16px 右箭头），间距 8px |
-| R4 | 开关 / Switch | 44×26px 胶囊开关，开启态背景 `#0099FF` |
-| R5 | 勾选 / Checkbox | `icons/Checkbox_filled.svg`(选中) / `icons/Checkbox.svg`(未选中)（20px，蓝色 `#0099FF`） |
+| R1 | 跳转 / Detail | **可选**辅助信息文字（17px，`var(--text_primary_light)`）+ `icons/chevron_right.svg`（16px 右箭头）；辅助信息可隐藏 |
+| R2 | 辅助信息+下拉菜单 / Dropdown | **可选**辅助信息文字（17px，`var(--text_primary_light)`）+ `icons/expand_list.svg`（16px 下拉箭头）；辅助信息可隐藏 |
+| R3 | 辅助信息+头像+箭头 / Avatar | **可选**辅助信息文字（17px，`var(--text_primary_light)`）+ `icons/Avatar_32.svg`（32px 圆形头像）+ `icons/chevron_right.svg`（16px 右箭头）；辅助信息和头像均可独立隐藏 |
+| R4 | 开关 / Switch | 44×26px 胶囊开关，开启态背景 `var(--brand_standard)` |
+| R5 | 勾选 / Checkbox | `icons/Checkbox_filled.svg`(选中) / `icons/Checkbox.svg`(未选中)（20px，`var(--brand_standard)`） |
 
 ---
 
@@ -46,25 +50,32 @@
 | # | 约束规则 | 说明 |
 | :--- | :--- | :--- |
 | 1 | **L5（二级+单行标题）** 与 **L6（二级+双行标题）** 只能与 **R1（跳转）**、**R2（下拉菜单）**、**R4（开关）** 组合 | 二级缩进变体可搭配跳转、下拉菜单或开关 |
-| 2 | **R3（头像）** 只能与 **L3（图标+单行标题）**、**L4（图标+双行标题）** 组合 | 头像右侧仅限搭配图标型左侧 |
+| 2 | **R3（辅助信息+头像+箭头）** 只能与 **L3（图标+单行标题）**、**L4（图标+双行标题）**、**L8-L11（tick 勾选类）** 组合 | 头像右侧仅限搭配图标型或 tick 勾选型左侧 |
 | 3 | **L7（头像+双行标题）** 只能与 **R0（为空）**、**R5（勾选）** 组合 | 头像型左侧仅限搭配为空或勾选右侧 |
-| 4 | **R1（跳转）** 可以不配置"辅助信息"文案 | 辅助信息文字为可选字段 |
-| 5 | **R0（为空）** 只能与 **L1（单行标题）**、**L7（头像+双行标题）** 组合 | 仅这两种左侧可不配置右侧 |
-| 6 | 只有当父项使用 **R4（开关）** 时，下方跟随的子项才可以应用 **L5/L6（二级变体）** | 二级缩进依赖父级开关触发 |
+| 4 | **R1/R2/R3** 的辅助信息文字均可隐藏 | R1 只保留箭头；R2 只保留下拉箭头；R3 辅助信息和头像可各自独立隐藏 |
+| 5 | **R0（为空）** 与 **R5（勾选）** 可与左侧任意类型搭配 | 无特定左侧限制，任意 L 均可配 R0 或 R5（受其他约束限制除外） |
+| 6 | 只有当父项使用 **R4（开关）** 或左侧勾选（**L8/L10**）或右侧勾选（**R5**）时，才可触发子项出现/消失 | 父子关系触发条件更新 |
 | 7 | **R4（开关）** 不能与 **L7（头像+双行标题）** 组合 | 头像型左侧不支持开关 |
+| 8 | **L8、L9、L10、L11** 只能与 **R0/R1/R2/R3** 组合，不能与 **R4（开关）** 或 **R5（勾选）** 组合。**使用原则**：仅当右侧有额外功能（跳转/下拉/头像）时才使用左侧 tick；单纯勾选选择使用 **R5（右侧勾选）** | 左侧 tick 不支持开关和右侧勾选并用 |
+| 9 | 同一卡片组内，**L8/L9** 组合互斥：只能有一行处于 L8（已勾选）状态 | 单行 tick 左侧互斥，同时只有一个已勾选 |
+| 10 | 同一卡片组内，**L10/L11** 组合互斥：只能有一行处于 L10（已勾选）状态 | 双行 tick 左侧互斥，同时只有一个已勾选 |
 
-### 3.1 有效变体矩阵（27 个基础变体）
+### 3.1 有效变体矩阵
 
 |  | R0 | R1 | R2 | R3 | R4 | R5 | 小计 |
 |---|:---:|:---:|:---:|:---:|:---:|:---:|:---:|
 | **L1** | ✅ | ✅ | ✅ | — | ✅ | ✅ | 5 |
-| **L2** | — | ✅ | ✅ | — | ✅ | ✅ | 4 |
-| **L3** | — | ✅ | ✅ | ✅ | ✅ | ✅ | 5 |
-| **L4** | — | ✅ | ✅ | ✅ | ✅ | ✅ | 5 |
+| **L2** | ✅ | ✅ | ✅ | — | ✅ | ✅ | 5 |
+| **L3** | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | 6 |
+| **L4** | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | 6 |
 | **L5** | — | ✅ | ✅ | — | ✅ | — | 3 |
 | **L6** | — | ✅ | ✅ | — | ✅ | — | 3 |
 | **L7** | ✅ | — | — | — | — | ✅ | 2 |
-| **合计** | | | | | | | **27** |
+| **L8** | ✅ | ✅ | ✅ | ✅ | — | — | 4 |
+| **L9** | ✅ | ✅ | ✅ | ✅ | — | — | 4 |
+| **L10** | ✅ | ✅ | ✅ | ✅ | — | — | 4 |
+| **L11** | ✅ | ✅ | ✅ | ✅ | — | — | 4 |
+| **合计** | | | | | | | **46** |
 
 ### 3.2 组合变体（6 个）
 
@@ -82,15 +93,31 @@
 ## 4. UI 设计规格
 
 - **容器宽度**: 428px（适配 iOS 标准宽度）
-- **行高**: 单行(L1/L3/L5) 56px；双行(L2/L4/L6/L7) 72px
+- **行高**: 单行(L1/L3/L5/L8/L9) 56px；双行(L2/L4/L6/L7/L10/L11) 72px
 - **内边距**: 左右 16px
 - **背景色**: 页面 `#F0F0F2`，组件 `#FFFFFF`
 - **字体**: 标题 `17px rgba(0,0,0,0.9)`；描述 `14px rgba(60,60,67,0.56)`，line-height: 1.2, margin-top: 1px
-- **分割线**: `0.5px rgba(0,0,0,0.1)`，左右缩进 16px
+- **分割线**: `0.5px rgba(0,0,0,0.05)`（Token `--color-separator`），左右缩进 16px
 - **卡片圆角**: 12px，Inset Grouped 样式
-- **组间距**: ≥ 8px（页面背景间距）
+- **组间距**: B3（12px）（同类卡片容器相邻规则）
 - **右侧区域间距**: gap: 4px, margin-left: 12px
 - **左侧区域间距**: gap: 12px
+
+### 4.2 文本截断规则
+
+**卡片式列表采用两段式 Flex 布局**：`[左区 flex:1] | [右区 flex-shrink:0]`
+
+Flex 算法分配顺序：
+1. 先固定右区（箭头/开关/勾选）的宽度
+2. 剩余空间全部分配给左区（`flex:1`）
+
+截断规则：
+1. **左区**：`flex:1; min-width:0`，左区宽度由 flex 算法自动分配
+2. **图标**（L3/L4/L5/L6/L7）：`flex-shrink:0`，不被压缩，始终完整显示
+3. **文字容器（text-group）**：`flex:1; min-width:0`，承接左区剩余空间后可继续压缩
+4. **标题（title）**：单行，超出 text-group 右边界省略（`…`）
+5. **副标题（subtitle）**：单行，同上省略
+6. **右区辅助文字（helper-text）**：`max-width:120px`，防止辅助文字过长挤压左区，超出省略
 
 ---
 
@@ -101,7 +128,7 @@
 ```css
 .form-container {
     width: 428px;
-    background: var(--color-bg-page);        /* ⚠️ 必须使用 bg_bottom_standard，不可用白色 */
+    background: var(--bg_middle_standard);        /* ⚠️ 必须使用 bg_middle_standard，不可用白色 */
     padding: 12px 16px;
     display: flex;
     flex-direction: column;
@@ -116,7 +143,7 @@
     align-items: center;
     padding: 0 16px;
     width: 100%;
-    background: var(--color-bg-item);
+    background: var(--bg_bottom_light);
     position: relative;
     border-radius: 12px;        /* 单行独立卡片时 */
     overflow: hidden;
@@ -130,23 +157,35 @@
 ```css
 .form-row .left-area {
     flex: 1;
+    min-width: 0;           /* 允许 flex 子项被压缩，配合右区固定宽度自动分配空间 */
     display: flex;
     align-items: center;
     gap: 12px;
     overflow: hidden;
 }
+/* 图标+文字的文字容器：可被压缩 */
+.form-row .left-area .text-group {
+    flex: 1;
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+}
 .form-row .title {
     font-size: 17px;
-    color: var(--text-primary, var(--color-text-primary));
+    color: var(--text-primary, var(--text_primary));
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
 }
 .form-row .subtitle {
     font-size: 14px;
-    color: var(--text-tertiary, var(--color-text-tertiary));
+    color: var(--text-tertiary, var(--text_secondary));
     line-height: 1.2;
     margin-top: 1px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 ```
 
@@ -162,19 +201,19 @@
 }
 .form-row .helper-text {
     font-size: 17px;
-    color: var(--text-secondary, var(--color-text-secondary));
+    color: var(--text-secondary, var(--text_primary_light));
 }
 .form-switch {
     width: 44px;
     height: 26px;
-    background: var(--brand-blue, var(--color-brand-standard));
+    background: var(--brand-blue, var(--brand_standard));
     border-radius: 13px;
     position: relative;
     cursor: pointer;
     transition: background 200ms ease-out;
 }
 .form-switch.off {
-    background: var(--color-switch-off);
+    background: var(--fill_standard_secondary);
 }
 .form-switch::after {
     content: '';
@@ -183,7 +222,7 @@
     top: 2px;
     width: 22px;
     height: 22px;
-    background: var(--color-bg-item);
+    background: var(--bg_bottom_light);
     border-radius: 50%;
     transition: right 200ms ease-out, left 200ms ease-out;
 }
@@ -197,7 +236,7 @@
 
 ```css
 .form-group {
-    background: var(--color-bg-page);
+    background: var(--bg_middle_standard);
     padding: 16px 0;
     border-radius: 0;
     width: 428px;
@@ -207,10 +246,10 @@
 .form-group-header {
     padding: 0 32px 8px;
     font-size: 14px;
-    color: var(--text-tertiary, var(--color-text-tertiary));
+    color: var(--text-tertiary, var(--text_secondary));
 }
 .form-group-content {
-    background: var(--color-bg-item);
+    background: var(--bg_bottom_light);
     margin: 0 16px;
     border-radius: 12px;
     overflow: hidden;
@@ -229,12 +268,12 @@
 .form-group-footer {
     padding: 8px 32px 0;
     font-size: 14px;
-    color: var(--text-tertiary, var(--color-text-tertiary));
+    color: var(--text-tertiary, var(--text_secondary));
     line-height: 1.4;
 }
 .form-separator {
     height: 0.5px;
-    background: var(--separator, var(--color-border-standard));
+    background: var(--separator, var(--border_standard));
     margin-left: 16px;
     margin-right: 16px;
 }
@@ -253,7 +292,7 @@
     padding: 0 0 6px 0;
     font-size: 12px;
     font-weight: 500;
-    color: var(--color-text-tertiary);
+    color: var(--text_secondary);
     display: flex;
     gap: 12px;
 }
@@ -287,37 +326,48 @@
 **规则**：
 - 同类行**必须相邻排列**，通过分割线区隔
 - 不同类型的子组件（如 L1+R1 与 L3+R4）允许混排在同一卡片内
-- 组间以页面背景间距（≥8px）区隔
+- 组间以页面背景间距 **B3（12px）** 区隔
+
+**同组混排限制**：
+- **类型 A（可自由混排）**：L1/L2 可相互混排
+- **类型 B（可与任意类型混排）**：L5/L6（二级类型）、L8/L9/L10/L11（勾选类型）可与同卡片内任意其他左侧类型混排
+- **类型 C（不可混排）**：L7（头像+双行标题）独占卡片，不与其他左侧类型混排
 
 ### 5.2 互斥关系（Mutual Exclusion）
 
-**定义**：当右侧为 **R5（勾选 / Checkbox）** 时，触发互斥关系 — 该组内同一时刻只能有一个 R5 处于选中态，其余行右侧为 **R0（为空）**，且组内所有行的左侧类型必须相同。
+**定义 A — 右侧勾选互斥（R5）**：当右侧为 **R5（勾选 / Checkbox）** 时，该组内同一时刻只能有一个 R5 处于选中态，其余行右侧为 **R0（为空）**，且组内所有行的左侧类型必须相同。
 
-**规则**：
+**定义 B — 左侧 tick 互斥（L8/L9 和 L10/L11）**：
+- 同一卡片组内，**L8/L9** 行只能有一行处于 **L8（已勾选）**状态，其余均为 L9（未勾选）
+- 同一卡片组内，**L10/L11** 行只能有一行处于 **L10（已勾选）**状态，其余均为 L11（未勾选）
+- L8/L9 与 L10/L11 不可在同一卡片组内混用
+
+**通用规则**：
 - 互斥选项**必须位于同一卡片**
-- 组内所有行的**左侧类型一致**（如全部为 L1 或全部为 L3）
-- 选中项显示 R5 勾选图标；未选中项右侧为 R0（为空）
 - 选中态即时生效，无需二次确认
 - 切换过渡 ≤ 200ms `ease-out`
 
 ### 5.3 父子关系（Parent-Child）
 
-**定义**：当上方列表行的右侧为 **R4（开关）** 时，其开/关状态控制下方一个或多个列表行的出现与消失，即构成父子关系。根据子列表数量不同，分为两种形态：
+**定义**：父行的交互状态控制下方一个或多个子行的出现与消失。
+
+**触发条件**（三种，选其一）：
+- 父行右侧为 **R4（开关）**：开关开启时子行出现，关闭时子行消失
+- 父行左侧为 **L8/L10（已勾选 tick）**：处于已勾选状态时子行出现，切换为 L9/L11（未勾选）时子行消失
+- 父行右侧为 **R5（勾选）**：处于选中状态时子行出现，取消选中时子行消失
 
 #### 情况一：子列表 < 3 个
 
 - 父子**必须在同一卡片组合内**
-- 父行右侧必须为 **R4（开关）**
 - 子行左侧限 **L5/L6（二级缩进变体）**，通过 L 型引导图标表达层级
 - 子行右侧限 **R1（跳转）**、**R2（下拉菜单）**、**R4（开关）**（约束规则 #1）
-- 父行关闭时，子行自动隐藏；父行开启时，子行自动展示
+- 父行触发条件关闭时，子行自动隐藏；触发条件开启时，子行自动展示
 
 #### 情况二：子列表 ≥ 3 个
 
-- 父行右侧必须为 **R4（开关）**
 - 子列表可以**单独作为一个卡片组合**出现在父卡片下方
 - 子列表**不限定左侧/右侧类型**，可使用任意有效的 L×R 组合
-- 父行关闭时，子卡片整体隐藏；父行开启时，子卡片整体展示
+- 父行触发条件关闭时，子卡片整体隐藏；触发条件开启时，子卡片整体展示
 
 **通用规则**：
 - 层级上限 **2 级**（父→子），禁止嵌套
@@ -328,7 +378,7 @@
 
 | 右侧类型 | 点击热区 | 触发行为 | 说明 |
 |----------|---------|---------|------|
-| **R0（为空）** | 整行可点击 | 执行自定义操作 | 仅限 L1+R0 组合；此时单行标题字色可变为**警示色**（`#FF3B30`）或**链接色**（`#0099FF`），用于表达危险操作或链接跳转语义 |
+| **R0（为空）** | 整行可点击 | 执行自定义操作 | 可与任意左侧类型搭配（受其他约束限制除外）；当左侧为 L1 时标题字色可变为**警示色**（`#FF3B30`）或**链接色**（`#0099FF`），用于表达危险操作或链接跳转语义 |
 | **R1（跳转）** | 整行可点击 | Push 跳转到新页面 | 点击后导航至目标页面 |
 | **R2（辅助信息+下拉菜单）** | 整行可点击 | 弹出**有勾选菜单（Menu-C）** | 菜单为单选互斥，选中后菜单关闭，R2 辅助信息文字更新为选中项 |
 | **R3（头像+箭头）** | 头像与箭头作为整体区域可点击 | Push 跳转到新页面 | 头像+箭头为一个完整的点击热区 |

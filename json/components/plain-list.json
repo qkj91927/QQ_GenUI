@@ -5,12 +5,13 @@
   "description": "横向撑满屏幕，适合数据驱动型界面，快速扫描大量同类信息。",
   "spec": "md/LIST_COMPONENT_SPEC.md",
 
-  "totalVariants": 67,
+  "totalVariants": 110,
   "theoreticalCombinations": "8×3×10=240",
   "validCombinationCount": 67,
+  "multiSelectVariantCount": 43,
 
   "anatomy": {
-    "areas": ["左侧区域 Left Area", "列表内容 Content Area", "右侧区域 Right Area"]
+    "areas": ["多选控件 Selection Control（可选）", "左侧区域 Left Area", "列表内容 Content Area", "右侧区域 Right Area"]
   },
 
   "dimensions": {
@@ -31,7 +32,7 @@
     ],
     "R": [
       { "id": "R0/Empty", "name": "Empty" },
-      { "id": "R1", "name": "辅助+箭头", "structure": ["helperText", "arrow"], "arrowIcon": "icons/chevron_right.svg", "helperStyle": { "fontSize": 17, "color": { "token": "text_secondary", "value": "rgba(60, 60, 67, 0.76)" }, "marginRight": 4 } },
+      { "id": "R1", "name": "辅助+箭头", "structure": ["helperText(optional)", "arrow"], "helperTextOptional": true, "arrowIcon": "icons/chevron_right.svg", "helperStyle": { "fontSize": 17, "color": { "token": "text_secondary", "value": "rgba(60, 60, 67, 0.76)" }, "marginRight": 4 } },
       { "id": "R2", "name": "辅助+头像+箭头", "structure": ["helperText", "avatar:32x32:round", "arrow"], "avatarAsset": "icons/Avatar_32.svg", "arrowIcon": "icons/chevron_right.svg", "avatarMarginRight": 8 },
       { "id": "R3", "name": "辅助+图片+箭头", "structure": ["helperText", "image:32x32:r4", "arrow"], "imageAsset": "icons/Thumbnail_32.svg", "arrowIcon": "icons/chevron_right.svg", "imageRadius": 4, "imageMarginRight": 8 },
       { "id": "R4", "name": "按钮", "style": { "padding": "6px 16px", "radius": 18, "fontSize": 14, "fontWeight": 500, "bg": { "token": "btn_bg", "value": "rgba(116, 116, 128, 0.08)" } } },
@@ -39,7 +40,21 @@
       { "id": "R6", "name": "Icon", "visual": "基础操作图标" },
       { "id": "R7", "name": "金额", "style": { "fontFamily": "DIN Alternate", "fontWeight": 700, "fontSize": 20 } },
       { "id": "R8", "name": "步数", "style": { "numberFont": "DIN Alternate 20px", "iconColumn": true, "rankText": "12px", "iconSize": 16 } },
-      { "id": "R9", "name": "聊天", "style": { "timeFont": "12px", "timeColor": { "token": "text_tertiary", "value": "rgba(60, 60, 67, 0.56)" }, "flexDirection": "column", "alignItems": "flex-end" } }
+      { "id": "R9", "name": "聊天", "style": { "timeFont": "12px", "timeColor": { "token": "text_tertiary", "value": "rgba(60, 60, 67, 0.56)" }, "flexDirection": "column", "alignItems": "flex-end" }, "statusIcon": "icons/remind_mute.svg", "statusIconOptional": true, "statusIconColor": { "token": "color-icon-secondary", "value": "#929296" }, "statusIconNote": "默认 remind_mute.svg，可替换为其他业务图标，颜色统一用 --color-icon-secondary" }
+    ],
+    "S": [
+      { "id": "S0", "name": "无多选（默认）", "description": "不显示选择控件" },
+      {
+        "id": "S1",
+        "name": "多选态",
+        "description": "左侧前置 24px 圆形选择控件，点击切换选中/未选中，不重复列举两个静态变体",
+        "size": 24,
+        "marginRight": 12,
+        "unselected": { "icon": "icons/Checkbox.svg" },
+        "selected": { "icon": "icons/Checkbox_filled.svg" },
+        "interaction": "替换 img.src：Checkbox.svg ↔ Checkbox_filled.svg",
+        "allowedR": ["R0", "R1", "R2", "R3", "R6", "R7"]
+      }
     ]
   },
 
@@ -49,10 +64,13 @@
     { "rule": "L0/Empty → C ∈ {C1, C2}, R ∈ {R1, R4, R5, R6}", "reason": "空左侧禁止三行C3，右侧仅限4种" },
     { "rule": "R2 → L = L1, C = C1", "reason": "辅助+头像+箭头仅限 Icon 单行" },
     { "rule": "R3 → C = C1", "reason": "辅助+图片仅限单行" },
+    { "rule": "R2/R3 → C = C1", "reason": "辅助+头像/图片类右侧仅限单行，不可与 C2/C3 组合" },
+    { "rule": "R1 → C ∈ {C1, C2, C3}", "reason": "辅助+箭头允许与单行/双行/三行搭配" },
     { "rule": "L2 → R = R6", "reason": "File Icon 右侧仅限 Icon" },
     { "rule": "R8, R9 → C = C2", "reason": "步数和聊天仅限双行" },
     { "rule": "R7, R8 → L = L4", "reason": "金额和步数强绑定 Medium Avatar" },
-    { "rule": "R9 → L = L5", "reason": "聊天强绑定 Large Avatar" }
+    { "rule": "R9 → L = L5", "reason": "聊天强绑定 Large Avatar" },
+    { "rule": "S1(多选态) → L ∈ {L0~L7}（任意），R ∈ {R0, R1, R2, R3, R6, R7}", "reason": "多选态不支持 R4按钮/R5Action/R8步数/R9聊天" }
   ],
 
   "layout": {
@@ -67,9 +85,20 @@
 
   "style": {
     "title": { "fontSize": 17, "lineHeight": 24, "color": { "token": "text_primary", "value": "rgba(0, 0, 0, 0.90)" }, "overflow": "ellipsis", "whiteSpace": "nowrap" },
-    "desc": { "fontSize": 14, "lineHeight": 20, "color": { "token": "text_secondary", "value": "rgba(60, 60, 67, 0.76)" } },
-    "linkText": { "color": { "token": "text_link", "value": "#214CA5" } },
-    "descStructure": "图标(16px) + 描述文本 · 描述文本 + textlink"
+    "desc": { "fontSize": 14, "lineHeight": 20, "height": 20, "display": "flex", "color": { "token": "text_secondary", "value": "rgba(60, 60, 67, 0.76)" } },
+    "descText": { "flexShrink": 1, "minWidth": 0, "overflow": "hidden", "textOverflow": "ellipsis", "whiteSpace": "nowrap", "note": "描述文字+textlink 合并为单一节点，textlink 仅以链接色区分，两者紧挨" },
+    "descImg": { "size": 16, "flexShrink": 0, "note": "描述行图标，不被压缩" },
+    "textLink": { "color": { "token": "text_link", "value": "#214CA5" }, "flexShrink": 0, "note": "文字链，不被压缩" },
+    "helperText": { "maxWidth": 120, "overflow": "hidden", "textOverflow": "ellipsis", "whiteSpace": "nowrap", "note": "右区辅助文字，最大宽度 120px 防止挤压内容区" },
+    "descStructure": "C2/C3 描述行默认仅展示描述文本（含可选 textlink），行首 empty.icon 与行尾右箭头默认不展示，可选添加：[行首图标(16px, flex-shrink:0, default:false, 可选)] + 描述文本(必填) + [textlink(嵌套在desc-text内, 可省略)] + [行尾右箭头(16px, flex-shrink:0, default:false, 可选)]；desc-text(flex-shrink:1)超出截断"
+  },
+
+  "layoutRules": {
+    "structure": "三段式 Flex：[左区 flex-shrink:0] | [内容区 flex:1 min-width:0] | [右区 flex-shrink:0]",
+    "contentArea": "flex:1; min-width:0 — 允许被压缩，overflow:hidden 生效",
+    "leftArea": "flex-shrink:0 — 图标/头像固定宽度",
+    "rightArea": "flex-shrink:0 — 辅助信息固定，helperText 加 max-width:120px 约束",
+    "truncationPriority": "内容区（标题/描述文字）优先被压缩截断，左右区固定不压缩"
   },
 
   "interaction": {
@@ -80,7 +109,7 @@
 
   "separator": {
     "height": 0.5,
-    "color": { "token": "separator", "value": "rgba(0, 0, 0, 0.08)" },
+    "color": { "token": "separator", "value": "rgba(0, 0, 0, 0.05)" },
     "marginLeft": 16,
     "note": "列表行之间，由外部容器控制"
   },

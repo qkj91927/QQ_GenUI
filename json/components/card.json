@@ -30,7 +30,9 @@
       "required": "#F0F0F2",
       "token": "bg_bottom_standard",
       "reason": "白色卡片容器需要浅灰色页面背景形成视觉层级分离"
-    }
+    },
+    "sectionGap": "B3（12px）",
+    "sectionGapNote": "Card 与 Card 之间使用 B3（12px）间距组件，遵循同类卡片容器相邻规则"
   },
 
   "blocks": {

@@ -12,21 +12,21 @@
 
 文本块组件包含 **13 种子组件变体**，分为 **H.居左**（7 种）和 **C.居中**（6 种）两大类：
 
-| 编号 | 名称 | 对齐方式 | 文字类型 | 容器高度 |
-|------|------|----------|----------|----------|
+| 编号 | 名称 | 对齐方式 | 文字类型 | 容器最小高度 |
+|------|------|----------|----------|-------------|
 | H1 | 大标题 | 居左 | title | 50px |
-| H2 | 一级标题 | 居左 | subtitle | 44px |
-| H3 | 二级标题 | 居左 | aux-title | 42px |
-| H4 | 正文段落 | 居左 | body | 56px |
-| H5 | 前缀正文 | 居左 | body | 56px |
-| H6 | 摘要文本 | 居左 | summary | 48px |
-| H7 | 提示文本 | 居左 | hint | 42px |
+| H2 | 一级标题 | 居左 | subtitle | 36px |
+| H3 | 二级标题 | 居左 | aux-title | 34px |
+| H4 | 正文段落 | 居左 | body | 24px（自适应） |
+| H5 | 前缀正文 | 居左 | body | 24px（自适应） |
+| H6 | 摘要文本 | 居左 | summary | 20px（自适应） |
+| H7 | 提示文本 | 居左 | hint | 17px（自适应） |
 | C1 | 大标题 | 居中 | title | 50px |
-| C2 | 一级标题 | 居中 | subtitle | 44px |
-| C3 | 二级标题 | 居中 | aux-title | 42px |
-| C4 | 正文段落 | 居中 | body | 56px |
-| C5 | 摘要文本 | 居中 | summary | 48px |
-| C6 | 提示文本 | 居中 | hint | 42px |
+| C2 | 一级标题 | 居中 | subtitle | 36px |
+| C3 | 二级标题 | 居中 | aux-title | 34px |
+| C4 | 正文段落 | 居中 | body | 24px（自适应） |
+| C5 | 摘要文本 | 居中 | summary | 20px（自适应） |
+| C6 | 提示文本 | 居中 | hint | 17px（自适应） |
 
 > **H 类与 C 类的区别**：文字属性（字号、字重、行高、颜色）完全相同，仅 `text-align` 不同（`left` vs `center`）。居中类（C）不包含"前缀正文"变体，因为前缀标识在居中排版中无意义。
 
@@ -67,7 +67,7 @@
 
 | 属性 | 值 | CSS 变量 |
 |------|------|----------|
-| 颜色 | `#214CA5` | `var(--text-link)` |
+| 颜色 | `#214CA5` | `var(--text_link)` |
 | 字号 | 继承父容器 | — |
 | 字重 | 继承父容器（400） | — |
 | 下划线 | 无 | `text-decoration: none` |
@@ -234,10 +234,18 @@ H3 二级标题（卡片标题）
 |------|------|
 | 容器宽度 | 428px |
 | 背景色 | `transparent`（组件本身透明，跟随页面背景色） |
+| 布局模式 | `display: flex`（弹性布局） |
 | `position` | `relative` |
-| 文字区域宽度 | 388px（容器 428 - 左右各 20px 内边距） |
-| 文字区域 `left` | 20px |
-| 文字区域 `position` | `absolute` |
+| 左右内边距 | 16px（`padding-left: 16px; padding-right: 16px`） |
+| 文字区域宽度 | 396px（容器 428 - 左右各 16px 内边距） |
+
+### 3.1 上下内边距规则
+
+| 变体分组 | 上下内边距 | 适用变体 |
+|---------|-----------|---------|
+| 大标题 | 8px | H1/C1 |
+| 一级标题、二级标题 | 4px | H2/C2、H3/C3 |
+| 正文、前缀正文、摘要、提示 | 0px | H4/C4、H5、H6/C5、H7/C6 |
 
 ---
 
@@ -274,42 +282,45 @@ H3 二级标题（卡片标题）
     width: 428px;
     background: transparent;
     position: relative;
+    display: flex;
+    padding-left: 16px;
+    padding-right: 16px;
 }
 ```
 
 ### 6.2 标题体系
 
 ```css
-/* H1/C1 大标题 26px Semibold — textTop: 8px, display: block */
+/* H1/C1 大标题 26px Semibold — padding-top/bottom: 8px */
 .text-block-container .text-block-title {
     font-family: 'PingFang SC', sans-serif;
     font-size: 26px;
     font-weight: 600;
-    color: var(--text-primary);
+    color: var(--text_primary);
     line-height: 34px;
     word-wrap: break-word;
 }
 .text-block-container .text-block-title.center { text-align: center; }
 .text-block-container .text-block-title.left { text-align: left; }
 
-/* H2/C2 一级标题 22px Medium — textTop: 8px, display: block */
+/* H2/C2 一级标题 22px Medium — padding-top/bottom: 4px */
 .text-block-container .text-block-subtitle {
     font-family: 'PingFang SC', sans-serif;
     font-size: 22px;
     font-weight: 500;
-    color: var(--text-primary);
+    color: var(--text_primary);
     line-height: 28px;
     word-wrap: break-word;
 }
 .text-block-container .text-block-subtitle.center { text-align: center; }
 .text-block-container .text-block-subtitle.left { text-align: left; }
 
-/* H3/C3 二级标题 18px Medium — textTop: 8px, display: block */
+/* H3/C3 二级标题 18px Medium — padding-top/bottom: 4px */
 .text-block-container .text-block-aux-title {
     font-family: 'PingFang SC', sans-serif;
     font-size: 18px;
     font-weight: 500;
-    color: var(--text-primary);
+    color: var(--text_primary);
     line-height: 26px;
     word-wrap: break-word;
 }
@@ -320,38 +331,38 @@ H3 二级标题（卡片标题）
 ### 8.3 正文、摘要与提示
 
 ```css
-/* H4/H5/C4 正文段落 17px Regular — textTop: 4px, display: inline-block, vertical-align: middle */
+/* H4/H5/C4 正文段落 17px Regular — padding-top/bottom: 0px */
 /* H5 与 H4 样式相同，仅语义不同（H5 用于带前缀标识的列表项） */
 .text-block-container .text-block-body {
     font-family: 'PingFang SC', sans-serif;
     font-size: 17px;
     font-weight: 400;
-    color: var(--text-primary);
+    color: var(--text_primary);
     line-height: 24px;
     word-wrap: break-word;
 }
 .text-block-container .text-block-body.center { text-align: center; }
 .text-block-container .text-block-body.left { text-align: left; }
 
-/* H6/C5 摘要文本 14px Regular — textTop: 4px, display: inline-block, vertical-align: middle */
+/* H6/C5 摘要文本 14px Regular — padding-top/bottom: 0px */
 .text-block-container .text-block-summary {
     font-family: 'PingFang SC', sans-serif;
     font-size: 14px;
     font-weight: 400;
-    color: var(--text-primary);
+    color: var(--text_primary);
     line-height: 20px;
     word-wrap: break-word;
 }
 .text-block-container .text-block-summary.center { text-align: center; }
 .text-block-container .text-block-summary.left { text-align: left; }
 
-/* H7/C6 提示文本 12px Regular — textTop: 4px, display: inline-block, vertical-align: middle */
+/* H7/C6 提示文本 12px Regular — padding-top/bottom: 0px */
 .text-block-container .text-block-hint {
     font-family: 'PingFang SC', sans-serif;
     font-size: 12px;
     font-weight: 400;
-    color: var(--text-primary);
-    line-height: 20px;
+    color: var(--text_primary);
+    line-height: 17px;
     word-wrap: break-word;
 }
 .text-block-container .text-block-hint.center { text-align: center; }
@@ -364,7 +375,7 @@ H3 二级标题（卡片标题）
 /* Textlink 内联链接色 - 适用于正文、摘要、提示文本 */
 .text-block-container .text-link,
 .text-block-container a {
-    color: var(--text-link);
+    color: var(--text_link);
     text-decoration: none;
     cursor: pointer;
 }

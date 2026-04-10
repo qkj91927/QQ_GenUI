@@ -151,7 +151,7 @@
     background: transparent;
     position: relative;
     overflow: hidden;
-    border-bottom: 0.5px solid var(--color-border-standard);
+    border-bottom: 0.5px solid var(--border_standard);
 }
 .df-tab-inner {
     width: 428px;
@@ -173,7 +173,7 @@
     font-size: 16px;
     font-family: 'PingFang SC', -apple-system, sans-serif;
     font-weight: 400;
-    color: var(--color-text-primary);
+    color: var(--text_primary);
     text-align: center;
     line-height: 22px;
 }
@@ -188,7 +188,7 @@
     width: 32px;
     height: 3px;
     border-radius: 1.5px;
-    background: var(--color-brand-standard);
+    background: var(--brand_standard);
 }
 .df-tab-item:not(.selected) .df-tab-indicator {
     opacity: 0;
@@ -206,7 +206,7 @@
 }
 .df-segment-bar {
     height: 36px;
-    background: var(--color-fill-standard-primary);
+    background: var(--fill_standard_primary);
     border-radius: 6px;
     display: flex;
     align-items: center;
@@ -226,17 +226,17 @@
     font-size: 14px;
     font-family: 'PingFang SC', -apple-system, sans-serif;
     font-weight: 400;
-    color: var(--color-text-secondary);
+    color: var(--text_primary_light);
     line-height: 20px;
 }
 .df-segment-item.selected .df-seg-label {
     font-weight: 500;
-    color: var(--color-text-primary);
+    color: var(--text_primary);
 }
 .df-segment-divider {
     width: 0.5px;
     height: 16px;
-    background: var(--color-border-standard);
+    background: var(--border_standard);
     flex-shrink: 0;
 }
 ```
@@ -252,7 +252,7 @@
 }
 .df-dropdown-btn {
     height: 36px;
-    background: var(--color-fill-standard-primary);
+    background: var(--fill_standard_primary);
     border-radius: 6px;
     display: flex;
     align-items: center;
@@ -263,7 +263,7 @@
     font-size: 14px;
     font-family: 'PingFang SC', -apple-system, sans-serif;
     font-weight: 400;
-    color: var(--color-text-primary);
+    color: var(--text_primary);
     line-height: 20px;
 }
 .df-dropdown-btn .df-dd-arrow {
@@ -299,7 +299,7 @@
 .df-tag-inner.scroll-mode::-webkit-scrollbar { display: none; }
 .df-tag-item {
     height: 40px;
-    background: var(--color-fill-standard-primary);
+    background: var(--fill_standard_primary);
     border-radius: 12px;
     display: flex;
     align-items: center;
@@ -310,13 +310,13 @@
     font-size: 15px;
     font-family: 'PingFang SC', -apple-system, sans-serif;
     font-weight: 400;
-    color: var(--color-text-secondary);
+    color: var(--text_primary_light);
     line-height: 20px;
     white-space: nowrap;
 }
 .df-tag-item.selected .df-tag-label {
     font-weight: 500;
-    color: var(--color-text-primary);
+    color: var(--text_primary);
 }
 /* 双行标签 D5 */
 .df-tag-item.df-tag-double {
@@ -328,22 +328,22 @@
     font-size: 15px;
     font-family: 'PingFang SC', -apple-system, sans-serif;
     font-weight: 400;
-    color: var(--color-text-secondary);
+    color: var(--text_primary_light);
     line-height: 20px;
 }
 .df-tag-item .df-tag-desc {
     font-size: 14px;
     font-family: 'PingFang SC', -apple-system, sans-serif;
     font-weight: 400;
-    color: var(--color-text-tertiary);
+    color: var(--text_secondary);
     line-height: 20px;
 }
 .df-tag-item.selected .df-tag-title {
     font-weight: 500;
-    color: var(--color-text-primary);
+    color: var(--text_primary);
 }
 .df-tag-item.selected .df-tag-desc {
-    color: var(--color-text-secondary);
+    color: var(--text_primary_light);
 }
 ```
 
@@ -378,12 +378,12 @@
     font-size: 14px;
     font-family: 'PingFang SC', -apple-system, sans-serif;
     font-weight: 500;
-    color: var(--color-text-secondary);
+    color: var(--text_primary_light);
     line-height: 20px;
     flex-shrink: 0;
 }
 .df-breadcrumb-item.current {
-    color: var(--color-text-primary);
+    color: var(--text_primary);
 }
 .df-breadcrumb-sep {
     width: 12px;

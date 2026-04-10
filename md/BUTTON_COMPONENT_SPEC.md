@@ -81,9 +81,9 @@
 
 | 状态 | 背景色 | 文字色 | 描边 |
 |:-----|:-------|:-------|:-----|
-| 默认 | 透明 | `#F74C30` | `rgba(60, 60, 67, 0.25)` 1px |
-| 按下 | `rgba(204, 204, 204, 0.30)` | `#F74C30` | `rgba(60, 60, 67, 0.25)` 1px |
-| 不可点击 | 透明 | `rgba(247, 76, 48, 0.30)` | `rgba(60, 60, 67, 0.12)` 1px |
+| 默认 | 透明 | `#E0462C` | `rgba(60, 60, 67, 0.25)` 1px |
+| 按下 | `rgba(204, 204, 204, 0.30)` | `#E0462C` | `rgba(60, 60, 67, 0.25)` 1px |
+| 不可点击 | 透明 | `rgba(224, 70, 44, 0.30)` | `rgba(60, 60, 67, 0.12)` 1px |
 
 ---
 
@@ -91,12 +91,11 @@
 
 ### 5.1 Spinner 样式
 
-- 尺寸：19 × 19px
-- 形状：3/4 弧形路径
-- 描边宽度：2.5px，圆角端点 (stroke-linecap: round)
-- 动画：线性旋转，1 秒/圈
-- 一级按钮 Spinner 颜色：`rgba(255, 255, 255, 0.90)`
-- 二级按钮 Spinner 颜色：`rgba(0, 0, 0, 0.40)`
+- 图标文件：`icons/loading.svg`（24×24px，缩放至19×19px使用）
+- 颜色处理：通过 CSS `filter` 控制颜色
+  - 一级按钮（白色背景文字）：`filter: brightness(0) invert(1); opacity: 0.9`（白色90%）
+  - 二级按钮（深色文字）：`filter: brightness(0); opacity: 0.4`（黑色40%）
+- 动画：线性旋转，1 秒/圈（`animation: btn-spin 1s linear infinite`）
 
 ### 5.2 布局
 
@@ -201,16 +200,16 @@
 
 ```css
 .btn-comp.type-primary.state-default {
-    background: var(--color-brand-standard);
-    color: var(--color-text-allwhite);
+    background: var(--brand_standard);
+    color: var(--text_allwhite_primary);
 }
 .btn-comp.type-primary.state-pressed {
-    background: var(--color-brand-pressed);
-    color: var(--color-text-allwhite);
+    background: var(--brand_standard);
+    color: var(--text_allwhite_primary);
 }
 .btn-comp.type-primary.state-loading {
-    background: var(--color-brand-pressed);
-    color: var(--color-text-allwhite);
+    background: var(--brand_standard);
+    color: var(--text_allwhite_primary);
 }
 .btn-comp.type-primary.state-disabled {
     background: rgba(0, 153, 255, 0.50);
@@ -224,22 +223,22 @@
 ```css
 .btn-comp.type-secondary.state-default {
     background: transparent;
-    border: 1px solid var(--color-border-stroke);
-    color: var(--color-text-primary);
+    border: 1px solid var(--border_standard);
+    color: var(--text_primary);
 }
 .btn-comp.type-secondary.state-pressed {
-    background: var(--color-fill-pressed-brand);
-    border: 1px solid var(--color-border-stroke);
-    color: var(--color-text-primary);
+    background: var(--feedback_press);
+    border: 1px solid var(--border_standard);
+    color: var(--text_primary);
 }
 .btn-comp.type-secondary.state-loading {
-    background: var(--color-fill-pressed-brand);
-    border: 1px solid var(--color-border-stroke);
-    color: var(--color-text-primary);
+    background: var(--feedback_press);
+    border: 1px solid var(--border_standard);
+    color: var(--text_primary);
 }
 .btn-comp.type-secondary.state-disabled {
-    background: var(--color-fill-pressed-brand);
-    border: 1px solid var(--color-border-disabled);
+    background: var(--feedback_press);
+    border: 1px solid var(--border_light);
     color: rgba(0, 0, 0, 0.30);
     opacity: 0.30;
     cursor: not-allowed;
@@ -251,17 +250,17 @@
 ```css
 .btn-comp.type-error.state-default {
     background: transparent;
-    border: 1px solid var(--color-border-stroke);
-    color: var(--color-feedback-error);
+    border: 1px solid var(--border_standard);
+    color: var(--feedback_error);
 }
 .btn-comp.type-error.state-pressed {
-    background: var(--color-fill-pressed-brand);
-    border: 1px solid var(--color-border-stroke);
-    color: var(--color-feedback-error);
+    background: var(--feedback_press);
+    border: 1px solid var(--border_standard);
+    color: var(--feedback_error);
 }
 .btn-comp.type-error.state-disabled {
     background: transparent;
-    border: 1px solid var(--color-border-disabled);
+    border: 1px solid var(--border_light);
     color: rgba(247, 76, 48, 0.30);
     cursor: not-allowed;
 }
@@ -270,11 +269,22 @@
 ### 8.6 加载动画
 
 ```css
+/* 加载图标（使用 icons/loading.svg） */
 .btn-spinner {
     width: 19px;
     height: 19px;
     margin-right: 4px;
     animation: btn-spin 1s linear infinite;
+}
+/* 一级按钮加载态：白色90% */
+.type-primary .btn-spinner {
+    filter: brightness(0) invert(1);
+    opacity: 0.9;
+}
+/* 二级按钮加载态：黑色40% */
+.type-secondary .btn-spinner {
+    filter: brightness(0);
+    opacity: 0.4;
 }
 @keyframes btn-spin {
     from { transform: rotate(0deg); }

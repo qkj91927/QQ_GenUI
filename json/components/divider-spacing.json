@@ -16,12 +16,12 @@
       }
     ],
     "B_spacing": [
-      { "id": "B1", "name": "间距 4px", "height": 4, "usage": "微间距，紧凑排列的辅助信息之间" },
-      { "id": "B2", "name": "间距 8px", "height": 8, "usage": "小间距，同组内容块之间" },
-      { "id": "B3", "name": "间距 12px", "height": 12, "usage": "中小间距，相关联的不同内容组之间" },
-      { "id": "B4", "name": "间距 16px", "height": 16, "usage": "标准间距，不同功能组之间" },
-      { "id": "B5", "name": "间距 24px", "height": 24, "usage": "大间距，不同功能模块之间" },
-      { "id": "B6", "name": "间距 32px", "height": 32, "usage": "超大间距，主要板块之间" }
+      { "id": "B1", "name": "间距 4px",  "height": 4,  "usage": "同组件之间·紧凑：标题+副标题、辅助信息并列" },
+      { "id": "B2", "name": "间距 8px",  "height": 8,  "usage": "同组件之间·标准 / 同类组件相邻：TextBlock/ImageBlock/Message 之间；HS_NavBar → 内容组件" },
+      { "id": "B3", "name": "间距 12px", "height": 12, "usage": "同类卡片容器相邻：Card 与 Card；Grouped List 组与组" },
+      { "id": "B4", "name": "间距 16px", "height": 16, "usage": "不同组件相邻（默认）：DataFilter/Search/TextBlock 与 List/Card/Grid；Textfield 与 Grouped List" },
+      { "id": "B5", "name": "间距 24px", "height": 24, "usage": "不同功能模块之间：内容区→操作区（TextBlock→ActionCombo）；个人信息区→设置区" },
+      { "id": "B6", "name": "间距 32px", "height": 32, "usage": "页面底部留白：最后组件→HomeBar/页面底部；ActionCombo→HomeBar（有 AIOInput 时由其 72px 替代）" }
     ]
   },
 

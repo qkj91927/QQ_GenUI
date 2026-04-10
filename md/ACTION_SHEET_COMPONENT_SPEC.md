@@ -13,7 +13,7 @@
 ```
 ┌───────────────────────────────────┐
 │  Overlay                          │
-│  var(--color-overlay-dark)        │
+│  var(--overlay_dark)        │
 ├───────────────────────────────────┤  ← border-radius: 16px
 │  ┌─────────────────────────────┐  │
 │  │     Title (optional)        │  │  ← 56px
@@ -24,7 +24,7 @@
 │  ├─────────────────────────────┤  │  ← divider 0.5px
 │  │  Danger Action (optional)   │  │  ← 56px
 │  └─────────────────────────────┘  │
-│           10px gap                │  ← bg: var(--color-bg-secondary)
+│           10px gap                │  ← bg: var(--bg_middle_standard)
 │  ┌─────────────────────────────┐  │
 │  │          Cancel             │  │  ← 56px
 │  └─────────────────────────────┘  │
@@ -171,7 +171,7 @@
     width: 428px;
     height: /* totalHeight，由JS动态设置 */;
     position: relative;
-    background: var(--color-bg-secondary);  /* 间距区域的背景色 #F3F3F7 */
+    background: var(--bg_middle_standard);  /* 间距区域的背景色 #F3F3F7 */
     border-top-left-radius: 16px;
     border-top-right-radius: 16px;
     overflow: hidden;
@@ -187,7 +187,7 @@
     top: 0;
     width: 428px;
     height: /* mainBlockHeight，由JS动态设置 */;
-    background: var(--color-bg-item);
+    background: var(--bg_bottom_light);
 }
 ```
 
@@ -214,13 +214,13 @@
     top: 0;
     width: 428px;
     height: 0.5px;
-    background: var(--color-separator);
+    background: var(--border_light);
 }
 .actionsheet-row .as-title-text {
     font-size: 14px;
     font-family: 'PingFang SC', sans-serif;
     font-weight: 400;
-    color: var(--color-text-secondary);
+    color: var(--text_primary_light);
     text-align: center;
     white-space: nowrap;
     overflow: hidden;
@@ -231,7 +231,7 @@
     font-size: 17px;
     font-family: 'PingFang SC', sans-serif;
     font-weight: 400;
-    color: var(--color-text-primary);
+    color: var(--text_primary);
     text-align: center;
     white-space: nowrap;
     overflow: hidden;
@@ -242,7 +242,7 @@
     font-size: 17px;
     font-family: 'PingFang SC', sans-serif;
     font-weight: 400;
-    color: var(--color-feedback-error);
+    color: var(--feedback_error);
     text-align: center;
     white-space: nowrap;
     overflow: hidden;
@@ -259,7 +259,7 @@
     left: 0;
     top: /* mainBlockHeight + 10 */px;
     width: 428px;
-    background: var(--color-bg-item);
+    background: var(--bg_bottom_light);
 }
 .actionsheet-cancel-row {
     width: 428px;
@@ -272,7 +272,7 @@
     font-size: 17px;
     font-family: 'PingFang SC', sans-serif;
     font-weight: 400;
-    color: var(--color-text-primary);
+    color: var(--text_primary);
     text-align: center;
 }
 ```

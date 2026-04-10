@@ -1,58 +1,87 @@
 <!DOCTYPE html>
-<html lang="zh-CN">
+<html lang="zh-CN" data-theme="qq-light">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>组件搭建器 - 母组件/子组件矩阵系统</title>
+    <link rel="stylesheet" href="css/QQ_color_tokens.css">
     <style>
         /*
-         * 简化 Token 变量 — 与 css/QQ_color_tokens.css 的映射关系：
-         * --text-primary     → --color-text-primary
-         * --text-secondary   → --color-text-secondary
-         * --text-tertiary    → --color-text-tertiary
-         * --brand-blue       → --color-brand-standard (#0099FF)
-         * --bg-item          → --color-bg-item (#FFFFFF)
-         * --bg-page          → --color-bg-page (#F0F0F2)
-         * --separator        → --color-separator
-         * --border-standard  → --color-border-standard
+         * 本地简化变量 — HTML 内联 :root 快捷别名（已接入 QQ_color_tokens.css）
+         * QBasicToken 权威来源：css/QQ_color_tokens.css（39个 token，下划线命名）
+         *
+         * 当前本地变量 → 对应 QBasicToken 映射：
+         * --text-primary       → --text_primary
+         * --text-secondary     → --text_primary_light
+         * --text-tertiary      → --text_secondary
+         * --text-quaternary    → --text_tertiary
+         * --text-link          → --text_link
+         * --text-allwhite      → --text_allwhite_primary
+         * --brand-blue         → --brand_standard
+         * --brand-blue-pressed → --brand_standard（dark）
+         * --feedback-error     → --feedback_error
+         * --feedback-success   → --feedback_success
+         * --feedback-blue      → --brand_standard
+         * --bg-item            → --bg_bottom_light
+         * --bg-page            → --bg_middle_standard
+         * --bg-secondary       → --bg_middle_standard
+         * --bg-sidebar         → --bg_bottom_light
+         * --hover-bg           → --fill_standard_primary
+         * --active-bg          → --brand_light
+         * --separator          → --border_light
+         * --border-standard    → --border_standard
+         * --border-stroke      → --border_standard
+         * --border-disabled    → --border_light
+         * --fill-standard      → --fill_standard_primary
+         * --fill-pressed       → --fill_standard_primary
+         * --fill-pressed-brand → --feedback_press
+         * --fill-tertiary      → --fill_standard_secondary
+         * --btn-bg             → --fill_standard_secondary
+         * --icon-primary       → --icon_primary
+         * --icon-secondary     → --icon_secondary
+         * --overlay-dark       → --overlay_dark
+         * --overlay-dialog     → --overlay_dark
+         * --overlay-toast      → --bg_toast_nonopaque
+         * --handle-color       → --text_tertiary
+         * --switch-off         → --fill_standard_secondary
          * 颜色权威来源：css/QQ_color_tokens.css
          */
         :root {
-            --text-primary: rgba(0, 0, 0, 0.9);
-            --text-secondary: rgba(60, 60, 67, 0.76);
-            --text-tertiary: rgba(60, 60, 67, 0.56);
-            --text-quaternary: rgba(60, 60, 67, 0.26);
-            --text-link: #214CA5;
-            --text-allwhite: #FFFFFF;
-            --separator: rgba(0, 0, 0, 0.05);
-            --border-standard: rgba(0, 0, 0, 0.10);
-            --border-stroke: rgba(60, 60, 67, 0.25);
-            --border-disabled: rgba(60, 60, 67, 0.12);
-            --bg-page: #F0F0F2;
-            --bg-sidebar: #FFFFFF;
-            --bg-item: #FFFFFF;
-            --bg-secondary: #F3F3F7;
-            --hover-bg: rgba(0, 0, 0, 0.04);
-            --active-bg: rgba(0, 153, 255, 0.1);
-            --brand-blue: #0099FF;
-            --brand-blue-pressed: #008AE5;
-            --brand-blue-light: rgba(0, 153, 255, 0.10);
-            --feedback-blue: #0099FF;
-            --feedback-error: #F74C30;
-            --feedback-success: #34C759;
-            --btn-bg: rgba(116, 116, 128, 0.08);
-            --fill-tertiary: rgba(118, 118, 128, 0.12);
-            --fill-standard: rgba(13, 16, 49, 0.04);
-            --fill-pressed: rgba(0, 0, 0, 0.04);
-            --fill-pressed-brand: rgba(204, 204, 204, 0.30);
-            --overlay-dark: rgba(0, 0, 0, 0.50);
-            --overlay-dialog: rgba(0, 0, 0, 0.40);
-            --overlay-toast: rgba(0, 0, 0, 0.80);
-            --handle-color: rgba(60, 60, 67, 0.30);
-            --switch-off: #E5E5EA;
-            --icon-primary: #1A1A1A;
-            --icon-secondary: #929296;
-            --arrow-color: rgba(60, 60, 67, 0.30);
+            --text-primary: var(--text_primary);
+            --text-secondary: var(--text_primary_light);
+            --text-tertiary: var(--text_secondary);
+            --text-quaternary: var(--text_tertiary);
+            --text-link: var(--text_link);
+            --text-allwhite: var(--text_allwhite_primary);
+            --separator: var(--border_light);
+            --border-standard: var(--border_standard);
+            --border-stroke: var(--border_standard);
+            --border-disabled: var(--border_light);
+            --bg-page: var(--bg_middle_standard);
+            --bg-sidebar: var(--bg_bottom_light);
+            --bg-item: var(--bg_bottom_light);
+            --bg-secondary: var(--bg_middle_standard);
+            --hover-bg: var(--fill_standard_primary);
+            --active-bg: var(--brand_light);
+            --brand-blue: var(--brand_standard);
+            --brand-blue-pressed: var(--brand_standard);
+            --brand-blue-light: var(--brand_light);
+            --feedback-blue: var(--brand_standard);
+            --feedback-error: var(--feedback_error);
+            --feedback-success: var(--feedback_success);
+            --btn-bg: var(--fill_standard_primary);
+            --fill-tertiary: var(--fill_standard_secondary);
+            --fill-standard: var(--fill_standard_primary);
+            --fill-pressed: var(--fill_standard_primary);
+            --fill-pressed-brand: var(--feedback_press);
+            --overlay-dark: var(--overlay_dark);
+            --overlay-dialog: var(--overlay_dark);
+            --overlay-toast: var(--bg_toast_nonopaque);
+            --handle-color: var(--text_tertiary);
+            --switch-off: var(--fill_standard_secondary);
+            --icon-primary: var(--icon_primary);
+            --icon-secondary: var(--icon_secondary);
+            --arrow-color: var(--text_tertiary);
         }
 
         * {
@@ -691,7 +720,7 @@
             position: absolute;
             bottom: 0;
             left: 16px; 
-            right: 0; /* 通栏或者留白，根据设计稿是 right:0 还是 right:16px? 假设是通栏背景下的分割线，通常是 inset left */
+            right: 16px; /* 左右对称缩进 16px，与 MD/JSON 规范一致 */
             z-index: 10;
         }
 
@@ -722,6 +751,44 @@
             background: #F8F8F8;
         }
 
+        /* --- Icon Indicator (CSS mask，颜色由 token 控制） --- */
+        .icon-indicator {
+            display: inline-block;
+            flex-shrink: 0;
+            background-color: var(--icon-secondary);
+            -webkit-mask-repeat: no-repeat;
+            mask-repeat: no-repeat;
+            -webkit-mask-position: center;
+            mask-position: center;
+            -webkit-mask-size: contain;
+            mask-size: contain;
+        }
+        .icon-indicator.chevron-right {
+            width: 16px; height: 16px;
+            -webkit-mask-image: url("data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTYiIGhlaWdodD0iMTYiIHZpZXdCb3g9IjAgMCAxNiAxNiIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPHBhdGggZmlsbC1ydWxlPSJldmVub2RkIiBjbGlwLXJ1bGU9ImV2ZW5vZGQiIGQ9Ik00LjkzMjgxIDEuNTk5MzJDNC43MTE1MSAxLjgyMDYyIDQuNzExNTEgMi4xNzk0MSA0LjkzMjgxIDIuNDAwNzFMMTAuMTc4NiA3LjY0NjQ2QzEwLjMxNzIgNy43ODUwOCAxMC4zOTY3IDcuODY1MjYgMTAuNDUwNSA3LjkyODU0QzEwLjQ3MjQgNy45NTQ0MiAxMC40ODMzIDcuOTY5OTIgMTAuNDg4IDcuOTc3MTJDMTAuNDkxNiA3Ljk5MjE4IDEwLjQ5MTYgOC4wMDc4NiAxMC40ODggOC4wMjI5MkMxMC40ODMzIDguMDMwMTEgMTAuNDcyNCA4LjA0NTYxIDEwLjQ1MDUgOC4wNzE0OUMxMC4zOTY3IDguMTM0NzggMTAuMzE3MiA4LjIxNDk1IDEwLjE3ODYgOC4zNTM1N0w0LjkzMjgxIDEzLjU5OTNDNC43MTE1MSAxMy44MjA2IDQuNzExNTEgMTQuMTc5NCA0LjkzMjgxIDE0LjQwMDdDNS4xNTQxIDE0LjYyMiA1LjUxMjkgMTQuNjIyIDUuNzM0MTkgMTQuNDAwN0wxMC45OTM0IDkuMTQxNDZDMTEuMTEzOCA5LjAyMTEgMTEuMjI3MSA4LjkwNzg5IDExLjMxNDQgOC44MDQ5NkMxMS40MDk0IDguNjkzMTIgMTEuNTA2NiA4LjU1NjczIDExLjU2MzcgOC4zODExNEMxMS42NDQxIDguMTMzNDMgMTEuNjQ0MSA3Ljg2NjYgMTEuNTYzNyA3LjYxODlDMTEuNTA2NiA3LjQ0MzMxIDExLjQwOTQgNy4zMDY5MSAxMS4zMTQ0IDcuMTk1MDhDMTEuMjI3MSA3LjA5MjE0IDExLjExMzggNi45Nzg5MiAxMC45OTM0IDYuODU4NTZMNS43MzQxOSAxLjU5OTMyQzUuNTEyOSAxLjM3ODAzIDUuMTU0MSAxLjM3ODAzIDQuOTMyODEgMS41OTkzMloiIGZpbGw9IiMxQTFBMUEiLz4KPC9zdmc+Cg==");
+            mask-image: url("data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTYiIGhlaWdodD0iMTYiIHZpZXdCb3g9IjAgMCAxNiAxNiIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPHBhdGggZmlsbC1ydWxlPSJldmVub2RkIiBjbGlwLXJ1bGU9ImV2ZW5vZGQiIGQ9Ik00LjkzMjgxIDEuNTk5MzJDNC43MTE1MSAxLjgyMDYyIDQuNzExNTEgMi4xNzk0MSA0LjkzMjgxIDIuNDAwNzFMMTAuMTc4NiA3LjY0NjQ2QzEwLjMxNzIgNy43ODUwOCAxMC4zOTY3IDcuODY1MjYgMTAuNDUwNSA3LjkyODU0QzEwLjQ3MjQgNy45NTQ0MiAxMC40ODMzIDcuOTY5OTIgMTAuNDg4IDcuOTc3MTJDMTAuNDkxNiA3Ljk5MjE4IDEwLjQ5MTYgOC4wMDc4NiAxMC40ODggOC4wMjI5MkMxMC40ODMzIDguMDMwMTEgMTAuNDcyNCA4LjA0NTYxIDEwLjQ1MDUgOC4wNzE0OUMxMC4zOTY3IDguMTM0NzggMTAuMzE3MiA4LjIxNDk1IDEwLjE3ODYgOC4zNTM1N0w0LjkzMjgxIDEzLjU5OTNDNC43MTE1MSAxMy44MjA2IDQuNzExNTEgMTQuMTc5NCA0LjkzMjgxIDE0LjQwMDdDNS4xNTQxIDE0LjYyMiA1LjUxMjkgMTQuNjIyIDUuNzM0MTkgMTQuNDAwN0wxMC45OTM0IDkuMTQxNDZDMTEuMTEzOCA5LjAyMTEgMTEuMjI3MSA4LjkwNzg5IDExLjMxNDQgOC44MDQ5NkMxMS40MDk0IDguNjkzMTIgMTEuNTA2NiA4LjU1NjczIDExLjU2MzcgOC4zODExNEMxMS42NDQxIDguMTMzNDMgMTEuNjQ0MSA3Ljg2NjYgMTEuNTYzNyA3LjYxODlDMTEuNTA2NiA3LjQ0MzMxIDExLjQwOTQgNy4zMDY5MSAxMS4zMTQ0IDcuMTk1MDhDMTEuMjI3MSA3LjA5MjE0IDExLjExMzggNi45Nzg5MiAxMC45OTM0IDYuODU4NTZMNS43MzQxOSAxLjU5OTMyQzUuNTEyOSAxLjM3ODAzIDUuMTU0MSAxLjM3ODAzIDQuOTMyODEgMS41OTkzMloiIGZpbGw9IiMxQTFBMUEiLz4KPC9zdmc+Cg==");
+        }
+        .icon-indicator.expand-list {
+            width: 16px; height: 16px;
+            -webkit-mask-image: url("data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTYiIGhlaWdodD0iMTYiIHZpZXdCb3g9IjAgMCAxNiAxNiIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPHBhdGggZmlsbC1ydWxlPSJldmVub2RkIiBjbGlwLXJ1bGU9ImV2ZW5vZGQiIGQ9Ik0xMS4zNzExIDkuNzk5MjhDMTEuNTkyNCA5LjU3ODMgMTEuOTUwNyA5LjU3ODE0IDEyLjE3MTkgOS43OTkyOEMxMi4zOTMxIDEwLjAyMDUgMTIuMzkyOSAxMC4zNzg3IDEyLjE3MTkgMTAuNjAwMUw4LjQwMDQ0IDE0LjM3MTVMOC4zNTc0NyAxNC40MTA2QzguMTM0OSAxNC41OTIxIDcuODA3MTEgMTQuNTc5IDcuNTk5NjYgMTQuMzcxNUwzLjgyODE3IDEwLjYwMDFMMy43ODkxMSAxMC41NTgxQzMuNjA3NTggMTAuMzM1NSAzLjYyMDcxIDEwLjAwNjggMy44MjgxNyA5Ljc5OTI4QzQuMDM1NjQgOS41OTE4NiA0LjM2NDQxIDkuNTc4NyA0LjU4Njk2IDkuNzYwMjJMNC42Mjg5NSA5Ljc5OTI4TDguMDAwMDUgMTMuMTcwNEwxMS4zNzExIDkuNzk5MjhaTTcuNjQyNjMgMS41ODkzMkM3Ljg2NTE3IDEuNDA3OTEgOC4xOTMwMSAxLjQyMTAxIDguNDAwNDQgMS42MjgzOUwxMi4xNzE5IDUuMzk5ODdMMTIuMjExIDUuNDQyODRDMTIuMzkyMyA1LjY2NTM5IDEyLjM3OTMgNS45OTMyNyAxMi4xNzE5IDYuMjAwNjVDMTEuOTY0NSA2LjQwODEyIDExLjYzNTcgNi40MjEyNSAxMS40MTMxIDYuMjM5NzFMMTEuMzcxMSA2LjIwMDY1TDguMDAwMDUgMi44Mjk1Nkw0LjYyODk1IDYuMjAwNjVDNC40MDc2NCA2LjQyMTc1IDQuMDQ5NCA2LjQyMTg4IDMuODI4MTcgNi4yMDA2NUMzLjYwNyA1Ljk3OTQyIDMuNjA3MDkgNS42MjExNiAzLjgyODE3IDUuMzk5ODdMNy41OTk2NiAxLjYyODM5TDcuNjQyNjMgMS41ODkzMloiIGZpbGw9IiMxQTFBMUEiLz4KPC9zdmc+Cg==");
+            mask-image: url("data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTYiIGhlaWdodD0iMTYiIHZpZXdCb3g9IjAgMCAxNiAxNiIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPHBhdGggZmlsbC1ydWxlPSJldmVub2RkIiBjbGlwLXJ1bGU9ImV2ZW5vZGQiIGQ9Ik0xMS4zNzExIDkuNzk5MjhDMTEuNTkyNCA5LjU3ODMgMTEuOTUwNyA5LjU3ODE0IDEyLjE3MTkgOS43OTkyOEMxMi4zOTMxIDEwLjAyMDUgMTIuMzkyOSAxMC4zNzg3IDEyLjE3MTkgMTAuNjAwMUw4LjQwMDQ0IDE0LjM3MTVMOC4zNTc0NyAxNC40MTA2QzguMTM0OSAxNC41OTIxIDcuODA3MTEgMTQuNTc5IDcuNTk5NjYgMTQuMzcxNUwzLjgyODE3IDEwLjYwMDFMMy43ODkxMSAxMC41NTgxQzMuNjA3NTggMTAuMzM1NSAzLjYyMDcxIDEwLjAwNjggMy44MjgxNyA5Ljc5OTI4QzQuMDM1NjQgOS41OTE4NiA0LjM2NDQxIDkuNTc4NyA0LjU4Njk2IDkuNzYwMjJMNC42Mjg5NSA5Ljc5OTI4TDguMDAwMDUgMTMuMTcwNEwxMS4zNzExIDkuNzk5MjhaTTcuNjQyNjMgMS41ODkzMkM3Ljg2NTE3IDEuNDA3OTEgOC4xOTMwMSAxLjQyMTAxIDguNDAwNDQgMS42MjgzOUwxMi4xNzE5IDUuMzk5ODdMMTIuMjExIDUuNDQyODRDMTIuMzkyMyA1LjY2NTM5IDEyLjM3OTMgNS45OTMyNyAxMi4xNzE5IDYuMjAwNjVDMTEuOTY0NSA2LjQwODEyIDExLjYzNTcgNi40MjEyNSAxMS40MTMxIDYuMjM5NzFMMTEuMzcxMSA2LjIwMDY1TDguMDAwMDUgMi44Mjk1Nkw0LjYyODk1IDYuMjAwNjVDNC40MDc2NCA2LjQyMTc1IDQuMDQ5NCA2LjQyMTg4IDMuODI4MTcgNi4yMDA2NUMzLjYwNyA1Ljk3OTQyIDMuNjA3MDkgNS42MjExNiAzLjgyODE3IDUuMzk5ODdMNy41OTk2NiAxLjYyODM5TDcuNjQyNjMgMS41ODkzMloiIGZpbGw9IiMxQTFBMUEiLz4KPC9zdmc+Cg==");
+        }
+        .icon-indicator.secondary-icon {
+            width: 24px; height: 24px;
+            -webkit-mask-image: url("data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjQiIGhlaWdodD0iMjQiIHZpZXdCb3g9IjAgMCAyNCAyNCIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPHBhdGggZmlsbC1ydWxlPSJldmVub2RkIiBjbGlwLXJ1bGU9ImV2ZW5vZGQiIGQ9Ik02LjY1MzgxIDEyLjAwMDRDNi42NTM4MSAxMS41MzA5IDcuMDM0MzcgMTEuMTUwNCA3LjUwMzgxIDExLjE1MDRIMTYuNTAzOEMxNi45NzMzIDExLjE1MDQgMTcuMzUzOCAxMS41MzA5IDE3LjM1MzggMTIuMDAwNEMxNy4zNTM4IDEyLjQ2OTggMTYuOTczMyAxMi44NTA0IDE2LjUwMzggMTIuODUwNEg3LjUwMzgxQzcuMDM0MzcgMTIuODUwNCA2LjY1MzgxIDEyLjQ2OTggNi42NTM4MSAxMi4wMDA0WiIgZmlsbD0iIzFBMUExQSIvPgo8L3N2Zz4K");
+            mask-image: url("data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjQiIGhlaWdodD0iMjQiIHZpZXdCb3g9IjAgMCAyNCAyNCIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPHBhdGggZmlsbC1ydWxlPSJldmVub2RkIiBjbGlwLXJ1bGU9ImV2ZW5vZGQiIGQ9Ik02LjY1MzgxIDEyLjAwMDRDNi42NTM4MSAxMS41MzA5IDcuMDM0MzcgMTEuMTUwNCA3LjUwMzgxIDExLjE1MDRIMTYuNTAzOEMxNi45NzMzIDExLjE1MDQgMTcuMzUzOCAxMS41MzA5IDE3LjM1MzggMTIuMDAwNEMxNy4zNTM4IDEyLjQ2OTggMTYuOTczMyAxMi44NTA0IDE2LjUwMzggMTIuODUwNEg3LjUwMzgxQzcuMDM0MzcgMTIuODUwNCA2LjY1MzgxIDEyLjQ2OTggNi42NTM4MSAxMi4wMDA0WiIgZmlsbD0iIzFBMUExQSIvPgo8L3N2Zz4K");
+        }
+        .icon-indicator.heart {
+            width: 16px; height: 16px;
+            -webkit-mask-image: url("data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjAiIGhlaWdodD0iMjAiIHZpZXdCb3g9IjAgMCAyMCAyMCIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPHBhdGggZmlsbC1ydWxlPSJldmVub2RkIiBjbGlwLXJ1bGU9ImV2ZW5vZGQiIGQ9Ik04Ljk5MjU1IDUuMzQ5NDFDNy42ODk3MiAzLjg4MzczIDUuNDM2NTQgMy43NzU3NSAzLjk5OTUzIDUuMTEwMTJDMi43MjAxOCA2LjI5ODA5IDIuNTEzMDUgOC4yNDc2NSAzLjUxNDIzIDkuNjc3OTFMMy41OTgzOSA5Ljc5ODEzQzQuMDYxODEgMTAuNDYwMiA0LjU4MjIgMTEuMDgwNCA1LjE1MzYyIDExLjY1MThMOS45MTE3NCAxNi40MUM5Ljk2MDU1IDE2LjQ1ODggMTAuMDM5NyAxNi40NTg4IDEwLjA4ODUgMTYuNDFMMTQuODQ2NiAxMS42NTE4QzE1LjQxODEgMTEuMDgwNCAxNS45Mzg0IDEwLjQ2MDIgMTYuNDAxOSA5Ljc5ODEyTDE2LjQ4NiA5LjY3NzkxQzE3LjQ4NzIgOC4yNDc2NSAxNy4yODAxIDYuMjk4MDkgMTYuMDAwNyA1LjExMDEyQzE0LjU2MzcgMy43NzU3NSAxMi4zMTA1IDMuODgzNzMgMTEuMDA3NyA1LjM0OTQxTDEwLjAwMDEgNi40ODI5M0w4Ljk5MjU1IDUuMzQ5NDFaTTEwLjAwMDEgNC4zNTE0NUM4LjE2MjE1IDIuMzQ2MTMgNS4wMzYwMyAyLjIxNDQyIDMuMDM1NTUgNC4wNzJDMS4yMzc5MSA1Ljc0MTI0IDAuOTQ2ODcgOC40ODA2MiAyLjM1MzY1IDEwLjQ5MDNMMi40Mzc4MSAxMC42MTA1QzIuOTQ4NTYgMTEuMzQwMiAzLjUyMjEgMTIuMDIzOCA0LjE1MTg5IDEyLjY1MzZMOC45MSAxNy40MTE3QzkuNTEyMDYgMTguMDEzOCAxMC40ODgyIDE4LjAxMzggMTEuMDkwMyAxNy40MTE3TDE1Ljg0ODQgMTIuNjUzNkMxNi40NzgyIDEyLjAyMzggMTcuMDUxNyAxMS4zNDAyIDE3LjU2MjQgMTAuNjEwNUwxNy42NDY2IDEwLjQ5MDNDMTkuMDUzNCA4LjQ4MDYyIDE4Ljc2MjMgNS43NDEyNCAxNi45NjQ3IDQuMDcyQzE0Ljk2NDIgMi4yMTQ0MiAxMS44MzgxIDIuMzQ2MTMgMTAuMDAwMSA0LjM1MTQ1WiIgZmlsbD0iIzFBMUExQSIvPgo8L3N2Zz4K");
+            mask-image: url("data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjAiIGhlaWdodD0iMjAiIHZpZXdCb3g9IjAgMCAyMCAyMCIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPHBhdGggZmlsbC1ydWxlPSJldmVub2RkIiBjbGlwLXJ1bGU9ImV2ZW5vZGQiIGQ9Ik04Ljk5MjU1IDUuMzQ5NDFDNy42ODk3MiAzLjg4MzczIDUuNDM2NTQgMy43NzU3NSAzLjk5OTUzIDUuMTEwMTJDMi43MjAxOCA2LjI5ODA5IDIuNTEzMDUgOC4yNDc2NSAzLjUxNDIzIDkuNjc3OTFMMy41OTgzOSA5Ljc5ODEzQzQuMDYxODEgMTAuNDYwMiA0LjU4MjIgMTEuMDgwNCA1LjE1MzYyIDExLjY1MThMOS45MTE3NCAxNi40MUM5Ljk2MDU1IDE2LjQ1ODggMTAuMDM5NyAxNi40NTg4IDEwLjA4ODUgMTYuNDFMMTQuODQ2NiAxMS42NTE4QzE1LjQxODEgMTEuMDgwNCAxNS45Mzg0IDEwLjQ2MDIgMTYuNDAxOSA5Ljc5ODEyTDE2LjQ4NiA5LjY3NzkxQzE3LjQ4NzIgOC4yNDc2NSAxNy4yODAxIDYuMjk4MDkgMTYuMDAwNyA1LjExMDEyQzE0LjU2MzcgMy43NzU3NSAxMi4zMTA1IDMuODgzNzMgMTEuMDA3NyA1LjM0OTQxTDEwLjAwMDEgNi40ODI5M0w4Ljk5MjU1IDUuMzQ5NDFaTTEwLjAwMDEgNC4zNTE0NUM4LjE2MjE1IDIuMzQ2MTMgNS4wMzYwMyAyLjIxNDQyIDMuMDM1NTUgNC4wNzJDMS4yMzc5MSA1Ljc0MTI0IDAuOTQ2ODcgOC40ODA2MiAyLjM1MzY1IDEwLjQ5MDNMMi40Mzc4MSAxMC42MTA1QzIuOTQ4NTYgMTEuMzQwMiAzLjUyMjEgMTIuMDIzOCA0LjE1MTg5IDEyLjY1MzZMOC45MSAxNy40MTE3QzkuNTEyMDYgMTguMDEzOCAxMC40ODgyIDE4LjAxMzggMTEuMDkwMyAxNy40MTE3TDE1Ljg0ODQgMTIuNjUzNkMxNi40NzgyIDEyLjAyMzggMTcuMDUxNyAxMS4zNDAyIDE3LjU2MjQgMTAuNjEwNUwxNy42NDY2IDEwLjQ5MDNDMTkuMDUzNCA4LjQ4MDYyIDE4Ljc2MjMgNS43NDEyNCAxNi45NjQ3IDQuMDcyQzE0Ljk2NDIgMi4yMTQ0MiAxMS44MzgxIDIuMzQ2MTMgMTAuMDAwMSA0LjM1MTQ1WiIgZmlsbD0iIzFBMUExQSIvPgo8L3N2Zz4K");
+        }
+        .icon-indicator.remind-mute {
+            width: 16px; height: 16px;
+            -webkit-mask-image: url("data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTYiIGhlaWdodD0iMTYiIHZpZXdCb3g9IjAgMCAxNiAxNiIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPHBhdGggZD0iTTcuMjYwMDkgMi4yNzIxMkM3LjI2MDA5IDEuODY0MDMgNy41OTA5MiAxLjUzMzIgNy45OTkwMSAxLjUzMzJDOC40MDcxIDEuNTMzMiA4LjczNzkyIDEuODY0MDMgOC43Mzc5MiAyLjI3MjEyVjIuNTUxNTFDOC43Mzc5MiAyLjU2Njg0IDguNzM3NDYgMi41ODIwNiA4LjczNjU0IDIuNTk3MTVDMTAuOTA3OSAyLjk1MzkgMTIuMzI0MyA0Ljg3NDIgMTIuMzI0MyA3LjEwMzM5TDEyLjMyNDkgOS4zMTI2TDEzLjY2NjUgMTEuMDU5M0MxMy42OTMxIDExLjA5MzggMTMuNzE1NSAxMS4xMzEzIDEzLjczMzUgMTEuMTcxQzEzLjg0MDkgMTEuNDA4NyAxMy44NTc0IDExLjY1NTIgMTMuODAzOCAxMS44ODA0QzEzLjc5NTIgMTEuODcxNCAxMy43ODY1IDExLjg2MjUgMTMuNzc3NiAxMS44NTM3TDExLjE5MTYgOS4yODYxNEwxMS4xOTEgNy4xMDMzOUMxMS4xOTEgNS4xNTkxOCA5Ljg2MjM3IDMuNjcxMTggNy45OTg0MSAzLjY3MTE4QzcuMjg0NjUgMy42NzExOCA2LjY0OTM5IDMuODg5MzcgNi4xMzcxNyA0LjI2NzgxTDUuMzI0NTcgMy40NjEwM0M1Ljg2NDI2IDMuMDIzNTQgNi41MTg3MiAyLjcxODc4IDcuMjYxNDcgMi41OTY5NkM3LjI2MDU1IDIuNTgxOTMgNy4yNjAwOSAyLjU2Njc3IDcuMjYwMDkgMi41NTE1MVYyLjI3MjEyWiIgZmlsbD0iIzFBMUExQSIvPgo8cGF0aCBkPSJNMy45MzM2NyAzLjEzMjUxQzMuNzEyMzcgMi45MTEyMSAzLjM1MzU4IDIuOTExMjEgMy4xMzIyOCAzLjEzMjUxQzIuOTEwOTggMy4zNTM4IDIuOTEwOTggMy43MTI2IDMuMTMyMjggMy45MzM4OUwxMi40NjU2IDEzLjI2NzJDMTIuNjg2OSAxMy40ODg1IDEzLjA0NTcgMTMuNDg4NSAxMy4yNjcgMTMuMjY3MkMxMy40ODgzIDEzLjA0NTkgMTMuNDg4MyAxMi42ODcxIDEzLjI2NyAxMi40NjU4TDMuOTMzNjcgMy4xMzI1MVoiIGZpbGw9IiMxQTFBMUEiLz4KPHBhdGggZD0iTTUuOTIxMTQgMTMuNDE4NEM1Ljg3OTczIDEzLjMyNTQgNS45NTIwMiAxMy4yMjY2IDYuMDUzNzUgMTMuMjI2Nkg5Ljk0NzYyQzEwLjA0OTQgMTMuMjI2NiAxMC4xMjE2IDEzLjMyNTQgMTAuMDgwMiAxMy40MTg0QzkuNzU1OTMgMTQuMTQ2MSA4Ljk0NzEyIDE0LjY2MTcgOC4wMDA2OSAxNC42NjE3QzcuMDU0MjUgMTQuNjYxNyA2LjI0NTQ1IDE0LjE0NjEgNS45MjExNCAxMy40MTg0WiIgZmlsbD0iIzFBMUExQSIvPgo8cGF0aCBkPSJNMy42NzI0OSA3LjEwMzM5QzMuNjcyNDkgNi42MzcyNiAzLjczNDQyIDYuMTg0NjQgMy44NTIyNCA1Ljc1N0w0LjgyMzI5IDYuNzIxMTFDNC44MTE3MiA2Ljg0NjMxIDQuODA1ODIgNi45NzM4NCA0LjgwNTgyIDcuMTAzMzlWOS41MDY4N0M0LjgwNTgyIDkuNjMxNzMgNC43NjQ1OCA5Ljc1MzEgNC42ODg1IDkuODUyMTJMMy4zNDIwOCAxMS42MDQ1SDkuNzQxODJMMTAuODgzMyAxMi43Mzc4SDMuMjgwNjZDMi40Nzc5MSAxMi43Mzc4IDEuOTMwMDIgMTEuOTExNSAyLjI2NDgyIDExLjE3MUMyLjI4Mjc4IDExLjEzMTMgMy4zMDUyNiAxMS4wOTM4IDIuMzMxODEgMTEuMDU5MkwzLjY3MjQ5IDkuMzE0MzFWNy4xMDMzOVoiIGZpbGw9IiMxQTFBMUEiLz4KPC9zdmc+Cg==");
+            mask-image: url("data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTYiIGhlaWdodD0iMTYiIHZpZXdCb3g9IjAgMCAxNiAxNiIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPHBhdGggZD0iTTcuMjYwMDkgMi4yNzIxMkM3LjI2MDA5IDEuODY0MDMgNy41OTA5MiAxLjUzMzIgNy45OTkwMSAxLjUzMzJDOC40MDcxIDEuNTMzMiA4LjczNzkyIDEuODY0MDMgOC43Mzc5MiAyLjI3MjEyVjIuNTUxNTFDOC43Mzc5MiAyLjU2Njg0IDguNzM3NDYgMi41ODIwNiA4LjczNjU0IDIuNTk3MTVDMTAuOTA3OSAyLjk1MzkgMTIuMzI0MyA0Ljg3NDIgMTIuMzI0MyA3LjEwMzM5TDEyLjMyNDkgOS4zMTI2TDEzLjY2NjUgMTEuMDU5M0MxMy42OTMxIDExLjA5MzggMTMuNzE1NSAxMS4xMzEzIDEzLjczMzUgMTEuMTcxQzEzLjg0MDkgMTEuNDA4NyAxMy44NTc0IDExLjY1NTIgMTMuODAzOCAxMS44ODA0QzEzLjc5NTIgMTEuODcxNCAxMy43ODY1IDExLjg2MjUgMTMuNzc3NiAxMS44NTM3TDExLjE5MTYgOS4yODYxNEwxMS4xOTEgNy4xMDMzOUMxMS4xOTEgNS4xNTkxOCA5Ljg2MjM3IDMuNjcxMTggNy45OTg0MSAzLjY3MTE4QzcuMjg0NjUgMy42NzExOCA2LjY0OTM5IDMuODg5MzcgNi4xMzcxNyA0LjI2NzgxTDUuMzI0NTcgMy40NjEwM0M1Ljg2NDI2IDMuMDIzNTQgNi41MTg3MiAyLjcxODc4IDcuMjYxNDcgMi41OTY5NkM3LjI2MDU1IDIuNTgxOTMgNy4yNjAwOSAyLjU2Njc3IDcuMjYwMDkgMi41NTE1MVYyLjI3MjEyWiIgZmlsbD0iIzFBMUExQSIvPgo8cGF0aCBkPSJNMy45MzM2NyAzLjEzMjUxQzMuNzEyMzcgMi45MTEyMSAzLjM1MzU4IDIuOTExMjEgMy4xMzIyOCAzLjEzMjUxQzIuOTEwOTggMy4zNTM4IDIuOTEwOTggMy43MTI2IDMuMTMyMjggMy45MzM4OUwxMi40NjU2IDEzLjI2NzJDMTIuNjg2OSAxMy40ODg1IDEzLjA0NTcgMTMuNDg4NSAxMy4yNjcgMTMuMjY3MkMxMy40ODgzIDEzLjA0NTkgMTMuNDg4MyAxMi42ODcxIDEzLjI2NyAxMi40NjU4TDMuOTMzNjcgMy4xMzI1MVoiIGZpbGw9IiMxQTFBMUEiLz4KPHBhdGggZD0iTTUuOTIxMTQgMTMuNDE4NEM1Ljg3OTczIDEzLjMyNTQgNS45NTIwMiAxMy4yMjY2IDYuMDUzNzUgMTMuMjI2Nkg5Ljk0NzYyQzEwLjA0OTQgMTMuMjI2NiAxMC4xMjE2IDEzLjMyNTQgMTAuMDgwMiAxMy40MTg0QzkuNzU1OTMgMTQuMTQ2MSA4Ljk0NzEyIDE0LjY2MTcgOC4wMDA2OSAxNC42NjE3QzcuMDU0MjUgMTQuNjYxNyA2LjI0NTQ1IDE0LjE0NjEgNS45MjExNCAxMy40MTg0WiIgZmlsbD0iIzFBMUExQSIvPgo8cGF0aCBkPSJNMy42NzI0OSA3LjEwMzM5QzMuNjcyNDkgNi42MzcyNiAzLjczNDQyIDYuMTg0NjQgMy44NTIyNCA1Ljc1N0w0LjgyMzI5IDYuNzIxMTFDNC44MTE3MiA2Ljg0NjMxIDQuODA1ODIgNi45NzM4NCA0LjgwNTgyIDcuMTAzMzlWOS41MDY4N0M0LjgwNTgyIDkuNjMxNzMgNC43NjQ1OCA5Ljc1MzEgNC42ODg1IDkuODUyMTJMMy4zNDIwOCAxMS42MDQ1SDkuNzQxODJMMTAuODgzMyAxMi43Mzc4SDMuMjgwNjZDMi40Nzc5MSAxMi43Mzc4IDEuOTMwMDIgMTEuOTExNSAyLjI2NDgyIDExLjE3MUMyLjI4Mjc4IDExLjEzMTMgMy4zMDUyNiAxMS4wOTM4IDIuMzMxODEgMTEuMDU5MkwzLjY3MjQ5IDkuMzE0MzFWNy4xMDMzOVoiIGZpbGw9IiMxQTFBMUEiLz4KPC9zdmc+Cg==");
+        }
+
         /* --- List Component Styles --- */
         .list-row {
             display: flex;
@@ -731,13 +798,19 @@
             position: relative;
             background: var(--bg-item);
         }
+        .list-selection { flex-shrink:0; margin-right:12px; cursor:pointer; }
+        .list-selection img { width:24px; height:24px; display:block; }
         .list-row.c1 { height: 52px; }
         .list-row.c2, .list-row.c3 { height: 72px; }
         .list-row .left-area { margin-right: 12px; display: flex; align-items: center; flex-shrink: 0; }
-        .list-row .content-area { flex: 1; display: flex; flex-direction: column; justify-content: center; overflow: hidden; }
+        .list-row .content-area { flex: 1; min-width: 0; display: flex; flex-direction: column; justify-content: center; overflow: hidden; }
         .list-row .right-area { margin-left: 12px; display: flex; align-items: center; flex-shrink: 0; }
         .list-row .title { font-size: 17px; line-height: 24px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; color: var(--text-primary); }
-        .list-row .desc { font-size: 14px; color: var(--text-secondary); line-height: 20px; display: flex; align-items: center; }
+        .list-row .desc { font-size: 14px; color: var(--text-secondary); line-height: 20px; height: 20px; display: flex; align-items: center; overflow: hidden; }
+        .list-row .desc-text { flex-shrink: 1; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+        .list-row .desc img { width: 16px; height: 16px; flex-shrink: 0; }
+        .list-row .desc .text-link { flex-shrink: 0; white-space: nowrap; }
+        .list-row .helper-text { max-width: 120px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
         .list-row .text-link { color: var(--text-link); cursor: pointer; }
         
         /* List Specific Right Areas */
@@ -998,9 +1071,18 @@
 
         .form-row .left-area {
             flex: 1;
+            min-width: 0;
             display: flex;
             align-items: center;
             gap: 12px;
+            overflow: hidden;
+        }
+
+        .form-row .left-area .text-group {
+            flex: 1;
+            min-width: 0;
+            display: flex;
+            flex-direction: column;
             overflow: hidden;
         }
 
@@ -1025,11 +1107,18 @@
             color: var(--text-tertiary);
             line-height: 1.2;
             margin-top: 1px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
         }
 
         .form-row .helper-text {
             font-size: 17px;
             color: var(--text-secondary);
+            max-width: 120px;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
         }
 
         .form-switch {
@@ -1068,7 +1157,7 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            padding: 16px 24px;
+            padding: 0 16px;
             background: transparent;
             width: 100%;
             box-sizing: border-box;
@@ -1147,7 +1236,8 @@
         }
         .action-btn-secondary {
             height: 52px;
-            background: var(--fill-tertiary);
+            background: transparent;
+            border: 1px solid var(--border-stroke);
             border-radius: 14px;
             display: flex;
             align-items: center;
@@ -1729,6 +1819,10 @@
             width: 428px;
             background: transparent;
             position: relative;
+            display: flex;
+            padding-left: 16px;
+            padding-right: 16px;
+            box-sizing: border-box;
         }
         .text-block-container .text-block-title {
             font-family: 'PingFang SC', sans-serif;
@@ -1785,7 +1879,7 @@
             font-size: 12px;
             font-weight: 400;
             color: var(--text-primary);
-            line-height: 20px;
+            line-height: 17px;
             word-wrap: break-word;
         }
         .text-block-container .text-block-hint.center { text-align: center; }
@@ -1807,6 +1901,10 @@
         .grid-container.scroll-mode::-webkit-scrollbar {
             display: none;
         }
+        /* E 类复合输入框图片行：隐藏滚动条 */
+        .atf-img-row::-webkit-scrollbar {
+            display: none;
+        }
         .grid-inner {
             display: flex;
             flex-wrap: wrap;
@@ -1824,6 +1922,12 @@
         }
         .grid-item-thumb {
             background: var(--fill-standard);
+        }
+        .grid-item-thumb.rounded {
+            border-radius: 12px;
+        }
+        .grid-item-thumb.circle {
+            border-radius: 50%;
         }
         .grid-item-label {
             font-family: 'PingFang SC', sans-serif;
@@ -2084,8 +2188,8 @@
         .card-md-link { color: var(--text-link); cursor: pointer; }
 
         /* ========== Message 消息 Component ========== */
-        .msg-outer { width: 428px; position: relative; padding: 4px 0; }
-        .msg-row { width: 364px; position: relative; display: flex; overflow: hidden; }
+        .msg-outer { width: 428px; position: relative; padding: 8px 0; }
+        .msg-row { width: 404px; position: relative; display: flex; overflow: hidden; }
         .msg-row.guest { flex-direction: row; margin-left: 12px; margin-right: auto; }
         .msg-row.host { flex-direction: row-reverse; margin-right: 12px; margin-left: auto; }
         .msg-avatar { width: 40px; flex-shrink: 0; padding-top: 8px; }
@@ -2093,7 +2197,7 @@
         .msg-bubble-area { flex: 1; padding-top: 8px; }
         .msg-row.guest .msg-bubble-area { padding-left: 8px; }
         .msg-row.host .msg-bubble-area { padding-right: 8px; }
-        .msg-bubble-text { border-radius: 10px; padding: 9px; display: inline-block; max-width: 308px; }
+        .msg-bubble-text { border-radius: 10px; padding: 9px; display: inline-block; max-width: 340px; }
         .msg-bubble-text.guest-bubble { background: var(--bg-item); }
         .msg-bubble-text.host-bubble { background: #0099FF; }
         .msg-bubble-text .msg-text { font-size: 17px; font-family: 'PingFang SC', sans-serif; font-weight: 400; line-height: 24px; word-wrap: break-word; }
@@ -2461,7 +2565,7 @@
             { id: 'R0/Empty', name: '为空' },
             { id: 'R1', name: '跳转', text: '辅助信息', icon: 'icons/chevron_right.svg' },
             { id: 'R2', name: '辅助信息+下拉菜单', text: '辅助信息', icon: 'icons/expand_list.svg' },
-            { id: 'R3', name: '头像', avatar: 'icons/Avatar_32.svg', icon: 'icons/chevron_right.svg' },
+            { id: 'R3', name: '辅助信息+头像+箭头', text: '辅助信息', avatar: 'icons/Avatar_32.svg', icon: 'icons/chevron_right.svg' },
             { id: 'R4', name: '开关', switch: true },
             { id: 'R5', name: '勾选', icon: 'icons/tick.svg' }
         ];
@@ -2490,7 +2594,8 @@
             // 模态
             { id: 'action_sheet', name: '操作面板 ActionSheet', variantCount: 0, category: '模态' },
             { id: 'dialog', name: '对话框 Dialog', variantCount: 0, category: '模态' },
-            { id: 'half_screen_overlay', name: '半屏浮层 HalfScreenOverlay', variantCount: 0, category: '模态' }
+            { id: 'half_screen_overlay', name: '半屏浮层 HalfScreenOverlay', variantCount: 0, category: '模态' },
+            { id: 'toast', name: '轻提示 Toast', variantCount: 0, category: '操作' }
         ];
 
         // ========== 组件定义 ==========
@@ -2508,13 +2613,14 @@
             divider_spacing: '用于分隔内容层级与控制视觉节奏的基础布局组件，通过分割线与间距两类子组件组织页面结构。',
             search: '用于内容检索的搜索输入组件，支持多种交互状态与布局形式，引导用户快速定位目标内容。',
             textfield: '表单场景中最基础的信息录入组件，支持多种输入类型与交互状态，满足不同数据采集需求。',
-            aio_input: 'AI 对话场景专用的底部输入组件，支持文字输入和语音输入切换。由 I1默认态 / I2生成中态 / I3输入态 共 3 种子组件构成。',
-            dialog: '居中显示的模态弹窗组件，用于传达重要信息并请求用户确认或决策。支持标题、正文（纯文本/文本+勾选/输入框）和多种操作按钮布局，共15种变体。',
-            menu: '伴随式非模态浮层菜单，出现在触发元素上方或下方 6px 位置，提供一组可选操作项。支持有图标、无图标和有勾选三种样式，选项数量 2-6 个。',
-            half_screen_overlay: '从屏幕底部弹出、约占半屏高度的模态容器组件，用于承载二级内容、表单、选择器等场景。分为标准型（半屏导航栏，默认A3，可按需替换）和把手型（拖拽把手条，不使用导航栏）两种子组件。',
-            button: '移动端最基础的操作触发组件，通过视觉层级（一级/二级/警示）和尺寸变化适配不同交互场景。由 4 种尺寸 × 3 种类型排列组合生成 12 种子组件。',
-            card: '承载结构化内容的圆角容器组件，用于在信息流、详情页等场景中展示多种组合形式的内容块。支持头像行、图片区、标题描述区、辅助信息行、列表行、按钮区等区块自由组合，统一 24px 圆角白色容器。',
-            message: '聊天对话场景中的消息气泡组件，由 4 种内容类型（通用文本/图文长描述/图文短标题/图标消息）× 2 种态（主态/客态）组合生成 8 种子组件。主态头像在右+蓝色气泡，客态头像在左+白色气泡。'
+            aio_input: '聊天场景中固定于页面底部的综合输入栏（All-in-One），集成文字输入与语音输入，覆盖待输入、生成中、输入中三种状态。',
+            dialog: '居中显示的模态弹窗组件，用于传达重要信息并请求用户确认或决策，支持多种正文与操作按钮布局。',
+            menu: '伴随式非模态浮层菜单，出现在触发元素上方或下方 6px 位置，提供一组可选操作项。支持有图标、无图标和有勾选三种样式。',
+            half_screen_overlay: '从屏幕底部弹出、约占半屏高度的模态容器组件，用于承载二级内容、表单、选择器等场景，分为标准型与把手型两种形式。',
+            toast: '短暂性的非阻断式反馈提示组件，用于告知用户操作结果或当前状态，自动消失无需交互。',
+            button: '移动端最基础的操作触发组件，通过视觉层级（一级/二级/警示）和尺寸变化适配不同交互场景。',
+            card: '承载结构化内容的圆角容器组件，用于在信息流、详情页等场景中展示多种组合形式的内容块，支持头像行、图片区、标题描述区、操作行等区块自由组合。',
+            message: '聊天对话场景中的消息气泡组件，支持通用文本、图文、图标消息等内容类型，分为主态与客态两种布局形式。'
         };
 
         function setComponentDefinition(id) {
@@ -2601,12 +2707,17 @@
             { id: 'L4', name: '图标+双行标题', icon: 'icons/empty_icon.svg', title: '标题文本', subtitle: '辅助说明文字', lines: 2 },
             { id: 'L5', name: '二级+单行标题', icon: 'icons/secondary.svg', title: '标题文本', lines: 1 },
             { id: 'L6', name: '二级+双行标题', icon: 'icons/secondary.svg', title: '标题文本', subtitle: '辅助说明文字', lines: 2 },
-            { id: 'L7', name: '头像+双行标题', icon: 'icons/Avatar_40.svg', title: '标题文本', subtitle: '辅助说明文字', lines: 2, isAvatar: true }
+            { id: 'L7', name: '头像+双行标题', icon: 'icons/Avatar_40.svg', title: '标题文本', subtitle: '辅助说明文字', lines: 2, isAvatar: true },
+            { id: 'L8', name: '已勾选+单行标题', icon: 'icons/tick.svg', title: '标题文本', lines: 1, isTick: true },
+            { id: 'L9', name: '未勾选+单行标题', title: '标题文本', lines: 1, isTick: true, unchecked: true },
+            { id: 'L10', name: '已勾选+双行标题', icon: 'icons/tick.svg', title: '标题文本', subtitle: '辅助说明文字', lines: 2, isTick: true },
+            { id: 'L11', name: '未勾选+双行标题', title: '标题文本', subtitle: '辅助说明文字', lines: 2, isTick: true, unchecked: true }
         ];
 
         // ========== 生成 通栏式列表 Plain List 组件变体矩阵 (L×C×R 三维) ==========
         function generateListVariants() {
             const variants = [];
+            // S0: 默认态（原有 67 种）
             LIST_L_OPTIONS.forEach(L => {
                 LIST_C_OPTIONS.forEach(C => {
                     LIST_R_OPTIONS.forEach(R => {
@@ -2625,10 +2736,32 @@
 
                         variants.push({
                             id: `${L.id}+${C.id}+${R.id}`,
-                            L: L,
-                            C: C,
-                            R: R,
-                            type: 'list'
+                            L: L, C: C, R: R,
+                            type: 'list', multiSelect: false
+                        });
+                    });
+                });
+            });
+            // S1: 多选态（R ∈ {R0,R1,R2,R3,R6,R7}，同步新约束）
+            const MULTI_SELECT_R = ['R0/Empty', 'R1', 'R2', 'R3', 'R6', 'R7'];
+            LIST_L_OPTIONS.forEach(L => {
+                LIST_C_OPTIONS.forEach(C => {
+                    LIST_R_OPTIONS.forEach(R => {
+                        if (!MULTI_SELECT_R.includes(R.id)) return;
+                        if (L.type !== 'any' && L.type !== C.type) return;
+                        if (L.id === 'L0/Empty') {
+                            if (C.id === 'C3') return;
+                            if (!['R1', 'R6', 'R0/Empty'].includes(R.id)) return;
+                        }
+                        if (R.id === 'R2' && (C.id !== 'C1' || L.id !== 'L1')) return;
+                        if (R.id === 'R3' && C.id !== 'C1') return;
+                        if (L.id === 'L2' && R.id !== 'R6') return;
+                        if (R.id === 'R7' && L.id !== 'L4') return;
+
+                        variants.push({
+                            id: `S1+${L.id}+${C.id}+${R.id}`,
+                            L: L, C: C, R: R,
+                            type: 'list', multiSelect: true
                         });
                     });
                 });
@@ -2693,17 +2826,19 @@
                     // 1. [L5/二级+单行标题] 与 [L6/二级+双行标题] 只能与 [R1/跳转]、[R2/下拉菜单]、[R4/开关] 组合
                     if ((L.id === 'L5' || L.id === 'L6') && R.id !== 'R1' && R.id !== 'R2' && R.id !== 'R4') return;
 
-                    // 2. [R3/头像] 只能与 [L3/图标+单行标题]、[L4/图标+双行标题] 组合
-                    if (R.id === 'R3' && L.id !== 'L3' && L.id !== 'L4') return;
+                    // 2. [R3/头像] 只能与 [L3/图标+单行标题]、[L4/图标+双行标题]、[L8-L11] 组合
+                    if (R.id === 'R3' && !['L3', 'L4', 'L8', 'L9', 'L10', 'L11'].includes(L.id)) return;
 
                     // 3. [L7/头像+双行标题] 只能与 [R0/为空]、[R5/勾选] 组合
                     if (L.id === 'L7' && R.id !== 'R0/Empty' && R.id !== 'R5') return;
 
-                    // 4. [R0/为空] 只能与 [L1/单行标题]、[L7/头像+双行标题] 组合
-                    if (R.id === 'R0/Empty' && L.id !== 'L1' && L.id !== 'L7') return;
+                    // 4. [R0/为空] 与 [R5/勾选] 可与左侧任意类型搭配（受其他约束限制除外）
 
                     // 5. [R4/开关] 不能与 [L7/头像+双行标题] 组合
                     if (R.id === 'R4' && L.id === 'L7') return;
+
+                    // 6. [L8/L9/L10/L11] 不能与 [R4/开关] 或 [R5/勾选] 组合
+                    if (['L8', 'L9', 'L10', 'L11'].includes(L.id) && (R.id === 'R4' || R.id === 'R5')) return;
 
                     variants.push({
                         id: `${L.id}+${R.id}`,
@@ -2734,7 +2869,7 @@
         // ========== 生成 Action 操作组合组件变体 ==========
         function generateActionVariants() {
             return [
-                // A. 操作组合 (9种) — Button 按钮型，来自 Frame 1_9731 + 3462_5192
+                // A. 操作组合 (8种) — Button 按钮型，来自 Frame 1_9731 + 3462_5192
                 { id: 'A1', group: '操作组合', name: '双按钮（二级+一级）', type: 'action', layout: 'dual-btn' },
                 { id: 'A2', group: '操作组合', name: '三按钮（二级+二级+一级）', type: 'action', layout: 'triple-btn' },
                 { id: 'A3', group: '操作组合', name: '单按钮（一级满宽）', type: 'action', layout: 'single-primary' },
@@ -2743,12 +2878,14 @@
                 { id: 'A6', group: '操作组合', name: '六图标横排', type: 'action', layout: 'icon-6-row' },
                 { id: 'A7', group: '操作组合', name: '四图标文字行', type: 'action', layout: 'icon-text-4' },
                 { id: 'A8', group: '操作组合', name: '操作+勾选+按钮', type: 'action', layout: 'mixed-check-btn' },
-                // B. 辅助操作组合 (5种) — Action 文字链型，来自 Frame 1_9746
-                { id: 'B1', group: '辅助操作组合', name: '勾选+文案+文字链', type: 'action', hasCheckbox: true, text: '勾选文案，可配置', textLink: '文字链接' },
-                { id: 'B2', group: '辅助操作组合', name: '辅助文案+文字链', type: 'action', text: '辅助说明文案，可配置', textLink: '文字链接' },
-                { id: 'B3', group: '辅助操作组合', name: '单Action', type: 'action', actions: 1 },
-                { id: 'B4', group: '辅助操作组合', name: '双Action', type: 'action', actions: 2 },
-                { id: 'B5', group: '辅助操作组合', name: '三Action', type: 'action', actions: 3 }
+                // B. 辅助操作组合 (7种) — Action 文字链型，来自 Frame 1_9746
+                { id: 'B1', group: '辅助操作组合', name: '居左勾选', type: 'action', hasCheckbox: true, checkboxAlign: 'left', text: '勾选文案，可配置', textLink: '文字链接', height: 36 },
+                { id: 'B2', group: '辅助操作组合', name: '居左辅助信息', type: 'action', checkboxAlign: 'left', text: '辅助说明文案，可配置', textLink: '文字链接', height: 36 },
+                { id: 'B3', group: '辅助操作组合', name: '居中勾选', type: 'action', hasCheckbox: true, checkboxAlign: 'center', text: '勾选文案，可配置', textLink: '文字链接', height: 36 },
+                { id: 'B4', group: '辅助操作组合', name: '居中辅助信息', type: 'action', checkboxAlign: 'center', text: '辅助说明文案，可配置', textLink: '文字链接', height: 36 },
+                { id: 'B5', group: '辅助操作组合', name: '单Action', type: 'action', actions: 1, height: 36 },
+                { id: 'B6', group: '辅助操作组合', name: '横排双Action', type: 'action', actions: 2, height: 36 },
+                { id: 'B7', group: '辅助操作组合', name: '横排三Action', type: 'action', actions: 3, height: 36 }
             ];
         }
 
@@ -3033,100 +3170,96 @@
 
         function generateTextBlockVariants() {
             return [
-                // === A.居左 ===
-                { id: 'H1', name: '大标题', group: 'H.居左', type: 'text_block', textAlign: 'left', textContent: '大标题\u00a0Semibold\u00a026/34', containerHeight: 50, textTop: 8, textWidth: 388, textLeft: 20, textType: 'title' },
-                { id: 'H2', name: '一级标题', group: 'H.居左', type: 'text_block', textAlign: 'left', textContent: '一级标题\u00a0Medium\u00a022/28', containerHeight: 44, textTop: 8, textWidth: 388, textLeft: 20, textType: 'subtitle' },
-                { id: 'H3', name: '二级标题', group: 'H.居左', type: 'text_block', textAlign: 'left', textContent: '二级标题\u00a0Medium\u00a018/26', containerHeight: 42, textTop: 8, textWidth: 388, textLeft: 20, textType: 'aux-title' },
-                { id: 'H4', name: '正文段落', group: 'H.居左', type: 'text_block', textAlign: 'left', textContent: '这是正文文本，Regular\u00a017/24。这是正文文本，Regular\u00a017/24。这是正文文本，Regular\u00a017/24。', containerHeight: 56, textTop: 4, textWidth: 388, textLeft: 20, textType: 'body' },
-                { id: 'H5', name: '前缀正文', group: 'H.居左', type: 'text_block', textAlign: 'left', textContent: '这是前缀正文，Regular\u00a017/24。这是前缀正文，Regular\u00a017/24。这是前缀正文。', containerHeight: 56, textTop: 4, textWidth: 388, textLeft: 20, textType: 'body' },
-                { id: 'H6', name: '摘要文本', group: 'H.居左', type: 'text_block', textAlign: 'left', textContent: '这是摘要文本，Regular\u00a014/20，这是摘要文本，Regular\u00a014/20，这是摘要文本，Regular\u00a014/20。', containerHeight: 48, textTop: 4, textWidth: 388, textLeft: 20, textType: 'summary' },
-                { id: 'H7', name: '提示文本', group: 'H.居左', type: 'text_block', textAlign: 'left', textContent: '这是提示文本，Regular\u00a012/20，这是提示文本，Regular\u00a012/20，这是提示文本，Regular\u00a012/20，这是提示文本，Regular\u00a012/20。', containerHeight: 42, textTop: 4, textWidth: 388, textLeft: 20, textType: 'hint' },
-                // === B.居中 ===
-                { id: 'C1', name: '大标题', group: 'C.居中', type: 'text_block', textAlign: 'center', textContent: '大标题\u00a0Semibold\u00a026/34', containerHeight: 50, textTop: 8, textWidth: 388, textLeft: 20, textType: 'title' },
-                { id: 'C2', name: '一级标题', group: 'C.居中', type: 'text_block', textAlign: 'center', textContent: '一级标题\u00a0Medium\u00a022/28', containerHeight: 44, textTop: 8, textWidth: 388, textLeft: 20, textType: 'subtitle' },
-                { id: 'C3', name: '二级标题', group: 'C.居中', type: 'text_block', textAlign: 'center', textContent: '二级标题\u00a0Medium\u00a018/26', containerHeight: 42, textTop: 8, textWidth: 388, textLeft: 20, textType: 'aux-title' },
-                { id: 'C4', name: '正文段落', group: 'C.居中', type: 'text_block', textAlign: 'center', textContent: '这是正文文本，Regular\u00a017/24。这是正文文本，Regular\u00a017/24。这是正文文本，Regular\u00a017/24。', containerHeight: 56, textTop: 4, textWidth: 388, textLeft: 20, textType: 'body' },
-                { id: 'C5', name: '摘要文本', group: 'C.居中', type: 'text_block', textAlign: 'center', textContent: '这是摘要文本，Regular\u00a014/20，这是摘要文本，Regular\u00a014/20，这是摘要文本，Regular\u00a014/20。', containerHeight: 48, textTop: 4, textWidth: 388, textLeft: 20, textType: 'summary' },
-                { id: 'C6', name: '提示文本', group: 'C.居中', type: 'text_block', textAlign: 'center', textContent: '这是提示文本，Regular\u00a012/20，这是提示文本，Regular\u00a012/20，这是提示文本，Regular\u00a012/20，这是提示文本，Regular\u00a012/20。', containerHeight: 42, textTop: 4, textWidth: 388, textLeft: 20, textType: 'hint' }
+                // === H.居左 ===
+                { id: 'H1', name: '大标题', group: 'H.居左', type: 'text_block', textAlign: 'left', textContent: '大标题\u00a0Semibold\u00a026/34', paddingY: 8, textType: 'title' },
+                { id: 'H2', name: '一级标题', group: 'H.居左', type: 'text_block', textAlign: 'left', textContent: '一级标题\u00a0Medium\u00a022/28', paddingY: 4, textType: 'subtitle' },
+                { id: 'H3', name: '二级标题', group: 'H.居左', type: 'text_block', textAlign: 'left', textContent: '二级标题\u00a0Medium\u00a018/26', paddingY: 4, textType: 'aux-title' },
+                { id: 'H4', name: '正文段落', group: 'H.居左', type: 'text_block', textAlign: 'left', textContent: '这是正文文本，Regular\u00a017/24。这是正文文本，Regular\u00a017/24。这是正文文本，Regular\u00a017/24。', paddingY: 0, textType: 'body' },
+                { id: 'H5', name: '前缀正文', group: 'H.居左', type: 'text_block', textAlign: 'left', textContent: '这是前缀正文，Regular\u00a017/24。这是前缀正文，Regular\u00a017/24。这是前缀正文。', paddingY: 0, textType: 'body' },
+                { id: 'H6', name: '摘要文本', group: 'H.居左', type: 'text_block', textAlign: 'left', textContent: '这是摘要文本，Regular\u00a014/20，这是摘要文本，Regular\u00a014/20，这是摘要文本，Regular\u00a014/20。', paddingY: 0, textType: 'summary' },
+                { id: 'H7', name: '提示文本', group: 'H.居左', type: 'text_block', textAlign: 'left', textContent: '这是提示文本，Regular\u00a012/17，这是提示文本，Regular\u00a012/17，这是提示文本，Regular\u00a012/17，这是提示文本，Regular\u00a012/17。', paddingY: 0, textType: 'hint' },
+                // === C.居中 ===
+                { id: 'C1', name: '大标题', group: 'C.居中', type: 'text_block', textAlign: 'center', textContent: '大标题\u00a0Semibold\u00a026/34', paddingY: 8, textType: 'title' },
+                { id: 'C2', name: '一级标题', group: 'C.居中', type: 'text_block', textAlign: 'center', textContent: '一级标题\u00a0Medium\u00a022/28', paddingY: 4, textType: 'subtitle' },
+                { id: 'C3', name: '二级标题', group: 'C.居中', type: 'text_block', textAlign: 'center', textContent: '二级标题\u00a0Medium\u00a018/26', paddingY: 4, textType: 'aux-title' },
+                { id: 'C4', name: '正文段落', group: 'C.居中', type: 'text_block', textAlign: 'center', textContent: '这是正文文本，Regular\u00a017/24。这是正文文本，Regular\u00a017/24。这是正文文本，Regular\u00a017/24。', paddingY: 0, textType: 'body' },
+                { id: 'C5', name: '摘要文本', group: 'C.居中', type: 'text_block', textAlign: 'center', textContent: '这是摘要文本，Regular\u00a014/20，这是摘要文本，Regular\u00a014/20，这是摘要文本，Regular\u00a014/20。', paddingY: 0, textType: 'summary' },
+                { id: 'C6', name: '提示文本', group: 'C.居中', type: 'text_block', textAlign: 'center', textContent: '这是提示文本，Regular\u00a012/17，这是提示文本，Regular\u00a012/17，这是提示文本，Regular\u00a012/17，这是提示文本，Regular\u00a012/17。', paddingY: 0, textType: 'hint' }
             ];
         }
 
         function generateGridVariants() {
             return [
-                // === A 平铺 Tile ===
                 // === A 平铺 ===
-                { id: 'A1', name: '平铺/横版/2个', type: 'grid', mode: 'tile',
+                { id: 'A1', name: '平铺/横版/2列', type: 'grid', mode: 'tile',
                   containerWidth: 428, containerHeight: 168, containerPadding: '16px',
-                  cols: 2, totalCols: 2, itemWidth: 190, thumbWidth: 192, thumbHeight: 108, thumbRadius: 16,
+                  cols: 2, totalCols: 2, itemWidth: 190, thumbWidth: 192, thumbHeight: 108, thumbRadius: 12,
                   labelSize: 14, labelHeight: 20, labelGap: 8, itemGapX: 16, thumbOffsetX: -1 },
-                { id: 'A2', name: '平铺/竖版/2个', type: 'grid', mode: 'tile',
+                { id: 'A2', name: '平铺/竖版/2列', type: 'grid', mode: 'tile',
                   containerWidth: 428, containerHeight: 252, containerPadding: '16px',
-                  cols: 2, totalCols: 2, itemWidth: 190, thumbWidth: 192, thumbHeight: 192, thumbRadius: 16,
+                  cols: 2, totalCols: 2, itemWidth: 190, thumbWidth: 192, thumbHeight: 192, thumbRadius: 12,
                   labelSize: 14, labelHeight: 20, labelGap: 8, itemGapX: 16, thumbOffsetX: -1 },
-                { id: 'A3', name: '平铺/正方形/3个', type: 'grid', mode: 'tile',
-                  containerWidth: 428, containerHeight: 180, containerPadding: '16px 18px',
-                  cols: 3, totalCols: 3, itemWidth: 120, thumbWidth: 120, thumbHeight: 120, thumbRadius: 16,
+                { id: 'A3', name: '平铺/横版(高)/2列', type: 'grid', mode: 'tile',
+                  containerWidth: 428, containerHeight: 328, containerPadding: '16px',
+                  cols: 2, totalCols: 2, itemWidth: 190, thumbWidth: 190, thumbHeight: 268, thumbRadius: 12,
                   labelSize: 14, labelHeight: 20, labelGap: 8, itemGapX: 16 },
-                { id: 'A4', name: '平铺/正方形/4个', type: 'grid', mode: 'tile',
+                { id: 'A4', name: '平铺/竖版/3列', type: 'grid', mode: 'tile',
+                  containerWidth: 428, containerHeight: 228, containerPadding: '16px 18px',
+                  cols: 3, totalCols: 3, itemWidth: 120, thumbWidth: 120, thumbHeight: 168, thumbRadius: 12,
+                  labelSize: 14, labelHeight: 20, labelGap: 8, itemGapX: 16 },
+                { id: 'A5', name: '平铺/正方形/3列', type: 'grid', mode: 'tile',
+                  containerWidth: 428, containerHeight: 180, containerPadding: '16px 18px',
+                  cols: 3, totalCols: 3, itemWidth: 120, thumbWidth: 120, thumbHeight: 120, thumbRadius: 12,
+                  labelSize: 14, labelHeight: 20, labelGap: 8, itemGapX: 16 },
+                { id: 'A6', name: '平铺/正方形/4列', type: 'grid', mode: 'tile',
                   containerWidth: 428, containerHeight: 145, containerPadding: '16px 14px',
-                  cols: 4, totalCols: 4, itemWidth: 88, thumbWidth: 88, thumbHeight: 88, thumbRadius: 16,
+                  cols: 4, totalCols: 4, itemWidth: 88, thumbWidth: 88, thumbHeight: 88, thumbRadius: 12,
                   labelSize: 12, labelHeight: 17, labelGap: 8, itemGapX: 16 },
-                { id: 'A5', name: '平铺/圆形/4个', type: 'grid', mode: 'tile',
+                { id: 'A7', name: '平铺/圆形/4列', type: 'grid', mode: 'tile',
                   containerWidth: 428, containerHeight: 109, containerPadding: '12px 24px',
                   cols: 4, totalCols: 4, itemWidth: 64, thumbWidth: 64, thumbHeight: 64, thumbRadius: 32,
-                  labelSize: 12, labelHeight: 17, labelGap: 4, itemGapX: 41.33,
-                  useIcon: true, iconRepeat: 15 },
-                { id: 'A6', name: '平铺/圆形/5个', type: 'grid', mode: 'tile',
+                  labelSize: 12, labelHeight: 17, labelGap: 4, itemGapX: 41.33 },
+                { id: 'A8', name: '平铺/圆形(宽)/5列', type: 'grid', mode: 'tile',
                   containerWidth: 428, containerHeight: 121, containerPadding: '16px 20px',
-                  cols: 5, totalCols: 5, itemWidth: 64, thumbWidth: 64, thumbHeight: 64, thumbRadius: 32,
-                  labelSize: 12, labelHeight: 17, labelGap: 8, itemGapX: 17,
-                  useIcon: true, iconRepeat: 1 },
-                { id: 'A7', name: '平铺/圆形/5个', type: 'grid', mode: 'tile',
+                  cols: 5, totalCols: 5, itemWidth: 64, thumbWidth: 64, thumbHeight: 64, thumbRadius: 12,
+                  labelSize: 12, labelHeight: 17, labelGap: 8, itemGapX: 17 },
+                { id: 'A9', name: '平铺/圆形(紧)/5列', type: 'grid', mode: 'tile',
                   containerWidth: 428, containerHeight: 109, containerPadding: '12px 20px',
                   cols: 5, totalCols: 5, itemWidth: 64, thumbWidth: 64, thumbHeight: 64, thumbRadius: 32,
-                  labelSize: 12, labelHeight: 17, labelGap: 4, itemGapX: 17,
-                  useIcon: true, iconRepeat: 15 },
-                { id: 'A8', name: '平铺/横版/2个', type: 'grid', mode: 'tile',
-                  containerWidth: 428, containerHeight: 329, containerPadding: '16px',
-                  cols: 2, totalCols: 2, itemWidth: 190, thumbWidth: 190, thumbHeight: 269, thumbRadius: 16,
-                  labelSize: 14, labelHeight: 20, labelGap: 8, itemGapX: 16 },
-                { id: 'A9', name: '平铺/竖版/3个', type: 'grid', mode: 'tile',
-                  containerWidth: 428, containerHeight: 228, containerPadding: '16px 18px',
-                  cols: 3, totalCols: 3, itemWidth: 120, thumbWidth: 120, thumbHeight: 168, thumbRadius: 16,
-                  labelSize: 14, labelHeight: 20, labelGap: 8, itemGapX: 16 },
+                  labelSize: 12, labelHeight: 17, labelGap: 4, itemGapX: 17 },
                 // === B 横滑 ===
-                { id: 'B1', name: '横滑/正方形', type: 'grid', mode: 'scroll',
-                  containerWidth: 428, containerHeight: 172, containerPadding: '16px',
-                  cols: 3, totalCols: 8, itemWidth: 112, thumbWidth: 112, thumbHeight: 112, thumbRadius: 16,
+                { id: 'B1', name: '横滑/竖版/2列', type: 'grid', mode: 'scroll',
+                  containerWidth: 428, containerHeight: 316, containerPadding: '16px',
+                  cols: 2, totalCols: 6, itemWidth: 172, thumbWidth: 172, thumbHeight: 256, thumbRadius: 12,
                   labelSize: 14, labelHeight: 20, labelGap: 8, itemGapX: 16 },
-                { id: 'B2', name: '横滑/正方形', type: 'grid', mode: 'scroll',
+                { id: 'B2', name: '横滑/竖版/3列', type: 'grid', mode: 'scroll',
+                  containerWidth: 428, containerHeight: 212, containerPadding: '16px',
+                  cols: 3, totalCols: 8, itemWidth: 108, thumbWidth: 108, thumbHeight: 152, thumbRadius: 12,
+                  labelSize: 14, labelHeight: 20, labelGap: 8, itemGapX: 16 },
+                { id: 'B3', name: '横滑/正方形/3列', type: 'grid', mode: 'scroll',
+                  containerWidth: 428, containerHeight: 172, containerPadding: '16px',
+                  cols: 3, totalCols: 8, itemWidth: 112, thumbWidth: 112, thumbHeight: 112, thumbRadius: 12,
+                  labelSize: 14, labelHeight: 20, labelGap: 8, itemGapX: 16 },
+                { id: 'B4', name: '横滑/正方形/4列', type: 'grid', mode: 'scroll',
                   containerWidth: 428, containerHeight: 137, containerPadding: '16px',
                   cols: 4, totalCols: 10, itemWidth: 80, thumbWidth: 80, thumbHeight: 80, thumbRadius: 12,
                   labelSize: 12, labelHeight: 17, labelGap: 8, itemGapX: 16 },
-                { id: 'B3', name: '横滑/圆形', type: 'grid', mode: 'scroll',
+                { id: 'B5', name: '横滑/圆形(矩)/6列', type: 'grid', mode: 'scroll',
                   containerWidth: 428, containerHeight: 114, containerPadding: '16px',
-                  cols: 6, totalCols: 12, itemWidth: 60, thumbWidth: 60, thumbHeight: 60, thumbRadius: 30,
+                  cols: 6, totalCols: 12, itemWidth: 60, thumbWidth: 60, thumbHeight: 60, thumbRadius: 12,
                   labelSize: 10, labelHeight: 14, labelGap: 8, itemGapX: 16 },
-                { id: 'B4', name: '横滑/圆形', type: 'grid', mode: 'scroll',
+                { id: 'B6', name: '横滑/圆形(圆)/6列', type: 'grid', mode: 'scroll',
                   containerWidth: 428, containerHeight: 112, containerPadding: '16px',
                   cols: 6, totalCols: 12, itemWidth: 60, thumbWidth: 60, thumbHeight: 60, thumbRadius: 30,
                   labelSize: 10, labelHeight: 14, labelGap: 6, itemGapX: 16 },
-                { id: 'B5', name: '横滑/圆形', type: 'grid', mode: 'scroll',
+                { id: 'B7', name: '横滑/圆形(矩)/7列', type: 'grid', mode: 'scroll',
                   containerWidth: 428, containerHeight: 106, containerPadding: '16px 12px',
-                  cols: 7, totalCols: 14, itemWidth: 52, thumbWidth: 52, thumbHeight: 52, thumbRadius: 26,
+                  cols: 7, totalCols: 14, itemWidth: 52, thumbWidth: 52, thumbHeight: 52, thumbRadius: 12,
                   labelSize: 10, labelHeight: 14, labelGap: 8, itemGapX: 16 },
-                { id: 'B6', name: '横滑/圆形', type: 'grid', mode: 'scroll',
+                { id: 'B8', name: '横滑/圆形(圆)/7列', type: 'grid', mode: 'scroll',
                   containerWidth: 428, containerHeight: 104, containerPadding: '16px 12px',
                   cols: 7, totalCols: 14, itemWidth: 52, thumbWidth: 52, thumbHeight: 52, thumbRadius: 26,
-                  labelSize: 10, labelHeight: 14, labelGap: 6, itemGapX: 16 },
-                { id: 'B7', name: '横滑/竖版', type: 'grid', mode: 'scroll',
-                  containerWidth: 428, containerHeight: 316, containerPadding: '16px',
-                  cols: 2, totalCols: 6, itemWidth: 172, thumbWidth: 172, thumbHeight: 256, thumbRadius: 15.2,
-                  labelSize: 14, labelHeight: 20, labelGap: 8, itemGapX: 16 },
-                { id: 'B8', name: '横滑/竖版', type: 'grid', mode: 'scroll',
-                  containerWidth: 428, containerHeight: 212, containerPadding: '16px',
-                  cols: 3, totalCols: 8, itemWidth: 108, thumbWidth: 108, thumbHeight: 152, thumbRadius: 16,
-                  labelSize: 14, labelHeight: 20, labelGap: 8, itemGapX: 16 }
+                  labelSize: 10, labelHeight: 14, labelGap: 6, itemGapX: 16 }
             ];
         }
 
@@ -3174,6 +3307,7 @@
                 action_sheet: generateActionSheetVariants().length,
                 dialog: generateDialogVariants().length,
                 half_screen_overlay: generateHalfScreenOverlayVariants().length,
+                toast: generateToastVariants().length,
                 aio_input: generateAioInputVariants().length,
                 card: generateCardVariants().length,
                 message: generateMessageVariants().length
@@ -3266,7 +3400,7 @@
                                             <div style="position: absolute; left: 0; top: 9px; text-align: right;">
                                                 <span style="font-size: 17px; font-family: PingFang SC; color: var(--text-secondary); white-space: nowrap;">辅助信息</span>
                                             </div>
-                                            <img src="icons/chevron_right.svg" style="position: absolute; left: 76px; top: 13px; width: 16px; height: 16px;">
+                                            <div class="icon-indicator chevron-right" style="position: absolute; left: 76px; top: 13px;"></div>
                                         </div>
                                     </div>
                                 </div>
@@ -3285,13 +3419,13 @@
                                             <img src="icons/empty_icon.svg" style="width: 16px; height: 16px;">
                                             <span style="font-size: 14px; font-family: PingFang SC; color: var(--text-secondary);">描述文本・描述文本</span>
                                             <span style="font-size: 14px; font-family: PingFang SC; color: var(--text-link);">textlink</span>
-                                            <img src="icons/chevron_right.svg" style="width: 12px; height: 12px;">
+                                            <div class="icon-indicator chevron-right" style="width:12px;height:12px;"></div>
                                         </div>
                                         <div style="position: absolute; left: 268px; top: 0; width: 92px; height: 72px;">
                                             <div style="position: absolute; left: 0; top: 24px; text-align: right;">
                                                 <span style="font-size: 17px; font-family: PingFang SC; color: var(--text-secondary); white-space: nowrap;">辅助信息</span>
                                             </div>
-                                            <img src="icons/chevron_right.svg" style="position: absolute; left: 76px; top: 28px; width: 16px; height: 16px;">
+                                            <div class="icon-indicator chevron-right" style="position: absolute; left: 76px; top: 28px;"></div>
                                         </div>
                                     </div>
                                 </div>
@@ -3324,7 +3458,7 @@
                                     <div style="font-size: 17px; color: var(--text-primary);">标题文本</div>
                                     <div style="display: flex; align-items: center; gap: 4px;">
                                         <span style="font-size: 17px; color: var(--text-secondary);">辅助信息</span>
-                                        <img src="icons/chevron_right.svg" style="width: 12px; height: 12px;">
+                                        <div class="icon-indicator chevron-right" style="width:12px;height:12px;"></div>
                                     </div>
                                 </div>
                             </div>
@@ -3341,11 +3475,11 @@
                                 <div style="width: 396px; margin: 0 16px; background: var(--bg-item); border-radius: 12px; overflow: hidden;">
                                      <div style="height: 56px; display: flex; align-items: center; padding: 0 16px; justify-content: space-between; border-bottom: 0.5px solid rgba(0,0,0,0.08);">
                                         <div style="font-size: 17px;">标题文本</div>
-                                        <img src="icons/chevron_right.svg" style="width: 24px;">
+                                        <div class="icon-indicator chevron-right" style="width:24px;height:24px;"></div>
                                      </div>
                                       <div style="height: 56px; display: flex; align-items: center; padding: 0 16px; justify-content: space-between;">
                                         <div style="font-size: 17px;">标题文本</div>
-                                        <img src="icons/chevron_right.svg" style="width: 24px;">
+                                        <div class="icon-indicator chevron-right" style="width:24px;height:24px;"></div>
                                      </div>
                                 </div>
                             </div>
@@ -3354,10 +3488,10 @@
                 `;
             } else if (type === 'action') {
                 // Action 操作组件预览 — 使用A1子组件「双按钮（二级+一级）」样式
-                // A1: dual-btn, .action-button-row 84px高
+                // A1: dual-btn, .action-button-row 52px高
                 return `
-                    <div style="width: 214px; height: 42px; position: relative; overflow: hidden;">
-                        <div style="position: absolute; top: 0; left: 0; transform: scale(0.5); transform-origin: top left; width: 428px; height: 84px;">
+                    <div style="width: 214px; height: 26px; position: relative; overflow: hidden;">
+                        <div style="position: absolute; top: 0; left: 0; transform: scale(0.5); transform-origin: top left; width: 428px; height: 52px;">
                             <div class="action-button-row" style="width: 428px;">
                                 <div class="action-btn-secondary" style="width: 184px;">按钮</div>
                                 <div class="action-btn-primary" style="width: 184px;">按钮</div>
@@ -3438,13 +3572,13 @@
                     </div>
                 `;
             } else if (type === 'text_block') {
-                // TextBlock 文本块预览 — 使用A1子组件「大标题·单行」样式
-                // A1: 428×50px, 26px标题
+                // TextBlock 文本块预览 — 使用H1子组件「大标题」样式
+                // H1: 428×50px, 26px标题, padding: 8px 16px
                 return `
                     <div style="width: 214px; height: 25px; position: relative; overflow: hidden;">
                         <div style="position: absolute; top: 0; left: 0; transform: scale(0.5); transform-origin: top left; width: 428px; height: 50px;">
-                            <div class="text-block-container" style="width: 428px; height: 50px;">
-                                <div class="text-block-title left" style="position: absolute; width: 388px; left: 20px; top: 8px;">大标题 Semibold 26/34</div>
+                            <div class="text-block-container" style="width: 428px; padding-top: 8px; padding-bottom: 8px; align-items: center;">
+                                <div class="text-block-title left" style="flex:1; min-width:0;">大标题 Semibold 26/34</div>
                             </div>
                         </div>
                     </div>
@@ -3610,6 +3744,15 @@
                         </div>
                     </div>
                 `;
+            } else if (type === 'toast') {
+                return `
+                    <div style="width:214px;height:30px;position:relative;overflow:hidden;border-radius:6px;display:flex;align-items:center;justify-content:center;">
+                        <div style="background:rgba(0,0,0,0.6);backdrop-filter:blur(20px);border-radius:8px;padding:5px 10px;display:inline-flex;align-items:center;gap:4px;white-space:nowrap;">
+                            <img src="icons/QUI_24_icons/tick_circle.svg" width="12" height="12" style="display:block;filter:brightness(0) invert(1);">
+                            <span style="font-size:9px;color:white;font-family:'PingFang SC',sans-serif;">Toast提示</span>
+                        </div>
+                    </div>
+                `;
             } else if (type === 'button') {
                 // Button 按钮预览 — 仅展示一个一级大按钮
                 return `
@@ -3686,6 +3829,8 @@
         }
 
         function selectParentComponent(id) {
+            // 记住选中的组件
+            localStorage.setItem('builder_component', id);
             // 更新选中状态
             document.querySelectorAll('.sidebar-item').forEach(item => {
                 item.classList.toggle('active', item.dataset.id === id);
@@ -3699,47 +3844,31 @@
             window.currentComponentType = id;
 
             // 渲染变体列表
-            if (id === 'list') {
-                renderListVariants();
-            } else if (id === 'navbar') {
-                renderNavbarVariants();
-            } else if (id === 'form') {
-                renderFormVariants();
-            } else if (id === 'action') {
-                renderActionVariants();
-            } else if (id === 'action_sheet') {
-                renderActionSheetVariants();
-            } else if (id === 'image_block') {
-                renderImageBlockVariants();
-            } else if (id === 'data_filter') {
-                renderDataFilterVariants();
-            } else if (id === 'text_block') {
-                renderTextBlockVariants();
-            } else if (id === 'grid') {
-                renderGridVariants();
-            } else if (id === 'hs_navbar') {
-                renderHsNavbarVariants();
-            } else if (id === 'divider_spacing') {
-                renderDividerSpacingVariants();
-            } else if (id === 'search') {
-                renderSearchVariants();
-            } else if (id === 'textfield') {
-                renderTextFieldVariants();
-            } else if (id === 'dialog') {
-                renderDialogVariants();
-            } else if (id === 'menu') {
-                renderMenuVariants();
-            }             else if (id === 'half_screen_overlay') {
-                renderHalfScreenOverlayVariants();
-            } else if (id === 'button') {
-                renderButtonVariants();
-            } else if (id === 'aio_input') {
-                renderAioInputVariants();
-            } else if (id === 'card') {
-                renderCardVariants();
-            } else if (id === 'message') {
-                renderMessageVariants();
-            }
+            const VARIANT_RENDER_MAP = {
+                list:                renderListVariants,
+                navbar:              renderNavbarVariants,
+                form:                renderFormVariants,
+                action:              renderActionVariants,
+                action_sheet:        renderActionSheetVariants,
+                image_block:         renderImageBlockVariants,
+                data_filter:         renderDataFilterVariants,
+                text_block:          renderTextBlockVariants,
+                grid:                renderGridVariants,
+                hs_navbar:           renderHsNavbarVariants,
+                divider_spacing:     renderDividerSpacingVariants,
+                search:              renderSearchVariants,
+                textfield:           renderTextFieldVariants,
+                dialog:              renderDialogVariants,
+                menu:                renderMenuVariants,
+                half_screen_overlay: renderHalfScreenOverlayVariants,
+                toast:               renderToastVariants,
+                button:              renderButtonVariants,
+                aio_input:           renderAioInputVariants,
+                card:                renderCardVariants,
+                message:             renderMessageVariants,
+            };
+            const renderFn = VARIANT_RENDER_MAP[id];
+            if (renderFn) renderFn();
         }
 
         // 组件ID到MD文档的映射
@@ -3760,6 +3889,7 @@
             dialog: 'md/DIALOG_COMPONENT_SPEC.md',
             menu: 'md/MENU_COMPONENT_SPEC.md',
             half_screen_overlay: 'md/HALF_SCREEN_OVERLAY_COMPONENT_SPEC.md',
+            toast: 'md/TOAST_COMPONENT_SPEC.md',
             button: 'md/BUTTON_COMPONENT_SPEC.md',
             aio_input: 'md/AIO_INPUT_COMPONENT_SPEC.md',
             card: 'md/CARD_COMPONENT_SPEC.md',
@@ -4374,6 +4504,227 @@
             });
         }
 
+        // ========== Toast 轻提示 ==========
+        // 注入 keyframes（只执行一次）
+        (function() {
+            if (!document.getElementById('toast-builder-spin-style')) {
+                const s = document.createElement('style');
+                s.id = 'toast-builder-spin-style';
+                s.textContent = '@keyframes toast-spin{from{transform:rotate(0deg)}to{transform:rotate(360deg)}}';
+                document.head.appendChild(s);
+            }
+        })();
+
+        function generateToastVariants() {
+            return [
+                { id: 'T1', name: '加载中',   type: 'toast', toastType: 'loading' },
+                { id: 'T2', name: '成功',     type: 'toast', toastType: 'success' },
+                { id: 'T3', name: '失败',     type: 'toast', toastType: 'fail'    },
+                { id: 'T4', name: '中性文字', type: 'toast', toastType: 'text'    },
+                { id: 'T5', name: '带操作',   type: 'toast', toastType: 'action'  }
+            ];
+        }
+
+        function buildToastElement(variant) {
+            const t = variant.toastType;
+            const TOAST_BG = 'background:var(--qq-bg-toast-nonopaque,rgba(0,0,0,0.6));backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);border-radius:16px;';
+            const LOADING = `<img src="icons/loading.svg" width="24" height="24" style="display:block;filter:brightness(0) invert(1);animation:toast-spin 1s linear infinite;">`;
+            const SUCCESS = `<img src="icons/QUI_24_icons/tick_circle.svg" width="24" height="24" style="display:block;filter:brightness(0) invert(1);">`;
+            const FAIL    = `<img src="icons/QUI_24_icons/caution_filled.svg" width="24" height="24" style="display:block;filter:brightness(0) invert(1);">`;
+            const el = document.createElement('div');
+            if (t === 'action') {
+                el.style.cssText = `${TOAST_BG}display:flex;align-items:center;justify-content:space-between;padding:12px 16px;height:52px;width:396px;box-sizing:border-box;`;
+                el.innerHTML = `
+                    <div style="display:flex;align-items:center;gap:4px;">${SUCCESS}<span style="font-family:'PingFang SC',sans-serif;font-size:16px;font-weight:400;line-height:22px;color:white;white-space:nowrap;">带操作Toast提示文案</span></div>
+                    <span class="toast-action-btn" style="font-family:'PingFang SC',sans-serif;font-size:14px;font-weight:400;line-height:22px;color:#4db8ff;white-space:nowrap;cursor:pointer;pointer-events:auto;">撤销</span>
+                `;
+            } else if (t === 'text') {
+                el.style.cssText = `${TOAST_BG}display:inline-flex;align-items:center;padding:12px 16px;height:44px;box-sizing:border-box;`;
+                el.innerHTML = `<span style="font-family:'PingFang SC',sans-serif;font-size:16px;font-weight:400;line-height:20px;color:white;white-space:nowrap;">Toast中性提示文案</span>`;
+            } else {
+                const icon = t === 'loading' ? LOADING : t === 'success' ? SUCCESS : FAIL;
+                const text = t === 'loading' ? '加载中' : t === 'success' ? '成功提示文案' : '失败提示文案';
+                el.style.cssText = `${TOAST_BG}display:inline-flex;align-items:center;gap:4px;padding:12px 16px;height:44px;box-sizing:border-box;`;
+                el.innerHTML = `${icon}<span style="font-family:'PingFang SC',sans-serif;font-size:16px;font-weight:400;line-height:20px;color:white;white-space:nowrap;">${text}</span>`;
+            }
+            return el;
+        }
+
+        function renderToastVariants() {
+            const variants = generateToastVariants();
+            const container = document.getElementById('variantList');
+            document.getElementById('variantTitle').textContent = '轻提示 Toast';
+            document.getElementById('variantCount').textContent = `${variants.length} 个变体（T1-T5）`;
+            setComponentDefinition('toast');
+            container.innerHTML = '';
+
+            variants.forEach(v => {
+                const card = document.createElement('div');
+                card.className = 'stateful-variant-card';
+                card.style.cursor = 'pointer';
+                card.title = '点击在画布中播放动画';
+
+                const left = document.createElement('div');
+                left.className = 'stateful-variant-left';
+                left.innerHTML = `<span class="variant-id">${v.id}</span><span class="variant-type-label">${v.name}</span>`;
+                card.appendChild(left);
+
+                const right = document.createElement('div');
+                right.className = 'stateful-variant-right';
+
+                const previewWrap = document.createElement('div');
+                previewWrap.className = 'stateful-variant-preview';
+                // 不可拖拽，点击触发动画
+                const preview = document.createElement('div');
+                preview.className = 'variant-preview';
+                preview.style.pointerEvents = 'none';
+                preview.appendChild(createToastPreview(v));
+                previewWrap.appendChild(preview);
+                right.appendChild(previewWrap);
+                card.appendChild(right);
+                container.appendChild(card);
+
+                // 点击卡片 → 在画布 phone-frame 内播放 Toast 动画
+                card.addEventListener('click', () => {
+                    const frame = document.querySelector('.phone-frame');
+                    if (!frame) return;
+                    const isT5 = v.toastType === 'action';
+
+                    // 移除已有的 toast 演示元素
+                    frame.querySelectorAll('.toast-demo-el').forEach(el => el.remove());
+
+                    const toastEl = buildToastElement(v);
+                    toastEl.classList.add('toast-demo-el');
+                    toastEl.style.position = 'absolute';
+                    toastEl.style.zIndex = '9999';
+                    toastEl.style.pointerEvents = 'none';
+                    toastEl.style.transition = isT5
+                        ? 'opacity 0.3s ease, transform 0.3s ease'
+                        : 'opacity 0.25s ease, transform 0.25s ease';
+
+                    if (isT5) {
+                        // T5：底部上方 64px，水平居中
+                        toastEl.style.left = '50%';
+                        toastEl.style.bottom = '64px';
+                        toastEl.style.transform = 'translateX(-50%) translateY(8px)';
+                        toastEl.style.opacity = '0';
+                        frame.appendChild(toastEl);
+                        requestAnimationFrame(() => requestAnimationFrame(() => {
+                            toastEl.style.opacity = '1';
+                            toastEl.style.transform = 'translateX(-50%) translateY(0)';
+                        }));
+                        // 点击操作文字链：立即消失
+                        const actionBtn = toastEl.querySelector('.toast-action-btn');
+                        let dismissed = false;
+                        function dismiss() {
+                            if (dismissed) return;
+                            dismissed = true;
+                            toastEl.style.opacity = '0';
+                            toastEl.style.transform = 'translateX(-50%) translateY(8px)';
+                            setTimeout(() => toastEl.remove(), 300);
+                        }
+                        if (actionBtn) actionBtn.addEventListener('click', dismiss);
+                        setTimeout(dismiss, 3000);
+                    } else {
+                        // T1-T4：页面正中央
+                        toastEl.style.left = '50%';
+                        toastEl.style.top = '50%';
+                        toastEl.style.transform = 'translate(-50%, -50%) scale(0.92)';
+                        toastEl.style.opacity = '0';
+                        frame.appendChild(toastEl);
+                        requestAnimationFrame(() => requestAnimationFrame(() => {
+                            toastEl.style.opacity = '1';
+                            toastEl.style.transform = 'translate(-50%, -50%) scale(1)';
+                        }));
+                        const duration = v.toastType === 'loading' ? 99999 : 2000;
+                        setTimeout(() => {
+                            toastEl.style.opacity = '0';
+                            toastEl.style.transform = 'translate(-50%, -50%) scale(0.92)';
+                            setTimeout(() => toastEl.remove(), 250);
+                        }, duration);
+                    }
+                });
+            });
+        }
+
+        function createToastPreview(variant) {
+            // 预览容器：无背景色，直接展示 Toast
+            const wrap = document.createElement('div');
+            const isT5 = variant.toastType === 'action';
+            const h = isT5 ? 60 : 48;
+            wrap.style.cssText = `width:214px;height:${h}px;border-radius:6px;position:relative;overflow:hidden;display:flex;align-items:center;justify-content:center;`;
+            const toastEl = buildToastElement(variant);
+            // 缩放 0.5
+            const scaleWrap = document.createElement('div');
+            scaleWrap.style.cssText = 'transform:scale(0.5);transform-origin:center center;';
+            scaleWrap.appendChild(toastEl);
+            wrap.appendChild(scaleWrap);
+            return wrap;
+        }
+
+        function createFullToastComponent(variant) {
+            // 在画布上放置：无背景色，直接展示 Toast
+            const isT5 = variant.toastType === 'action';
+            const wrap = document.createElement('div');
+            wrap.style.cssText = `width:428px;height:${isT5 ? 120 : 96}px;border-radius:12px;position:relative;display:flex;align-items:center;justify-content:center;`;
+
+            // 提示标签
+            const label = document.createElement('div');
+            label.style.cssText = 'position:absolute;top:6px;left:8px;font-size:10px;color:var(--text-tertiary);font-family:"PingFang SC",sans-serif;opacity:0.6;';
+            label.textContent = isT5 ? `${variant.id} ${variant.name} · 底部上方64px · 显示3秒` : `${variant.id} ${variant.name} · 页面正中央 · 显示2秒`;
+            wrap.appendChild(label);
+
+            if (isT5) {
+                const posWrap = document.createElement('div');
+                posWrap.style.cssText = 'position:absolute;bottom:16px;left:50%;transform:translateX(-50%);';
+                posWrap.appendChild(buildToastElement(variant));
+                wrap.appendChild(posWrap);
+            } else {
+                wrap.appendChild(buildToastElement(variant));
+            }
+
+            // 点击演示动画按钮（无模态遮罩）
+            const btn = document.createElement('div');
+            btn.style.cssText = 'position:absolute;top:6px;right:8px;font-size:10px;color:var(--text-tertiary);cursor:pointer;font-family:"PingFang SC",sans-serif;opacity:0.6;';
+            btn.textContent = '▶ 动画';
+            btn.addEventListener('click', () => {
+                const toastEl = buildToastElement(variant);
+                if (isT5) {
+                    toastEl.style.cssText += `position:fixed;left:50%;bottom:64px;transform:translateX(-50%) translateY(8px);opacity:0;z-index:9999;pointer-events:auto;transition:opacity 0.3s ease,transform 0.3s ease;`;
+                    document.body.appendChild(toastEl);
+                    requestAnimationFrame(() => requestAnimationFrame(() => {
+                        toastEl.style.opacity = '1';
+                        toastEl.style.transform = 'translateX(-50%) translateY(0)';
+                    }));
+                    const actionBtn2 = toastEl.querySelector('.toast-action-btn');
+                    let dismissed2 = false;
+                    function dismiss2() {
+                        if (dismissed2) return;
+                        dismissed2 = true;
+                        toastEl.style.opacity = '0';
+                        toastEl.style.transform = 'translateX(-50%) translateY(8px)';
+                        setTimeout(() => toastEl.remove(), 300);
+                    }
+                    if (actionBtn2) actionBtn2.addEventListener('click', dismiss2);
+                    setTimeout(dismiss2, 3000);
+                } else {
+                    toastEl.style.cssText += `position:fixed;left:50%;top:50%;transform:translate(-50%,-50%) scale(0.92);opacity:0;z-index:9999;pointer-events:none;transition:opacity 0.25s ease,transform 0.25s ease;`;
+                    document.body.appendChild(toastEl);
+                    requestAnimationFrame(() => requestAnimationFrame(() => {
+                        toastEl.style.opacity = '1';
+                        toastEl.style.transform = 'translate(-50%,-50%) scale(1)';
+                    }));
+                    setTimeout(() => {
+                        toastEl.style.opacity = '0';
+                        toastEl.style.transform = 'translate(-50%,-50%) scale(0.92)';
+                        setTimeout(() => toastEl.remove(), 250);
+                    }, 2000);
+                }
+            });
+            wrap.appendChild(btn);
+            return wrap;
+        }
+
         // ========== 按钮 Button 侧边栏渲染 ==========
         let btnConfig = { sizeKey: 'large', typeKey: 'primary' };
 
@@ -4853,7 +5204,7 @@
             preview.dataset.variant = JSON.stringify(variant); // 数据绑定在预览区域
 
             if (variant.type === 'list') {
-                preview.appendChild(createListPreview(variant.L, variant.C, variant.R));
+                preview.appendChild(createListPreview(variant.L, variant.C, variant.R, variant.multiSelect));
             } else if (variant.type === 'navbar') {
                 preview.appendChild(createNavbarPreview(variant.L, variant.C, variant.R));
             } else if (variant.type === 'form') {
@@ -4886,6 +5237,8 @@
                 preview.appendChild(createMenuPreview(variant));
             } else if (variant.type === 'half_screen_overlay') {
                 preview.appendChild(createHalfScreenOverlayPreview(variant));
+            } else if (variant.type === 'toast') {
+                preview.appendChild(createToastPreview(variant));
             } else if (variant.type === 'button') {
                 preview.appendChild(createButtonPreview(variant));
             } else if (variant.type === 'aio_input') {
@@ -4904,9 +5257,17 @@
         }
 
         // ========== Helper Functions (Synced from Matrix) ==========
-        function buildListRow(L, C, R) {
+        function buildListRow(L, C, R, multiSelect) {
             const row = document.createElement('div');
             row.className = `list-row ${C.id.toLowerCase()}`;
+
+            // 多选控件（前置）
+            if (multiSelect) {
+                const sel = document.createElement('div');
+                sel.className = 'list-selection';
+                sel.innerHTML = `<img src="icons/Checkbox.svg">`;
+                row.appendChild(sel);
+            }
             
             // Left
             const left = document.createElement('div');
@@ -4919,8 +5280,8 @@
             const content = document.createElement('div');
             content.className = 'content-area';
             content.innerHTML = `<div class="title">列表文本</div>` + 
-                (C.lines >= 2 ? `<div class="desc"><img src="icons/empty_icon.svg" style="width:16px;height:16px;margin-right:2px;">描述文本<span style="margin:0 2px">・</span>描述文本<span class="text-link">textlink</span><img src="icons/chevron_right.svg" style="width:16px;height:16px;margin-left:2px;"></div>` : '') +
-                (C.lines >= 3 ? `<div class="desc"><img src="icons/empty_icon.svg" style="width:16px;height:16px;margin-right:2px;">描述文本<span style="margin:0 2px">・</span>描述文本<span class="text-link">textlink</span><img src="icons/chevron_right.svg" style="width:16px;height:16px;margin-left:2px;"></div>` : '');
+                (C.lines >= 2 ? `<div class="desc"><span class="desc-text">描述文本・描述文本<span style="color:var(--text-link)">textlink</span></span></div>` : '') +
+                (C.lines >= 3 ? `<div class="desc"><span class="desc-text">描述文本・描述文本<span style="color:var(--text-link)">textlink</span></span></div>` : '');
             row.appendChild(content);
 
             // Right
@@ -4928,15 +5289,15 @@
             right.className = 'right-area';
             let rightHtml = '';
             switch(R.id) {
-                case 'R1': rightHtml = `<span style="font-size:17px;color:var(--text-secondary);margin-right:4px">辅助信息</span><img src="icons/chevron_right.svg">`; break;
-                case 'R2': rightHtml = `<span style="font-size:17px;color:var(--text-secondary);margin-right:4px">辅助信息</span><img src="icons/Avatar_32.svg" class="avatar-32" style="margin-right:8px;"><img src="icons/chevron_right.svg">`; break;
-                case 'R3': rightHtml = `<span style="font-size:17px;color:var(--text-secondary);margin-right:4px">辅助信息</span><img src="icons/Thumbnail_32.svg" style="width:32px;height:32px;border-radius:4px;margin-right:8px;"><img src="icons/chevron_right.svg">`; break;
+                case 'R1': rightHtml = `<span style="font-size:17px;color:var(--text-secondary);margin-right:4px;max-width:120px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">辅助信息</span><div class="icon-indicator chevron-right"></div>`; break;
+                case 'R2': rightHtml = `<span style="font-size:17px;color:var(--text-secondary);margin-right:4px;max-width:120px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">辅助信息</span><img src="icons/Avatar_32.svg" class="avatar-32" style="margin-right:8px;"><div class="icon-indicator chevron-right"></div>`; break;
+                case 'R3': rightHtml = `<span style="font-size:17px;color:var(--text-secondary);margin-right:4px;max-width:120px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">辅助信息</span><img src="icons/Thumbnail_32.svg" style="width:32px;height:32px;border-radius:4px;margin-right:8px;"><div class="icon-indicator chevron-right"></div>`; break;
                 case 'R4': rightHtml = `<div class="btn-secondary">按钮</div>`; break;
                 case 'R5': rightHtml = `<span class="text-link" style="font-size:17px">Action</span>`; break;
                 case 'R6': rightHtml = `<img src="icons/empty_icon.svg">`; break;
                 case 'R7': rightHtml = `<span class="amount">-258.00</span>`; break;
-                case 'R8': rightHtml = `<div style="display:flex;align-items:center;"><span class="amount" style="font-size:20px;">2630</span><div style="display:flex;flex-direction:column;align-items:center;margin-left:4px;"><span style="font-size:12px;color:var(--text-tertiary);line-height:1;margin-bottom:2px">6</span><img src="icons/heart.svg" style="width:16px"></div></div>`; break;
-                case 'R9': rightHtml = `<div style="display:flex;flex-direction:column;align-items:flex-end;"><span style="font-size:12px;color:var(--text-tertiary);margin-bottom:4px">17:53</span><img src="icons/remind_mute.svg"></div>`; break;
+                case 'R8': rightHtml = `<div style="display:flex;align-items:center;"><span class="amount" style="font-size:20px;">2630</span><div style="display:flex;flex-direction:column;align-items:center;margin-left:4px;"><span style="font-size:12px;color:var(--text-tertiary);line-height:1;margin-bottom:2px">6</span><div class="icon-indicator heart"></div></div></div>`; break;
+                case 'R9': rightHtml = `<div style="display:flex;flex-direction:column;align-items:flex-end;"><span style="font-size:12px;color:var(--text-tertiary);margin-bottom:4px">17:53</span><div class="icon-indicator remind-mute"></div></div>`; break;
             }
             right.innerHTML = rightHtml;
             row.appendChild(right);
@@ -5040,7 +5401,7 @@
 
         function buildFormRow(L, R) {
             const row = document.createElement('div');
-            const isDouble = ['L2', 'L4', 'L6', 'L7'].includes(L.id);
+            const isDouble = ['L2', 'L4', 'L6', 'L7', 'L10', 'L11'].includes(L.id);
             row.className = `form-row ${isDouble ? 'double-line' : 'single-line'}`;
             
             // Left Area
@@ -5048,15 +5409,22 @@
             left.className = 'left-area';
             
             let leftIconHtml = '';
-            if (['L3', 'L4'].includes(L.id)) {
+            if (L.isTick) {
+                // L8/L10 已勾选，L9/L11 未勾选（用透明占位保持对齐）
+                if (!L.unchecked) {
+                    leftIconHtml = `<img src="icons/tick.svg" style="width:24px; height:24px;">`;
+                } else {
+                    leftIconHtml = `<div style="width:24px; height:24px; flex-shrink:0;"></div>`;
+                }
+            } else if (['L3', 'L4'].includes(L.id)) {
                 leftIconHtml = `<img src="${L.icon || 'icons/empty_icon.svg'}" style="width:24px; height:24px;">`;
             } else if (['L5', 'L6'].includes(L.id)) {
-                leftIconHtml = `<img src="icons/secondary.svg" style="width:24px; height:24px;">`;
+                leftIconHtml = `<div class="icon-indicator secondary-icon"></div>`;
             } else if (L.id === 'L7') {
                 leftIconHtml = `<img src="${L.icon || 'icons/Avatar_40.svg'}" style="width:40px; height:40px; border-radius:50%;">`;
             }
             
-            const textGroup = `<div style="display:flex; flex-direction:column;">
+            const textGroup = `<div class="text-group">
                 <div class="title">${L.title || '标题文本'}</div>
                 ${(isDouble && L.subtitle) ? `<div class="subtitle">${L.subtitle}</div>` : ''}
             </div>`;
@@ -5073,13 +5441,13 @@
                 case 'R0/Empty':
                     break;
                 case 'R1': 
-                    rightHtml = `${R.text ? `<span class="helper-text">${R.text}</span>` : ''}<img src="icons/chevron_right.svg" style="width:16px; height:16px;">`;
+                    rightHtml = `${R.text ? `<span class="helper-text">${R.text}</span>` : ''}<div class="icon-indicator chevron-right"></div>`;
                     break;
                 case 'R2': 
-                    rightHtml = `${R.text ? `<span class="helper-text">${R.text}</span>` : ''}<img src="icons/expand_list.svg" style="width:16px; height:16px;">`;
+                    rightHtml = `${R.text ? `<span class="helper-text">${R.text}</span>` : ''}<div class="icon-indicator expand-list"></div>`;
                     break;
                 case 'R3': 
-                    rightHtml = `<img src="${R.avatar || 'icons/Avatar_32.svg'}" style="width:32px; height:32px; border-radius:50%; margin-right:4px;"><img src="icons/chevron_right.svg" style="width:16px; height:16px;">`;
+                    rightHtml = `${R.text ? `<span class="helper-text">${R.text}</span>` : ''}<img src="${R.avatar || 'icons/Avatar_32.svg'}" style="width:32px; height:32px; border-radius:50%; margin-right:4px;"><div class="icon-indicator chevron-right"></div>`;
                     break;
                 case 'R4': 
                     rightHtml = `<div class="form-switch"></div>`;
@@ -5097,8 +5465,8 @@
             return row;
         }
 
-        function createListPreview(L, C, R) {
-            const component = buildListRow(L, C, R);
+        function createListPreview(L, C, R, multiSelect) {
+            const component = buildListRow(L, C, R, multiSelect);
             return wrapForPreview(component, (C.lines === 1 ? 52 : 72));
         }
 
@@ -5109,7 +5477,7 @@
 
         function createFormPreview(L, R) {
             const component = buildFormRow(L, R);
-            const isDouble = ['L2', 'L4', 'L6', 'L7'].includes(L.id);
+            const isDouble = ['L2', 'L4', 'L6', 'L7', 'L10', 'L11'].includes(L.id);
             return wrapForPreview(component, (isDouble ? 72 : 56));
         }
 
@@ -5208,7 +5576,7 @@
                 }
                 return row;
             } else if (variant.actions) {
-                // B. 辅助操作行 — 纯 Action 链接
+                // B5-B7. 辅助操作行 — 纯 Action 链接
                 const row = document.createElement('div');
                 row.className = 'action-row';
                 row.style.width = '428px';
@@ -5225,14 +5593,17 @@
                 }
                 return row;
             } else {
-                // B. 辅助操作行 — 勾选/文案/文字链型
+                // B1-B4. 辅助操作行 — 勾选/文案/文字链型，全部 36px 单行
+                const isLeft = variant.checkboxAlign === 'left';
                 const row = document.createElement('div');
                 row.className = 'action-row';
                 row.style.width = '428px';
+                row.style.height = '36px';
+                row.style.justifyContent = isLeft ? 'flex-start' : 'center';
                 if (variant.hasCheckbox) {
                     const cb = document.createElement('img');
-                    cb.src = 'icons/Checkbox.svg';
-                    cb.className = 'action-checkbox';
+                    cb.src = 'icons/Checkbox_filled.svg';
+                    cb.style.cssText = 'width:16px; height:16px; flex-shrink:0; margin-right:4px;';
                     row.appendChild(cb);
                 }
                 if (variant.text) {
@@ -5253,14 +5624,14 @@
 
         function createActionPreview(variant) {
             const component = buildActionRow(variant);
-            let height = 36;
+            let height = variant.height || 36;
             if (variant.layout) {
                 if (variant.layout === 'grid-4' || variant.layout === 'mixed-check-btn') {
                     height = 72;
                 } else if (variant.layout === 'icon-6-row' || variant.layout === 'icon-text-4') {
                     height = 48;
                 } else {
-                    height = 84;
+                    height = 52;
                 }
             }
             return wrapForPreview(component, height);
@@ -5700,7 +6071,7 @@
                         if (i > 0) {
                             const sep = document.createElement('div');
                             sep.className = 'df-breadcrumb-sep';
-                            sep.innerHTML = '<img src="icons/chevron_right.svg" width="12" height="12">';
+                            sep.innerHTML = '<div class="icon-indicator chevron-right" style="width:12px;height:12px;"></div>';
                             inner.appendChild(sep);
                         }
                         const item = document.createElement('span');
@@ -5719,7 +6090,7 @@
                         if (i > 0) {
                             const sep = document.createElement('div');
                             sep.className = 'df-breadcrumb-sep';
-                            sep.innerHTML = '<img src="icons/chevron_right.svg" width="12" height="12">';
+                            sep.innerHTML = '<div class="icon-indicator chevron-right" style="width:12px;height:12px;"></div>';
                             inner.appendChild(sep);
                         }
                         const item = document.createElement('span');
@@ -5744,13 +6115,13 @@
             const container = document.createElement('div');
             container.className = 'text-block-container';
             container.style.width = '428px';
-            container.style.height = variant.containerHeight + 'px';
+            container.style.paddingTop = variant.paddingY + 'px';
+            container.style.paddingBottom = variant.paddingY + 'px';
+            container.style.alignItems = 'center';
 
             const textDiv = document.createElement('div');
-            textDiv.style.position = 'absolute';
-            textDiv.style.width = variant.textWidth + 'px';
-            textDiv.style.left = variant.textLeft + 'px';
-            textDiv.style.top = variant.textTop + 'px';
+            textDiv.style.flex = '1';
+            textDiv.style.minWidth = '0';
 
             if (variant.textType === 'title') {
                 textDiv.className = 'text-block-title ' + variant.textAlign;
@@ -5760,16 +6131,10 @@
                 textDiv.className = 'text-block-aux-title ' + variant.textAlign;
             } else if (variant.textType === 'body') {
                 textDiv.className = 'text-block-body ' + variant.textAlign;
-                textDiv.style.display = 'inline-block';
-                textDiv.style.verticalAlign = 'middle';
             } else if (variant.textType === 'summary') {
                 textDiv.className = 'text-block-summary ' + variant.textAlign;
-                textDiv.style.display = 'inline-block';
-                textDiv.style.verticalAlign = 'middle';
             } else if (variant.textType === 'hint') {
                 textDiv.className = 'text-block-hint ' + variant.textAlign;
-                textDiv.style.display = 'inline-block';
-                textDiv.style.verticalAlign = 'middle';
             }
 
             textDiv.innerHTML = variant.textContent;
@@ -5779,7 +6144,11 @@
 
         function createTextBlockPreview(variant) {
             const component = buildTextBlockRow(variant);
-            return wrapForPreview(component, variant.containerHeight);
+            // 预览高度：标题类用固定高度，正文类自适应用行高估算
+            const previewH = variant.paddingY > 0
+                ? (variant.textType === 'title' ? 50 : variant.textType === 'subtitle' ? 36 : 34)
+                : (variant.textType === 'body' ? 48 : variant.textType === 'summary' ? 40 : 34);
+            return wrapForPreview(component, previewH);
         }
 
         function wrapForPreview(component, height) {
@@ -6225,7 +6594,7 @@
             // 添加组件内容
             let component;
             if (variant.type === 'list') {
-                component = createFullListComponent(variant.L, variant.C, variant.R);
+                component = createFullListComponent(variant.L, variant.C, variant.R, variant.multiSelect);
             } else if (variant.type === 'navbar') {
                 component = createFullNavbarComponent(variant.L, variant.C, variant.R);
             } else if (variant.type === 'form') {
@@ -6260,6 +6629,8 @@
                 component = createFullMenuComponent(variant);
             } else if (variant.type === 'half_screen_overlay') {
                 component = createFullHalfScreenOverlayComponent(variant);
+            } else if (variant.type === 'toast') {
+                component = createFullToastComponent(variant);
             } else if (variant.type === 'button') {
                 component = createFullButtonComponent(variant);
             } else if (variant.type === 'aio_input') {
@@ -6390,47 +6761,65 @@
             });
         }
 
-        function createFullListComponent(L, C, R) {
+        function createFullListComponent(L, C, R, multiSelect) {
             const row = document.createElement('div');
             row.className = `list-row ${C.id.toLowerCase()}`;
             row.style.display = 'flex';
             row.style.alignItems = 'center';
-            row.style.padding = '0 16px'; // 修正为与 CSS 一致
+            row.style.padding = '0 16px';
             row.style.background = 'white';
-            row.style.borderBottom = '0.5px solid var(--separator)';
-            // 修正高度与 CSS 一致 (C1=52px, C2/C3=72px)
             row.style.height = C.lines === 1 ? '52px' : '72px';
-            row.style.gap = '12px';
+
+            // 分割线：距左 16px 到右侧边缘（MD §8.3 规范）
+            const sep = document.createElement('div');
+            sep.style.cssText = 'position:absolute;bottom:0;left:16px;right:0;height:0.5px;background:var(--separator);';
+            row.appendChild(sep);
+
+            // 多选控件（前置）
+            if (multiSelect) {
+                const sel = document.createElement('div');
+                sel.className = 'list-selection';
+                sel.innerHTML = `<img src="icons/Checkbox.svg">`;
+                row.appendChild(sel);
+            }
 
             // Left Area
             const left = document.createElement('div');
+            left.style.flexShrink = '0';
+            left.style.marginRight = '12px';
+            left.style.display = 'flex';
+            left.style.alignItems = 'center';
             if (L.id !== 'L0/Empty' && L.asset) {
                 const img = document.createElement('img');
                 img.src = L.asset;
                 let size = '24px';
                 if (L.class.includes('52')) size = '52px';
                 else if (L.class.includes('40')) size = '40px';
-                else if (L.class.includes('36')) size = '36px';
                 else if (L.class.includes('32')) size = '32px';
                 img.style.width = size;
                 img.style.height = size;
-                if (L.class.includes('avatar') || L.class.includes('thumb')) {
-                    img.style.borderRadius = '50%';
-                }
+                if (L.class.includes('avatar')) img.style.borderRadius = '50%';
+                else if (L.class.includes('thumb')) img.style.borderRadius = '8px';
                 left.appendChild(img);
+            } else {
+                left.style.width = '0';
+                left.style.marginRight = '0';
             }
 
             // Content Area
             const content = document.createElement('div');
             content.style.flex = '1';
             content.style.minWidth = '0';
-            content.innerHTML = `<div style="font-size:17px; color:var(--text-primary); line-height:1.4;">列表文本</div>`;
-            
+            content.style.display = 'flex';
+            content.style.flexDirection = 'column';
+            content.style.justifyContent = 'center';
+            content.style.overflow = 'hidden';
+            content.innerHTML = `<div style="font-size:17px;color:var(--text-primary);line-height:24px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">列表文本</div>`;
             if (C.lines >= 2) {
-                content.innerHTML += `<div style="font-size:14px; color:var(--text-secondary); margin-top:2px; line-height:1.4; display:flex; align-items:center; gap:4px;"><img src="icons/empty_icon.svg" style="width:16px;height:16px;">描述文本 · 描述文本 <span style="color:#0099FF">textlink</span><img src="icons/chevron_right.svg" style="width:16px;height:16px;"></div>`;
+                content.innerHTML += `<div style="font-size:14px;color:var(--text-secondary);line-height:20px;height:20px;display:flex;align-items:center;overflow:hidden;"><img src="icons/empty_icon.svg" style="width:16px;height:16px;flex-shrink:0;margin-right:2px;"><span style="flex-shrink:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">描述文本・描述文本<span style="color:var(--text-link)">textlink</span></span><div class="icon-indicator chevron-right" style="margin-left:2px;"></div></div>`;
             }
             if (C.lines >= 3) {
-                content.innerHTML += `<div style="font-size:14px; color:var(--text-secondary); margin-top:2px; line-height:1.4; display:flex; align-items:center; gap:4px;"><img src="icons/empty_icon.svg" style="width:16px;height:16px;">描述文本 · 描述文本 <span style="color:#0099FF">textlink</span><img src="icons/chevron_right.svg" style="width:16px;height:16px;"></div>`;
+                content.innerHTML += `<div style="font-size:14px;color:var(--text-secondary);line-height:20px;height:20px;display:flex;align-items:center;overflow:hidden;"><img src="icons/empty_icon.svg" style="width:16px;height:16px;flex-shrink:0;margin-right:2px;"><span style="flex-shrink:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">描述文本・描述文本<span style="color:var(--text-link)">textlink</span></span><div class="icon-indicator chevron-right" style="margin-left:2px;"></div></div>`;
             }
 
             // Right Area
@@ -6438,17 +6827,18 @@
             right.style.flexShrink = '0';
             right.style.display = 'flex';
             right.style.alignItems = 'center';
-            right.style.gap = '8px';
+            right.style.marginLeft = '12px';
+            right.style.gap = '4px';
 
             switch(R.id) {
                 case 'R1':
-                    right.innerHTML = `<span style="font-size:17px; color:var(--text-secondary);">辅助信息</span><img src="icons/chevron_right.svg" style="width:16px; height:16px;">`;
+                    right.innerHTML = `<span style="font-size:17px;color:var(--text-secondary);margin-right:4px;max-width:120px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">辅助信息</span><div class="icon-indicator chevron-right"></div>`;
                     break;
                 case 'R2':
-                    right.innerHTML = `<span style="font-size:17px; color:var(--text-secondary);">辅助信息</span><img src="icons/Avatar_32.svg" style="width:32px; height:32px; border-radius:50%; margin-right:8px;"><img src="icons/chevron_right.svg" style="width:16px; height:16px;">`;
+                    right.innerHTML = `<span style="font-size:17px;color:var(--text-secondary);margin-right:4px;max-width:120px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">辅助信息</span><img src="icons/Avatar_32.svg" style="width:32px;height:32px;border-radius:50%;margin-right:8px;"><div class="icon-indicator chevron-right"></div>`;
                     break;
                 case 'R3':
-                    right.innerHTML = `<span style="font-size:17px; color:var(--text-secondary);">辅助信息</span><img src="icons/Thumbnail_32.svg" style="width:32px; height:32px; margin-right:8px;"><img src="icons/chevron_right.svg" style="width:16px; height:16px;">`;
+                    right.innerHTML = `<span style="font-size:17px;color:var(--text-secondary);margin-right:4px;max-width:120px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">辅助信息</span><img src="icons/Thumbnail_32.svg" style="width:32px;height:32px;border-radius:4px;margin-right:8px;"><div class="icon-indicator chevron-right"></div>`;
                     break;
                 case 'R4':
                     right.innerHTML = `<div class="btn-secondary">按钮</div>`;
@@ -6457,16 +6847,16 @@
                     right.innerHTML = `<span class="text-link" style="font-size:17px;">Action</span>`;
                     break;
                 case 'R6':
-                    right.innerHTML = `<img src="icons/empty_icon.svg" style="width:24px;">`;
+                    right.innerHTML = `<img src="icons/empty_icon.svg" style="width:24px;height:24px;">`;
                     break;
                 case 'R7':
                     right.innerHTML = `<span class="amount" style="color:var(--feedback-error);">-258.00</span>`;
                     break;
                 case 'R8':
-                    right.innerHTML = `<div style="display:flex; align-items:center;"><span class="amount">2630</span><div style="display:flex; flex-direction:column; align-items:center; margin-left:4px;"><span style="font-size:12px; color:var(--text-tertiary); line-height:1; margin-bottom:2px;">6</span><img src="icons/heart.svg" style="width:16px;"></div></div>`;
+                    right.innerHTML = `<div style="display:flex;align-items:center;"><span class="amount">2630</span><div style="display:flex;flex-direction:column;align-items:center;margin-left:4px;"><span style="font-size:12px;color:var(--text-tertiary);line-height:1;margin-bottom:2px;">6</span><div class="icon-indicator heart"></div></div></div>`;
                     break;
                 case 'R9':
-                    right.innerHTML = `<div style="display:flex; flex-direction:column; align-items:flex-end;"><span style="font-size:12px; color:var(--text-tertiary); margin-bottom:4px;">17:53</span><img src="icons/remind_mute.svg" style="width:18px;"></div>`;
+                    right.innerHTML = `<div style="display:flex;flex-direction:column;align-items:flex-end;"><span style="font-size:12px;color:var(--text-tertiary);margin-bottom:4px;">17:53</span><div class="icon-indicator remind-mute"></div></div>`;
                     break;
             }
 
@@ -6590,12 +6980,12 @@
             if (['L3', 'L4'].includes(L.id)) {
                 leftIconHtml = `<img src="${L.icon || 'icons/empty_icon.svg'}" style="width:24px; height:24px;">`;
             } else if (['L5', 'L6'].includes(L.id)) {
-                leftIconHtml = `<img src="icons/secondary.svg" style="width:24px; height:24px;">`;
+                leftIconHtml = `<div class="icon-indicator secondary-icon"></div>`;
             } else if (L.id === 'L7') {
                 leftIconHtml = `<img src="${L.icon || 'icons/Avatar_40.svg'}" style="width:40px; height:40px; border-radius:50%;">`;
             }
             
-            const textGroup = `<div style="display:flex; flex-direction:column;">
+            const textGroup = `<div class="text-group">
                 <div class="title">${L.title || '标题文本'}</div>
                 ${(isDouble && L.subtitle) ? `<div class="subtitle">${L.subtitle}</div>` : ''}
             </div>`;
@@ -6612,13 +7002,13 @@
                 case 'R0/Empty':
                     break;
                 case 'R1': 
-                    rightHtml = `${R.text ? `<span class="helper-text">${R.text}</span>` : ''}<img src="icons/chevron_right.svg" style="width:16px; height:16px;">`;
+                    rightHtml = `${R.text ? `<span class="helper-text">${R.text}</span>` : ''}<div class="icon-indicator chevron-right"></div>`;
                     break;
                 case 'R2': 
-                    rightHtml = `${R.text ? `<span class="helper-text">${R.text}</span>` : ''}<img src="icons/expand_list.svg" style="width:16px; height:16px;">`;
+                    rightHtml = `${R.text ? `<span class="helper-text">${R.text}</span>` : ''}<div class="icon-indicator expand-list"></div>`;
                     break;
                 case 'R3': 
-                    rightHtml = `<img src="${R.avatar || 'icons/Avatar_32.svg'}" style="width:32px; height:32px; border-radius:50%; margin-right:4px;"><img src="icons/chevron_right.svg" style="width:16px; height:16px;">`;
+                    rightHtml = `<img src="${R.avatar || 'icons/Avatar_32.svg'}" style="width:32px; height:32px; border-radius:50%; margin-right:4px;"><div class="icon-indicator chevron-right"></div>`;
                     break;
                 case 'R4': 
                     rightHtml = `<div class="form-switch"></div>`;
@@ -6939,8 +7329,8 @@
                 const navbar = document.createElement('div');
                 navbar.style.cssText = 'width: 100%; height: 54px; flex-shrink: 0; display: flex; align-items: center; justify-content: flex-end; padding: 0 16px; background: var(--bg-item); box-sizing: border-box;';
                 const closeBtn = document.createElement('div');
-                closeBtn.style.cssText = 'width: 30px; height: 30px; border-radius: 50%; background: var(--fill-pressed); display: flex; align-items: center; justify-content: center;';
-                closeBtn.innerHTML = `<svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M12.2426 3.75736C12.5858 4.10051 12.5858 4.65685 12.2426 5L9.24264 8L12.2426 11C12.5858 11.3431 12.5858 11.8995 12.2426 12.2426C11.8995 12.5858 11.3431 12.5858 11 12.2426L8 9.24264L5 12.2426C4.65685 12.5858 4.10051 12.5858 3.75736 12.2426C3.41421 11.8995 3.41421 11.3431 3.75736 11L6.75736 8L3.75736 5C3.41421 4.65685 3.41421 4.10051 3.75736 3.75736C4.10051 3.41421 4.65685 3.41421 5 3.75736L8 6.75736L11 3.75736C11.3431 3.41421 11.8995 3.41421 12.2426 3.75736Z" fill="var(--text-primary)"/></svg>`;
+                closeBtn.style.cssText = 'width: 30px; height: 30px;';
+                closeBtn.innerHTML = `<img src="icons/Close_HalfScreen.svg" width="30" height="30" style="display:block;">`;
                 navbar.appendChild(closeBtn);
                 outer.appendChild(navbar);
             } else {
@@ -7020,12 +7410,13 @@
                 ? { default: '默认', pressed: '按下', loading: '加载', disabled: '不可' }
                 : { default: '默认态', pressed: '按下态', loading: '加载态', disabled: '不可点击' };
 
-            // spinner 渐变圆环生成（还原 Figma 设计稿）
+            // 加载图标：使用 loading.svg，颜色随按钮类型通过 filter 控制
             function getSpinnerInline() {
-                const color = variant.typeKey === 'primary' ? '255,255,255' : '0,0,0';
-                const op = variant.typeKey === 'primary' ? '0.90' : '0.40';
-                const uid = variant.typeKey + '_' + Math.random().toString(36).slice(2,6);
-                return `<svg style="width:19px;height:19px;margin-right:4px;animation:btn-spin 1s linear infinite;" width="19" height="19" viewBox="0 0 19 19" fill="none"><defs><linearGradient id="sgA${uid}" x1="9.5" y1="0" x2="9.5" y2="9.5" gradientUnits="userSpaceOnUse"><stop stop-color="rgba(${color},${op})"/><stop offset="1" stop-color="rgba(${color},${op})" stop-opacity="0.6"/></linearGradient><linearGradient id="sgB${uid}" x1="9.5" y1="19" x2="9.5" y2="9.5" gradientUnits="userSpaceOnUse"><stop stop-color="rgba(${color},0.05)"/><stop offset="1" stop-color="rgba(${color},${op})" stop-opacity="0.3"/></linearGradient></defs><path d="M9.5 1C5.08 1 1.5 4.58 1.5 9s3.58 8.5 8 8.5" stroke="url(#sgA${uid})" stroke-width="2" stroke-linecap="round"/><path d="M9.5 18C13.92 18 17.5 14.42 17.5 10s-3.58-8.5-8-8.5" stroke="url(#sgB${uid})" stroke-width="2" stroke-linecap="round"/></svg>`;
+                const isWhite = variant.typeKey === 'primary';
+                const filterStyle = isWhite
+                    ? 'filter:brightness(0) invert(1);opacity:0.9;'
+                    : 'filter:brightness(0);opacity:0.4;';
+                return `<img src="icons/loading.svg" width="19" height="19" style="display:block;margin-right:4px;${filterStyle}animation:btn-spin 1s linear infinite;">`;
             }
 
             if (stateKey === 'loading') {
@@ -7524,7 +7915,7 @@
                         if (i > 0) {
                             const sep = document.createElement('div');
                             sep.className = 'df-breadcrumb-sep';
-                            sep.innerHTML = '<img src="icons/chevron_right.svg" width="12" height="12">';
+                            sep.innerHTML = '<div class="icon-indicator chevron-right" style="width:12px;height:12px;"></div>';
                             inner.appendChild(sep);
                         }
                         const item = document.createElement('span');
@@ -7543,7 +7934,7 @@
                         if (i > 0) {
                             const sep = document.createElement('div');
                             sep.className = 'df-breadcrumb-sep';
-                            sep.innerHTML = '<img src="icons/chevron_right.svg" width="12" height="12">';
+                            sep.innerHTML = '<div class="icon-indicator chevron-right" style="width:12px;height:12px;"></div>';
                             inner.appendChild(sep);
                         }
                         const item = document.createElement('span');
@@ -7663,7 +8054,7 @@
         }
 
         // ========== 半屏导航栏 HsNavbar 构建函数 ==========
-        const HS_CLOSE_SVG = `<svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M12.2426 3.75736C12.5858 4.10051 12.5858 4.65685 12.2426 5L9.24264 8L12.2426 11C12.5858 11.3431 12.5858 11.8995 12.2426 12.2426C11.8995 12.5858 11.3431 12.5858 11 12.2426L8 9.24264L5 12.2426C4.65685 12.5858 4.10051 12.5858 3.75736 12.2426C3.41421 11.8995 3.41421 11.3431 3.75736 11L6.75736 8L3.75736 5C3.41421 4.65685 3.41421 4.10051 3.75736 3.75736C4.10051 3.41421 4.65685 3.41421 5 3.75736L8 6.75736L11 3.75736C11.3431 3.41421 11.8995 3.41421 12.2426 3.75736Z" fill="var(--text-primary)"/></svg>`;
+        const HS_CLOSE_IMG = `<img src="icons/Close_HalfScreen.svg" width="30" height="30" style="display:block;">`;
         const HS_BACK_SVG = `<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" clip-rule="evenodd" d="M15.6013 2.39886C15.9332 2.73081 15.9332 3.269 15.6013 3.60094L7.73265 11.4696C7.52472 11.6775 7.40539 11.7978 7.32481 11.8927C7.29186 11.9315 7.27547 11.9548 7.26844 11.9656C7.26312 11.9881 7.26312 12.0117 7.26844 12.0343C7.27547 12.045 7.29186 12.0683 7.32481 12.1071C7.4054 12.202 7.52473 12.3223 7.73265 12.5302L15.6013 20.3989C15.9332 20.7308 15.9332 21.269 15.6013 21.6009C15.2693 21.9329 14.7311 21.9329 14.3992 21.6009L6.51032 13.7121C6.32975 13.5315 6.15991 13.3617 6.02883 13.2073C5.88642 13.0396 5.74058 12.835 5.655 12.5716C5.53427 12.2 5.53427 11.7998 5.655 11.4282C5.74058 11.1648 5.88642 10.9602 6.02883 10.7925C6.15991 10.6381 6.32976 10.4683 6.51033 10.2877L14.3992 2.39886C14.7311 2.06692 15.2693 2.06692 15.6013 2.39886Z" fill="var(--text-primary)"/></svg>`;
         const hsAssetPath = 'icons/';
 
@@ -7698,8 +8089,8 @@
                     // A4 uses QR code icon
                     right.innerHTML = `<img src="${hsAssetPath}empty_icon.svg" style="width:24px; height:24px;">`;
                 } else {
-                    // A1, A2, A3 use circle close button
-                    right.innerHTML = `<div style="width:30px; height:30px; border-radius:50%; background:rgba(0,0,0,0.04); display:flex; align-items:center; justify-content:center;">${HS_CLOSE_SVG}</div>`;
+                    // A1, A2, A3 use Close_HalfScreen.svg（已自带灰底圆，不需要外层容器）
+                    right.innerHTML = HS_CLOSE_IMG;
                 }
                 row.appendChild(right);
 
@@ -8018,14 +8409,21 @@
             const variants = [];
             types.forEach(t => {
                 states.forEach(s => {
-                    variants.push({
-                        id: t.key + s.key,
-                        group: t.key + '.' + t.label,
-                        name: t.label + ' · ' + s.label,
-                        type: 'textfield',
-                        tfType: t.tfType,
-                        state: s.state
-                    });
+                    variants.push({ id: t.key + s.key, group: t.key + '.' + t.label, name: t.label + ' · ' + s.label, type: 'textfield', tfType: t.tfType, state: s.state });
+                });
+            });
+            // E 类复合输入框（精简命名，5态）
+            const eTypes = [
+                { key: 'E1', label: '卡片·基础',      tfType: 'adv_card_noimg_nofin', layout: 'card', hasImage: false, hasFinish: false },
+                { key: 'E2', label: '卡片·图片',      tfType: 'adv_card_img_nofin',   layout: 'card', hasImage: true,  hasFinish: false },
+                { key: 'E3', label: '卡片·完成',      tfType: 'adv_card_noimg_fin',   layout: 'card', hasImage: false, hasFinish: true  },
+                { key: 'E4', label: '卡片·图片+完成',  tfType: 'adv_card_img_fin',     layout: 'card', hasImage: true,  hasFinish: true  },
+                { key: 'E5', label: '通栏·基础',      tfType: 'adv_full_noimg_nofin', layout: 'full', hasImage: false, hasFinish: false },
+                { key: 'E6', label: '通栏·图片',      tfType: 'adv_full_img_nofin',   layout: 'full', hasImage: true,  hasFinish: false }
+            ];
+            eTypes.forEach(t => {
+                states.forEach(s => {
+                    variants.push({ id: t.key + '-' + s.key, group: t.key + '.' + t.label, name: t.label + ' · ' + s.label, type: 'textfield', tfType: t.tfType, state: s.state, isAdvanced: true, advLayout: t.layout, advHasImage: t.hasImage, advHasFinish: t.hasFinish });
                 });
             });
             return variants;
@@ -8034,38 +8432,45 @@
         function renderTextFieldVariants() {
             const variants = generateTextFieldVariants();
             const container = document.getElementById('variantList');
-            
+
             document.getElementById('variantTitle').textContent = '输入框';
-            document.getElementById('variantCount').textContent = `${variants.length} 个变体（4种类型 × 5种状态）`;
+            document.getElementById('variantCount').textContent = `${variants.length} 个变体（A-D 4类型×5状态 + E 复合输入框 6种×5态）`;
             setComponentDefinition('textfield');
-            
+
             container.innerHTML = '';
 
-            const types = [
+            const abcdTypes = [
                 { key: 'A', label: '单行无标题', tfType: 'single_no_title' },
                 { key: 'B', label: '单行有标题', tfType: 'single_with_title' },
-                { key: 'C', label: '电话号码', tfType: 'phone' },
-                { key: 'D', label: '多行文本', tfType: 'multiline' }
+                { key: 'C', label: '电话号码',   tfType: 'phone' },
+                { key: 'D', label: '多行文本',   tfType: 'multiline' }
+            ];
+            const eTypesList = [
+                { key: 'E1', label: '卡片·基础',     tfType: 'adv_card_noimg_nofin' },
+                { key: 'E2', label: '卡片·图片',     tfType: 'adv_card_img_nofin'   },
+                { key: 'E3', label: '卡片·完成',     tfType: 'adv_card_noimg_fin'   },
+                { key: 'E4', label: '卡片·图片+完成', tfType: 'adv_card_img_fin'    },
+                { key: 'E5', label: '通栏·基础',     tfType: 'adv_full_noimg_nofin' },
+                { key: 'E6', label: '通栏·图片',     tfType: 'adv_full_img_nofin'   }
             ];
             const states = [
-                { key: '1', label: '默认', state: 'default' },
-                { key: '2', label: '激活', state: 'focused' },
-                { key: '3', label: '输入', state: 'typing' },
-                { key: '4', label: '完成', state: 'completed' },
-                { key: '5', label: '错误', state: 'error' }
+                { label: '默认', state: 'default' },
+                { label: '激活', state: 'focused' },
+                { label: '输入', state: 'typing'  },
+                { label: '完成', state: 'completed'},
+                { label: '错误', state: 'error'   }
             ];
 
-            // 设置全局分段选择栏
+            // 全局分段选择栏（A-D + E 共用）
             const globalSegWrap = document.getElementById('globalSegBarWrap');
-            const globalSegBar = document.getElementById('globalSegBar');
+            const globalSegBar  = document.getElementById('globalSegBar');
             globalSegWrap.style.display = '';
             globalSegBar.innerHTML = '';
             states.forEach((s, i) => {
                 if (i > 0) {
-                    const divider = document.createElement('div');
-                    divider.className = 'state-segment-divider';
-                    divider.dataset.divider = String(i);
-                    globalSegBar.appendChild(divider);
+                    const d = document.createElement('div');
+                    d.className = 'state-segment-divider';
+                    globalSegBar.appendChild(d);
                 }
                 const tab = document.createElement('div');
                 tab.className = 'state-segment-tab' + (i === 0 ? ' active' : '');
@@ -8073,60 +8478,86 @@
                 tab.dataset.state = s.state;
                 globalSegBar.appendChild(tab);
             });
-            // 初始隐藏第一个tab旁的分隔线
             const firstDiv = globalSegBar.querySelector('.state-segment-divider');
             if (firstDiv) firstDiv.style.opacity = '0';
 
-            const previewWraps = [];
+            const allPreviewWraps = []; // { previewWrap, tfType }
 
-            types.forEach(t => {
+            // A-D 卡片
+            abcdTypes.forEach(t => {
                 const card = document.createElement('div');
                 card.className = 'stateful-variant-card';
-
-                // 左侧：编号 + 类型名称
                 const left = document.createElement('div');
                 left.className = 'stateful-variant-left';
                 left.innerHTML = `<span class="variant-id">${t.key}</span><span class="variant-type-label">${t.label}</span>`;
                 card.appendChild(left);
-
-                // 右侧：仅预览，无分段选择
                 const right = document.createElement('div');
                 right.className = 'stateful-variant-right';
-
                 const previewWrap = document.createElement('div');
                 previewWrap.className = 'stateful-variant-preview';
-                const defaultVariant = variants.find(v => v.tfType === t.tfType && v.state === 'default');
-                if (defaultVariant) {
+                const defVariant = variants.find(v => v.tfType === t.tfType && v.state === 'default');
+                if (defVariant) {
                     const preview = document.createElement('div');
                     preview.className = 'variant-preview';
                     preview.draggable = true;
-                    preview.dataset.variant = JSON.stringify(defaultVariant);
-                    preview.appendChild(createTextFieldPreview(defaultVariant));
+                    preview.dataset.variant = JSON.stringify(defVariant);
+                    preview.appendChild(createTextFieldPreview(defVariant));
                     preview.addEventListener('dragstart', handleDragStart);
                     previewWrap.appendChild(preview);
                 }
                 right.appendChild(previewWrap);
                 card.appendChild(right);
-
-                previewWraps.push({ previewWrap, tfType: t.tfType });
+                allPreviewWraps.push({ previewWrap, tfType: t.tfType });
                 container.appendChild(card);
             });
 
-            // 全局分段标签点击事件
+            // E 类分割线
+            const dividerEl = document.createElement('div');
+            dividerEl.style.cssText = 'width:100%;padding:12px 0;display:flex;align-items:center;gap:8px;';
+            dividerEl.innerHTML = '<div style="flex:1;height:0.5px;background:rgba(0,0,0,0.10);"></div><span style="font-size:11px;font-weight:500;color:var(--text-tertiary);white-space:nowrap;">E. 复合输入框 Advanced Textfield</span><div style="flex:1;height:0.5px;background:rgba(0,0,0,0.10);"></div>';
+            container.appendChild(dividerEl);
+
+            // E 类卡片（无独立分段栏，并入全局）
+            eTypesList.forEach(t => {
+                const card = document.createElement('div');
+                card.className = 'stateful-variant-card';
+                const left = document.createElement('div');
+                left.className = 'stateful-variant-left';
+                left.innerHTML = `<span class="variant-id">${t.key}</span><span class="variant-type-label" style="font-size:11px;">${t.label}</span>`;
+                card.appendChild(left);
+                const right = document.createElement('div');
+                right.className = 'stateful-variant-right';
+                const previewWrap = document.createElement('div');
+                previewWrap.className = 'stateful-variant-preview';
+                const defVariant = variants.find(v => v.tfType === t.tfType && v.state === 'default');
+                if (defVariant) {
+                    const preview = document.createElement('div');
+                    preview.className = 'variant-preview';
+                    preview.draggable = true;
+                    preview.dataset.variant = JSON.stringify(defVariant);
+                    preview.appendChild(createTextFieldPreview(defVariant));
+                    preview.addEventListener('dragstart', handleDragStart);
+                    previewWrap.appendChild(preview);
+                }
+                right.appendChild(previewWrap);
+                card.appendChild(right);
+                allPreviewWraps.push({ previewWrap, tfType: t.tfType });
+                container.appendChild(card);
+            });
+
+            // 全局分段点击事件（控制所有 A-D + E1-E6）
             globalSegBar.addEventListener('click', (e) => {
                 const clickedTab = e.target.closest('.state-segment-tab');
                 if (!clickedTab) return;
-                globalSegBar.querySelectorAll('.state-segment-tab').forEach(st => st.classList.remove('active'));
+                globalSegBar.querySelectorAll('.state-segment-tab').forEach(t => t.classList.remove('active'));
                 clickedTab.classList.add('active');
-                // 管理分隔线显隐
                 globalSegBar.querySelectorAll('.state-segment-divider').forEach(d => d.style.opacity = '1');
                 const activeIdx = Array.from(globalSegBar.querySelectorAll('.state-segment-tab')).indexOf(clickedTab);
                 globalSegBar.querySelectorAll('.state-segment-divider').forEach((d, di) => {
                     if (di === activeIdx - 1 || di === activeIdx) d.style.opacity = '0';
                 });
                 const newState = clickedTab.dataset.state;
-                // 更新所有类型的预览
-                previewWraps.forEach(({ previewWrap, tfType }) => {
+                allPreviewWraps.forEach(({ previewWrap, tfType }) => {
                     const newVariant = variants.find(v => v.tfType === tfType && v.state === newState);
                     if (newVariant) {
                         previewWrap.innerHTML = '';
@@ -8146,6 +8577,11 @@
             const w = width || 428;
             const tfType = variant.tfType;
             const state = variant.state;
+
+            // E 类复合输入框路由
+            if (variant.isAdvanced || tfType.startsWith('adv_')) {
+                return buildAdvancedTextFieldRow(variant, w);
+            }
 
             if (tfType === 'multiline') {
                 return buildTextFieldMultiLine(state, w);
@@ -8313,8 +8749,103 @@
 
         function createTextFieldPreview(variant) {
             const component = buildTextFieldRow(variant, 428);
-            const h = variant.tfType === 'multiline' ? 221 : 80;
+            const h = (variant.isAdvanced || variant.tfType.startsWith('adv_')) ? 420 : (variant.tfType === 'multiline' ? 221 : 80);
             return wrapForPreview(component, h);
+        }
+
+        // E 类 Advanced Textfield 复合输入框构建
+        function buildAdvancedTextFieldRow(variant, width) {
+            const w = width || 428;
+            const state = variant.state;
+            const isCard = variant.advLayout === 'card' || variant.tfType.includes('card');
+            const hasImage = variant.advHasImage !== undefined ? variant.advHasImage : variant.tfType.includes('_img_');
+            const hasFinish = variant.advHasFinish !== undefined ? variant.advHasFinish : (variant.tfType.endsWith('_fin') || variant.tfType.includes('_fin_'));
+            const contentW = isCard ? 396 : w;
+            const innerPadX = 16;
+            const textAreaW = contentW - innerPadX * 2;
+            // 文字字号：有完成操作=20px，其余=17px；行高分别28/24px
+            const fontSize = hasFinish ? 20 : 17;
+            const lineH = hasFinish ? 28 : 24;
+            // 操作按钮：有完成操作=2个，其余=3个（hasImage不影响按钮数量）
+            const numBtns = hasFinish ? 2 : 3;
+
+            const ATF_OP_ICON = `<img src="icons/empty_icon.svg" width="24" height="24" style="display:block;">`;
+            const ATF_ADD_ICON = `<svg width="24" height="24" viewBox="0 0 24 24" fill="none"><path fill-rule="evenodd" clip-rule="evenodd" d="M12 3.5C12.5523 3.5 13 3.94772 13 4.5V11H19.5C20.0523 11 20.5 11.4477 20.5 12C20.5 12.5523 20.0523 13 19.5 13H13V19.5C13 20.0523 12.5523 20.5 12 20.5C11.4477 20.5 11 20.0523 11 19.5V13H4.5C3.94772 13 3.5 12.5523 3.5 12C3.5 11.4477 3.94772 11 4.5 11H11V4.5C11 3.94772 11.4477 3.5 12 3.5Z" fill="rgba(60,60,67,0.56)"/></svg>`;
+            // 光标：inline，垂直对齐文字底部，高度跟随行高
+            const ATF_CURSOR = `<span style="display:inline-block;width:1px;height:1.2em;background:var(--brand-blue);vertical-align:text-bottom;margin-left:1px;"></span>`;
+
+            function buildBtn(text) {
+                return `<div style="display:flex;align-items:center;gap:6px;padding:8px 12px;background:rgba(13,16,49,0.04);border-radius:24px;flex-shrink:0;">${ATF_OP_ICON}<span style="font-size:17px;color:var(--text-primary);white-space:nowrap;">${text}</span></div>`;
+            }
+
+            const el = document.createElement('div');
+            el.style.cssText = `width:${w}px;height:420px;position:relative;font-family:"PingFang SC",sans-serif;${isCard ? 'padding:0 16px;box-sizing:border-box;' : ''}`;
+
+            const content = document.createElement('div');
+            content.style.cssText = `width:${contentW}px;height:420px;display:flex;flex-direction:column;gap:16px;padding:24px ${innerPadX}px 16px;box-sizing:border-box;overflow:hidden;${isCard ? 'background:white;border-radius:24px;' : ''}`;
+
+            // ① 文字区域 (flex:1)
+            const textWrap = document.createElement('div');
+            textWrap.style.cssText = 'flex:1;min-height:0;overflow:hidden;';
+            const textLine = document.createElement('div');
+            textLine.style.cssText = `width:${textAreaW}px;font-size:${fontSize}px;font-weight:400;line-height:${lineH}px;word-break:break-all;`;
+            const PRESET_TXT = '这是一行输入的文本这是一行输入的文本';
+            const PRESET_ERR = '这是一行输入的文本超出字数限制这是一行输入的文本超出字数';
+            if (state === 'default') {
+                textLine.innerHTML = `<span style="color:rgba(60,60,67,0.26);">输入文本</span>`;
+            } else if (state === 'focused') {
+                textLine.innerHTML = `${ATF_CURSOR}<span style="color:rgba(60,60,67,0.26);">输入文本</span>`;
+            } else if (state === 'typing') {
+                textLine.innerHTML = `<span style="color:rgba(0,0,0,0.9);">${PRESET_TXT}</span>${ATF_CURSOR}`;
+            } else if (state === 'completed') {
+                textLine.innerHTML = `<span style="color:rgba(0,0,0,0.9);">${PRESET_TXT}</span>`;
+            } else if (state === 'error') {
+                textLine.innerHTML = `<span style="color:rgba(0,0,0,0.9);">${PRESET_ERR}</span>${ATF_CURSOR}`;
+            }
+            textWrap.appendChild(textLine);
+            content.appendChild(textWrap);
+
+            // ② 图片行（+按钮始终在左，圆角16px；typing/completed/error 态追加3张图）
+            if (hasImage) {
+                const imgRow = document.createElement('div');
+                imgRow.className = 'atf-img-row';
+                imgRow.style.cssText = `display:flex;align-items:center;gap:12px;flex-shrink:0;width:${textAreaW}px;overflow-x:auto;overflow-y:hidden;scrollbar-width:none;-webkit-overflow-scrolling:touch;`;
+                imgRow.innerHTML = `<div style="width:88px;height:88px;border-radius:16px;background:rgba(13,16,49,0.04);display:flex;align-items:center;justify-content:center;flex-shrink:0;">${ATF_ADD_ICON}</div>`;
+                if (state === 'typing' || state === 'completed' || state === 'error') {
+                    for (let i = 0; i < 3; i++) {
+                        imgRow.innerHTML += `<img src="icons/Thumbnail_88.svg" style="width:88px;height:88px;border-radius:12px;flex-shrink:0;object-fit:cover;display:block;">`;
+                    }
+                }
+                content.appendChild(imgRow);
+            }
+
+            // ③ 底部操作栏（仅卡片式）
+            if (isCard) {
+                const bottomBar = document.createElement('div');
+                bottomBar.style.cssText = `display:flex;align-items:center;justify-content:space-between;flex-shrink:0;width:${textAreaW}px;`;
+
+                const leftBtns = document.createElement('div');
+                leftBtns.style.cssText = 'display:flex;align-items:center;gap:12px;';
+                for (let i = 0; i < numBtns; i++) leftBtns.innerHTML += buildBtn('操作');
+                bottomBar.appendChild(leftBtns);
+
+                const rightArea = document.createElement('div');
+                rightArea.style.cssText = 'display:flex;align-items:center;gap:12px;justify-content:flex-end;';
+                const charTxt = state === 'typing' ? '9/100字' : state === 'error' ? '120/100字' : '0/100字';
+                const charColor = state === 'error' ? 'var(--feedback-error,#F74C30)' : 'rgba(60,60,67,0.56)';
+                rightArea.innerHTML = `<span style="font-size:12px;color:${charColor};white-space:nowrap;">${charTxt}</span>`;
+
+                if (hasFinish) {
+                    // done.svg；default/focused 态 opacity 0.3，其余 1
+                    const opacity = (state === 'default' || state === 'focused') ? '0.3' : '1';
+                    rightArea.innerHTML += `<img src="icons/done.svg" width="40" height="40" style="display:block;flex-shrink:0;opacity:${opacity};">`;
+                }
+                bottomBar.appendChild(rightArea);
+                content.appendChild(bottomBar);
+            }
+
+            el.appendChild(content);
+            return el;
         }
 
         function createFullTextFieldComponent(variant) {
@@ -8322,6 +8853,13 @@
             const state = variant.state;
             const el = document.createElement('div');
             el.style.cssText = 'width:100%;position:relative;font-family:"PingFang SC",sans-serif;';
+
+            // E 类复合输入框：直接使用静态构建（无交互态）
+            if (variant.isAdvanced || tfType.startsWith('adv_')) {
+                const adv = buildAdvancedTextFieldRow(variant, 428);
+                adv.style.width = '100%';
+                return adv;
+            }
 
             if (tfType === 'multiline') {
                 el.style.height = '221px';
@@ -8539,12 +9077,11 @@
                 wrapper.style.zIndex = '10';
                 wrapper.style.height = '0';
                 wrapper.style.overflow = 'visible';
-                // 关闭按钮换白色背景以保证可见性
-                const closeBtn = wrapper.querySelector('div[style*="border-radius:50%"]');
-                if (closeBtn) {
-                    closeBtn.style.background = 'rgba(0,0,0,0.15)';
-                    const svg = closeBtn.querySelector('svg path');
-                    if (svg) svg.setAttribute('fill', 'white');
+                // 关闭按钮换深色半透明背景以保证可见性（Close_HalfScreen.svg 自带浅灰底，叠图时需加深）
+                const closeSvg = wrapper.querySelector('img[src*="Close_HalfScreen"]');
+                if (closeSvg) {
+                    closeSvg.style.filter = 'brightness(2)';
+                    closeSvg.style.opacity = '0.9';
                 }
             } else {
                 // 非图片：正常占据一行高度
@@ -10157,6 +10694,18 @@
 
         // ========== 全局交互事件委托：可交互组件状态切换 ==========
         document.addEventListener('click', function(e) {
+            // 0. 多选控件切换（list-selection img）
+            const selImg = e.target.closest('.list-selection img');
+            if (selImg) {
+                e.stopPropagation();
+                if (selImg.src.includes('Checkbox_filled')) {
+                    selImg.src = selImg.src.replace('Checkbox_filled', 'Checkbox');
+                } else {
+                    selImg.src = selImg.src.replace('Checkbox.svg', 'Checkbox_filled.svg');
+                }
+                return;
+            }
+
             // 1. 开关 Switch 切换（form-switch / list-row .switch）
             const switchEl = e.target.closest('.form-switch, .list-row .switch');
             if (switchEl) {
@@ -10206,8 +10755,11 @@
 
         // ========== 初始化 ==========
         renderParentComponents();
-        // 默认选中第一个母组件，展开子组件列表
-        selectParentComponent(PARENT_COMPONENTS[0].id);
+        // 恢复上次选中的组件，否则默认第一个
+        const savedBuilderComp = localStorage.getItem('builder_component');
+        const initBuilderComp = (savedBuilderComp && PARENT_COMPONENTS.find(c => c.id === savedBuilderComp))
+            ? savedBuilderComp : PARENT_COMPONENTS[0].id;
+        selectParentComponent(initBuilderComp);
     </script>
 </body>
 </html>
