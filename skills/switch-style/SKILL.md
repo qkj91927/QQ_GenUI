@@ -1,13 +1,19 @@
 ---
 name: switch-style
-description: This skill should be used when the user wants to switch, apply, or transform an existing UI/page/component into a different brand's visual style (e.g., "switch to Apple style", "make it look like Stripe", "apply Spotify theme"). It reads the corresponding brand DESIGN.md from the awesomedesign directory and applies the brand's complete visual system — colors, typography, spacing, shadows, border-radius, component stylings — to the target interface while preserving its structure and content. Supports 58 brand styles including Apple, Stripe, Spotify, Linear, Tesla, Ferrari, Notion, Figma, Vercel, and more.
+description: This skill should be used when the user wants to switch, apply, or transform an existing UI/page/component into a different brand's visual style (e.g., "switch to Apple style", "make it look like Stripe", "apply Spotify theme"). It reads the corresponding brand DESIGN.md from the local awesomedesign directory or fetches it from the GitHub repository (https://github.com/qkj91927/QQ_GenUI/tree/main/awesomedesign), and applies the brand's complete visual system — colors, typography, spacing, shadows, border-radius, component stylings — to the target interface while preserving its structure and content. Supports 58 brand styles including Apple, Stripe, Spotify, Linear, Tesla, Ferrari, Notion, Figma, Vercel, and more.
 ---
 
 # switch-style
 
 ## 概述
 
-本 skill 将已有的 UI 界面（HTML 页面/组件）切换为指定品牌的视觉风格。品牌视觉规范存储在项目 `awesomedesign/` 目录中，每个品牌子目录包含一个 `DESIGN.md` 文件，定义了完整的设计系统：颜色、字体、组件样式、布局、阴影、圆角、响应式行为等。
+本 skill 将已有的 UI 界面（HTML 页面/组件）切换为指定品牌的视觉风格。品牌视觉规范存储在 `awesomedesign/` 目录中，每个品牌子目录包含一个 `DESIGN.md` 文件，定义了完整的设计系统：颜色、字体、组件样式、布局、阴影、圆角、响应式行为等。
+
+**品牌资源获取**：
+- **本地优先**：若项目本地存在 `awesomedesign/` 目录，直接使用 `read_file` 读取
+- **远程获取**：若本地不存在，从 GitHub 远程仓库获取：`https://github.com/qkj91927/QQ_GenUI/tree/main/awesomedesign`
+  - 浏览品牌目录列表：`https://github.com/qkj91927/QQ_GenUI/tree/main/awesomedesign`
+  - 获取品牌 DESIGN.md：使用 `web_fetch` 从 `https://raw.githubusercontent.com/qkj91927/QQ_GenUI/main/awesomedesign/<brand>/DESIGN.md` 获取内容
 
 切换风格时，**保留页面的结构和内容不变**，仅替换视觉层（颜色、字体、间距、圆角、阴影、组件外观），使页面呈现出目标品牌的设计语言。
 
@@ -28,7 +34,7 @@ description: This skill should be used when the user wants to switch, apply, or 
 
 ## 可用品牌列表
 
-品牌风格文件位于 `awesomedesign/<brand>/DESIGN.md`，完整列表参见 `references/brand-index.md`。
+品牌风格文件位于 `awesomedesign/<brand>/DESIGN.md`（本地）或 `https://raw.githubusercontent.com/qkj91927/QQ_GenUI/main/awesomedesign/<brand>/DESIGN.md`（远程），完整列表参见 `references/brand-index.md`。
 
 当前支持 **58 个品牌**，涵盖科技、汽车、金融、设计工具、AI 等领域。
 
@@ -43,8 +49,10 @@ description: This skill should be used when the user wants to switch, apply, or 
 
 ### Step 2：读取品牌 DESIGN.md
 
-- 使用 `read_file` 读取 `awesomedesign/<brand>/DESIGN.md`
+- **本地优先**：使用 `read_file` 读取 `awesomedesign/<brand>/DESIGN.md`
+- **若本地不存在**：使用 `web_fetch` 从 `https://raw.githubusercontent.com/qkj91927/QQ_GenUI/main/awesomedesign/<brand>/DESIGN.md` 获取内容
 - 可参考同目录下的 `preview.html`（亮色预览）和 `preview-dark.html`（暗色预览）作为该品牌的交互式 Token 目录与视觉效果参考
+  - 远程路径：`https://raw.githubusercontent.com/qkj91927/QQ_GenUI/main/awesomedesign/<brand>/preview.html`
 - 重点提取以下章节并内化为当前上下文的设计约束：
   1. **Color Palette & Roles** — 颜色映射规则
   2. **Typography Rules** — 字体、字号、字重、行高、字间距
