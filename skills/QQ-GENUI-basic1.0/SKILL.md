@@ -239,11 +239,17 @@ description: 当用户生成界面（页面/UI/组件）、局部调整界面（
 - 通过 Knot 检索 `tokens.css` 内容
   - `query`: "通用 Token 间距 字号 圆角 CSS"
   - `keyword`: "tokens.css;间距;字号;圆角"
+- 通过 Knot 检索 `DIVIDER_SPACING_COMPONENT_SPEC.md` 内容（布局间距规范）
+  - `query`: "分隔与间距 组件间距 布局间距 Divider Spacing 间距档位"
+  - `keyword`: "DIVIDER_SPACING_COMPONENT_SPEC;divider-spacing;间距;布局"
+  - 重点理解：6 档间距值（4/8/12/16/24/32px）、组件间间距选择规则、分割线使用场景
+  - **此规范是页面中组件之间正确分隔的唯一依据，未读取将导致组件间距错误**
 - 在 `<html>` 设置 `data-theme="qq-light"` 或 `data-theme="qq-dark"`
 - 颜色 Token 共 **39 个 QBasicToken**，命名格式 `--token名`（下划线分隔，如 `--brand_standard`、`--text_primary`）
 - **旧命名已废弃**：`--color-xxx`、`--qq-xxx` 等 151 个旧 token 已在 v1.0.5 中移除，禁止使用
 - 颜色仅使用 `QQ_color_tokens.css` 中定义的 QBasicToken 值
 - 非颜色 Token 使用 `tokens.css` 中定义的值
+- 组件间间距使用 `DIVIDER_SPACING_COMPONENT_SPEC.md` 中定义的间距档位和选择规则
 - 间距全部为 4px 整数倍
 
 通过条件：
@@ -251,6 +257,7 @@ description: 当用户生成界面（页面/UI/组件）、局部调整界面（
 - 不存在自定义颜色值
 - 不存在旧命名 Token（`--color-xxx` / `--qq-xxx`）
 - 不存在非 4px 网格间距
+- 组件间间距选择符合 DIVIDER_SPACING_COMPONENT_SPEC 规则
 
 ### Gate 5：背景色强约束
 
@@ -348,6 +355,7 @@ description: 当用户生成界面（页面/UI/组件）、局部调整界面（
 
 - [ ] 所有颜色值是否均来自 `QQ_color_tokens.css`？是否存在硬编码颜色？
 - [ ] 所有间距（margin / padding / gap）是否为 4px 整数倍？
+- [ ] 组件间间距是否符合 `DIVIDER_SPACING_COMPONENT_SPEC.md` 中定义的间距档位（4/8/12/16/24/32px）和选择规则？
 - [ ] 字号、字重、行高是否使用 `tokens.css` 中定义的 Token？
 - [ ] 圆角值是否使用 Token 或 SPEC 中指定的值？
 - [ ] 背景色是否符合 Gate 5 的强约束规则？
