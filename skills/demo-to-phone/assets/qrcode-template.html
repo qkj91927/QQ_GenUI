@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{DEMO_NAME}} - QQ扫码体验</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "PingFang SC", "Microsoft YaHei", sans-serif;
+        }
+        .card {
+            background: #fff;
+            border-radius: 24px;
+            padding: 48px 40px;
+            text-align: center;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.15);
+            max-width: 400px;
+            width: 90%;
+        }
+        .demo-name {
+            font-size: 22px;
+            font-weight: 700;
+            color: #1a1a2e;
+            margin-bottom: 8px;
+            word-break: break-word;
+        }
+        .hint {
+            font-size: 15px;
+            color: #6c7a89;
+            margin-bottom: 32px;
+        }
+        #qrcode {
+            display: inline-block;
+            padding: 16px;
+            background: #fff;
+            border-radius: 12px;
+            border: 1px solid #eee;
+        }
+        #qrcode canvas {
+            display: block;
+        }
+        .url-text {
+            margin-top: 24px;
+            font-size: 12px;
+            color: #adb5bd;
+            word-break: break-all;
+            line-height: 1.6;
+            padding: 0 8px;
+        }
+    </style>
+</head>
+<body>
+    <div class="card">
+        <div class="demo-name">{{DEMO_NAME}}</div>
+        <div class="hint">使用 QQ 扫码体验</div>
+        <div id="qrcode"></div>
+        <div class="url-text">{{QR_URL}}</div>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/qrcode-generator@1.4.4/qrcode.min.js"></script>
+    <script>
+        var url = "{{QR_URL}}";
+        var qr = qrcode(0, "M");
+        qr.addData(url);
+        qr.make();
+        var size = 240;
+        var cellSize = Math.floor(size / qr.getModuleCount());
+        document.getElementById("qrcode").innerHTML = qr.createSvgTag(cellSize, 0);
+    </script>
+</body>
+</html>
