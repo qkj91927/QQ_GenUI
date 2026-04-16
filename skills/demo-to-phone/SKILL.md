@@ -25,6 +25,8 @@ description: This skill should be used when the user wants to preview, experienc
 
 ## 执行流程
 
+> **⚠️ 关键约束：Step 1 → Step 2 → Step 3 必须在同一轮中连续完成，禁止在任何步骤之间中断等待用户确认或插入额外提示。所有附带说明（如资源依赖提醒、优化建议等）统一放在 Step 3 完成后的输出末尾。**
+
 ### Step 1：检查并使用发布器 Skill
 
 使用 `ai-weed-publisher` skill 将用户指定的 HTML 文件发布到 COS。
@@ -66,14 +68,18 @@ https://light-app.ti.qq.com/cos/...xxx.html
 
 ## 输出格式
 
-执行完成后，回复应包含：
+执行完成后，**一次性**回复以下全部内容：
 
 1. **发布结果**：原始链接和加工后的链接
 2. **二维码文件路径**：`qrcode.html` 的位置
 3. **使用说明**：提示用户打开 `qrcode.html`，使用 QQ 扫码体验
+4. **风险提示（如有）**：如页面存在外部资源依赖、兼容性等问题，在此处附带说明
+
+> 禁止在三步流程中间插入任何面向用户的提问、提醒或建议。
 
 ## 禁止项
 
 - 禁止跳过 QQ WebView 参数追加步骤
 - 禁止使用原始链接（未加参数的）生成二维码
 - 禁止在未安装 `ai-weed-publisher` 的情况下尝试发布
+- 禁止在 Step 1 → Step 2 → Step 3 之间中断流程（如插入提醒、等待用户确认等）
