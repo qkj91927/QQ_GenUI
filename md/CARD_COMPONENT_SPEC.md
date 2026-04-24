@@ -4,11 +4,30 @@
 > **大类**：数据  
 > **变体数量**：10 种子组件（C1 ~ C10）
 
+## 🔒 强约束声明
+
+@LINT F1, F3, F4, S17, TK1, TK14, DV1
+@SPEC_OF_TRUTH 本文件为 Card 权威规范
+
+### @MUST
+- 变体仅限 C1-C10，共 10 种
+- 容器宽度 396px（卡片嵌入）
+- 预定义区块（头像行 / 图片区 / 标题区 / 辅助行 / 箭头行）结构固定，不可重组
+- 描述最大 2 行
+- 图片 `object-fit: cover`，占位图按场景使用 landscape / portrait / square
+- C10 为唯一开放插槽卡片，内部仅可嵌：`text_block` / `image_block` / `action(A1-A8)` / `data_filter` / `grid`
+- 卡片内部分割线使用 `var(--border-default)` 或 `var(--border-weak)`（按各区块 spec 定义）
+
+### @FORBIDDEN
+- 发明注册表外的变体
+- 图片 `object-fit` 非 `cover`（除非明确特殊场景）
+- 使用纯灰矩形代替 placeholder_*.svg
+
 ---
 
 ## 1. 组件概述
 
-卡片组件是一种承载结构化内容的圆角容器，用于在信息流、详情页等场景中展示多种组合形式的内容块。每张卡片由多个区块（头像行、图片区、标题区、辅助信息行、列表行、按钮区、Markdown 内容区等）自由组合而成，统一使用 24px 圆角白色容器，两侧缩进 16px（内容宽度 396px）。
+卡片组件是一种承载结构化内容的圆角容器，用于在信息流、详情页等场景中展示多种组合形式的内容块。每张卡片由多个区块（头像行、图片区、标题区、辅助信息行、列表行、按钮区、Markdown 内容区等）自由组合而成，统一使用 12px 圆角白色容器，两侧缩进 16px（内容宽度 396px）。
 
 ---
 
@@ -37,7 +56,7 @@
 |------|------|------|
 | 外层宽度 | 428px | 设备宽度 |
 | 内容宽度 | 396px | 左右各缩进 16px |
-| 圆角 | 24px | 统一圆角 |
+| 圆角 | 12px (`var(--radius-m)`) | 统一圆角 |
 | 背景色 | `#FFFFFF` (`--bg-bottom`) | 白色容器 |
 | 溢出裁剪 | `overflow: hidden` | 图片撑满不超出 |
 
@@ -131,7 +150,7 @@
 | 标题字号 | 17px / 400 / `var(--text-primary)` |
 | 描述字号 | 12px / 400 / `var(--text-secondary)` |
 | 按钮尺寸 | 72×36px |
-| 按钮背景 | `rgba(116,116,128,0.08)` (btn_bg) |
+| 按钮背景 | `var(--fill-tertiary)` |
 | 按钮圆角 | 9999px（胶囊型） |
 | 按钮文字 | 14px / 500 / `var(--text-primary)` |
 
@@ -158,7 +177,7 @@
 |------|------|
 | 按钮宽度 | 364px |
 | 按钮高度 | 52px |
-| 背景色 | `rgba(116,116,128,0.08)` (`--fill-tertiary`) |
+| 背景色 | `var(--fill-tertiary)` |
 | 圆角 | 999px |
 | 文字 | 17px / 600 / `var(--text-primary)` |
 | 外部上下间距 | 16px |
@@ -188,9 +207,9 @@
 | 高度 | 52px |
 | 背景色 | `#FFFFFF` |
 | 内容区域 | 364px 宽，左右各 16px |
-| 顶部分割线 | 364px 宽，0.5px solid separator |
+| 顶部分割线 | 364px 宽，0.5px solid `var(--border-default)` |
 | 标题样式 | 17px / 400 / `var(--text-primary)` |
-| 箭头图标 | 8×16px，颜色 `rgba(60,60,67,0.75)` |
+| 箭头图标 | 8×16px，颜色 `var(--icon-secondary)` |
 
 ### 4.11 Markdown 内容区域（Card Markdown Content）
 
@@ -210,7 +229,7 @@
 
 ## 5. 属性约束
 
-1. **圆角统一**：所有卡片容器圆角必须为 24px，不可修改
+1. **圆角统一**：所有卡片容器圆角必须为 12px（`var(--radius-m)`），不可修改
 2. **宽度固定**：卡片内容宽度 396px，两侧 16px 边距，不可调整
 3. **图片比例**：短图 180px、长图 320px 为固定高度，宽度 396px 撑满
 4. **头像行分割线**：仅底部展示分割线，无头像行时无此分割线
@@ -404,7 +423,7 @@ H7 提示文本（如有疑问，请[联系客服]）
 .card-wrap {
     width: 396px;
     background: var(--bg-bottom);
-    border-radius: 24px;
+    border-radius: var(--radius-m);  /* 12px */
     overflow: hidden;
 }
 ```

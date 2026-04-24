@@ -2,7 +2,7 @@
   "id": "card",
   "name": "卡片 Card",
   "category": "数据",
-  "description": "独立的内容容器，使用24px圆角白色卡片承载不同区块组合，适用于信息流、个人资料、产品展示等场景。需搭配浅灰色页面背景(#F2F2F7)使用。",
+  "description": "独立的内容容器，使用12px圆角白色卡片承载不同区块组合，适用于信息流、个人资料、产品展示等场景。需搭配浅灰色页面背景(#F2F2F7)使用。",
   "spec": "md/CARD_COMPONENT_SPEC.md",
 
   "totalVariants": 10,
@@ -24,7 +24,7 @@
     "outerWidth": 428,
     "contentWidth": 396,
     "horizontalPadding": 16,
-    "borderRadius": 24,
+    "borderRadius": 12,
     "background": "#FFFFFF",
     "pageBackground": {
       "required": "#F2F2F7",

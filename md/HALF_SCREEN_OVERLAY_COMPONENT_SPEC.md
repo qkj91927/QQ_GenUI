@@ -4,6 +4,23 @@
 > **大类**：模态  
 > **变体数量**：2 种（标准型 + 把手型）
 
+## 🔒 强约束声明
+
+@LINT F1, F10, S8, S9, S15, S17, TK1
+@SPEC_OF_TRUTH 本文件为 HalfScreenOverlay 权威规范
+
+### @MUST
+- 变体仅限 HSO-A（标准型）/ HSO-B（把手型），共 2 种
+- 容器宽度 428px，顶部圆角 20px
+- HSO-A 必须嵌入 HS_NavBar；HSO-B 半屏态用把手条（无 NavBar），全屏态用 NavBar（L3 关闭）
+- 内部只可嵌入**非模态**组件：`list` / `form` / `text_block` / `image_block` / `action` / `grid` / `data_filter` / `search`
+- 默认底色 `var(--bg-top)`；含 Card/Grouped List 时切 `var(--bg-secondary)`
+
+### @FORBIDDEN
+- 发明注册表外的变体
+- 与 Dialog / ActionSheet / 另一个 HalfScreenOverlay 相互嵌套
+- 修改顶部 20px 圆角或 428px 宽度
+
 ## 1. 组件概述
 
 半屏浮层（HalfScreenOverlay）是从屏幕底部弹出、约占半屏高度的模态容器组件。它用于承载二级内容、表单、选择器等场景，支持下滑关闭和点击蒙层关闭。分为**标准型**（半屏导航栏，默认 A3，可根据业务需求使用 A1-A4/B1-B3 任意变体）和**把手型**（拖拽把手条，不使用导航栏）两种子组件。

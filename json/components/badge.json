@@ -1,0 +1,109 @@
+{
+  "id": "badge",
+  "name": "红点 Badge",
+  "category": "运营",
+  "description": "贴附于宿主元素（典型宿主：头像 / 图标 / 缩略图，后续可扩展）右上方 45° 圆边点的微型徽章。三种视觉强度：强提醒（红色）、弱提醒（灰色半透明，免打扰会话）、AIO 导航栏（仅 NavBar L2）。",
+  "spec": "md/BADGE_COMPONENT_SPEC.md",
+
+  "totalVariants": 11,
+  "groups": ["强提醒 Strong (B1-B4)", "弱提醒 Weak (W1-W4)", "AIO 导航栏 AIO (A1-A3)"],
+
+  "anatomy": {
+    "positionRule": "圆形(B1/W1)→圆心；胶囊(B2-B4/W2-W4)→左半圆圆心；均钉死在宿主内切圆的右上方 45° 圆边点 P",
+    "anchorPoint": {
+      "name": "P (45° edge point on host's inscribed circle)",
+      "formula": "P = (50% + 50%·cos45°, 50% − 50%·sin45°) ≈ (85.3553%, 14.6447%)",
+      "x": "85.3553%",
+      "y": "14.6447%"
+    },
+    "positionFormula": {
+      "top":  "calc(14.6447% - badge_height / 2)",
+      "left": "calc(85.3553% - badge_height / 2)"
+    },
+    "hostTypical": ["头像 (Avatar)", "图标 (Icon)", "缩略图 (Thumbnail)"],
+    "hostExtensible": true,
+    "hostNotRecommended": ["按钮 (Button)", "宫格 (Grid)", "图片块 (ImageBlock)", "文本块 (TextBlock)", "列表行容器自身"],
+    "hostExtensionRule": "新增宿主类型需先在 md/BADGE_COMPONENT_SPEC.md 声明并更新典型宿主列表",
+    "hostCss": "position: relative; display: inline-block;",
+    "badgeCss": "position: absolute; top: calc(14.6447% - h/2); left: calc(85.3553% - h/2);  /* 胶囊向右生长，左半圆圆心 P 锚点不动 */",
+    "aioException": "AIO 导航栏 A1-A3 不走此公式——内嵌于 NavBar L2 区域内，由 NavBar L2 自行定位"
+  },
+
+  "variants": [
+    { "id": "B1", "name": "强 · 无数字", "group": "强提醒", "content": null,  "shape": "circle", "width": 10, "height": 10, "borderRadius": "50%", "background": "--accent-red", "textColor": null,           "fontSize": null, "fontWeight": null },
+    { "id": "B2", "name": "强 · 个位数", "group": "强提醒", "content": "9",   "shape": "pill",   "minWidth": 18, "height": 18, "padding": "0 4px", "borderRadius": 10, "background": "--accent-red", "textColor": "--text-white", "fontSize": 12, "fontWeight": 600 },
+    { "id": "B3", "name": "强 · 两位数", "group": "强提醒", "content": "66",  "shape": "pill",   "minWidth": 18, "height": 18, "padding": "0 4px", "borderRadius": 10, "background": "--accent-red", "textColor": "--text-white", "fontSize": 12, "fontWeight": 600 },
+    { "id": "B4", "name": "强 · 99+",   "group": "强提醒", "content": "99+", "shape": "pill",   "minWidth": 18, "height": 18, "padding": "0 4px", "borderRadius": 10, "background": "--accent-red", "textColor": "--text-white", "fontSize": 12, "fontWeight": 600 },
+
+    { "id": "W1", "name": "弱 · 无数字", "group": "弱提醒", "content": null,  "shape": "circle", "width": 10, "height": 10, "borderRadius": "50%", "background": "#D9D9D9", "textColor": null,           "fontSize": null, "fontWeight": null },
+    { "id": "W2", "name": "弱 · 个位数", "group": "弱提醒", "content": "9",   "shape": "pill",   "minWidth": 18, "height": 18, "padding": "3px 4px", "borderRadius": 10, "background": "#D9D9D9", "textColor": "--text-white", "fontSize": 12, "fontWeight": 600 },
+    { "id": "W3", "name": "弱 · 两位数", "group": "弱提醒", "content": "66",  "shape": "pill",   "minWidth": 18, "height": 18, "padding": "3px 4px", "borderRadius": 10, "background": "#D9D9D9", "textColor": "--text-white", "fontSize": 12, "fontWeight": 600 },
+    { "id": "W4", "name": "弱 · 99+",   "group": "弱提醒", "content": "99+", "shape": "pill",   "minWidth": 18, "height": 18, "padding": "3px 4px", "borderRadius": 10, "background": "#D9D9D9", "textColor": "--text-white", "fontSize": 12, "fontWeight": 600 },
+
+    { "id": "A1", "name": "AIO · 个位数", "group": "AIO导航栏", "content": "9",   "shape": "pill", "minWidth": 24, "height": 24, "padding": "4px 6px", "borderRadius": "--radius-m", "background": "--fill-tertiary", "textColor": "--text-primary", "fontSize": 14, "fontWeight": 500, "lineHeight": 16 },
+    { "id": "A2", "name": "AIO · 两位数", "group": "AIO导航栏", "content": "66",  "shape": "pill", "minWidth": 24, "height": 24, "padding": "4px 6px", "borderRadius": "--radius-m", "background": "--fill-tertiary", "textColor": "--text-primary", "fontSize": 14, "fontWeight": 500, "lineHeight": 16 },
+    { "id": "A3", "name": "AIO · 99+",   "group": "AIO导航栏", "content": "99+", "shape": "pill", "minWidth": 24, "height": 24, "padding": "4px 6px", "borderRadius": "--radius-m", "background": "--fill-tertiary", "textColor": "--text-primary", "fontSize": 14, "fontWeight": 500, "lineHeight": 16 }
+  ],
+
+  "tokens": {
+    "background": {
+      "strong":  { "token": "--accent-red",      "note": "QUI 错误/警示语义色（强提醒）" },
+      "weak":    { "value": "#D9D9D9", "type": "hardcoded", "note": "硬编码实色（Figma rgba(0,0,0,0.15) 在白底渲染等效色）；待 QUI token 系统补充实色灰再迁回 token" },
+      "aio":     { "token": "--fill-tertiary",   "note": "rgba 灰 12%（AIO 导航栏）" }
+    },
+    "text": {
+      "strongWeak": { "token": "--text-white",   "note": "白色，B/W 系" },
+      "aio":        { "token": "--text-primary", "note": "黑色，A 系（深色字）" }
+    },
+    "radius": {
+      "BW": 10,
+      "A":  "--radius-m"
+    },
+    "fontFamily": "SF Pro Display"
+  },
+
+  "interaction": {
+    "thresholds": {
+      "0":          "Badge 隐藏（display: none）",
+      "1-9":        "显示个位数（B2/W2/A1）",
+      "10-99":      "显示两位数（B3/W3/A2）",
+      ">=100":      "显示 \"99+\"（B4/W4/A3）",
+      "stateOnly":  "无具体数 → 显示无数字小圆点（B1/W1）"
+    },
+    "animation": {
+      "default": "无动画（即时显隐）",
+      "optional": "scale 0 → 1 入场，duration 200ms / ease-out"
+    }
+  },
+
+  "constraints": [
+    { "rule": "Badge 必须贴附于宿主元素，禁止独立使用", "reason": "组件语义为'宿主上的提醒指示'" },
+    { "rule": "典型宿主：头像 / 图标 / 缩略图；默认不建议按钮 / 宫格 / 图片 / 文本块 / 列表行容器；新增宿主类型须先在 spec 声明", "reason": "Badge 视觉语义适用于'人/物的身份载体'；保留扩展性而非硬封闭" },
+    { "rule": "底色固定 3 色：强=token --accent-red / 弱=硬编码 #D9D9D9 / AIO=token --fill-tertiary", "reason": "弱提醒因 QUI 现有 token 均为半透明，暂走硬编码实色 #D9D9D9，待补充实色灰 token 后迁回" },
+    { "rule": "数字字号固定：B/W 系 12px Semibold；A 系 14px Medium", "reason": "与三种语义场景的尺度匹配" },
+    { "rule": "数量 ≥100 必须截断为 \"99+\"", "reason": "防止超长数字破坏 Badge 形态与布局" },
+    { "rule": "B/W 圆角 10px，A 圆角 12px (--radius-m)", "reason": "B/W 圆角为 Badge 组件固有尺寸（按 TK2b 豁免），A 严格遵循标准 token" },
+    { "rule": "AIO 导航栏 A1-A3 仅可出现在 NavBar L2（返回+气泡）", "reason": "A 系语义专属于 AIO 页面顶部 chrome，反向独占；其他位置一律禁用" },
+    { "rule": "锚点钉死在宿主内切圆 45° 右上圆边点 P (85.3553%, 14.6447%)：圆点→圆心钉 P；胶囊→左半圆圆心钉 P", "reason": "保证未读数从 9 → 66 → 99+ 增长时左侧锚点不动，且贴合圆形头像的视觉边界（45° 圆边点正好落在头像右上的可视圆边上）" },
+    { "rule": "弱提醒 W1-W4 专用于'已开启消息免打扰'的会话场景", "reason": "免打扰会话仍需告知有未读，但视觉降级为低对比度灰色 Badge，不强提醒" }
+  ],
+
+  "usage": {
+    "strong":  ["QQ 未读消息红点", "邮箱未读数", "订单待支付提醒", "警告级通知"],
+    "weak":    ["已开启「消息免打扰」会话的未读消息数（替代 B 系红色 Badge）"],
+    "aio":     ["仅 AIO 页面顶部 NavBar L2（返回+气泡）显示返回 AIO 聊天列表的未读消息数"]
+  },
+
+  "relations": {
+    "navbar_L2_aio": {
+      "type": "强绑定（双向独占）",
+      "desc": "NavBar L2（返回+气泡）的'气泡'子元素必须使用 Badge A1-A3；Badge A1-A3 反向只能用于 NavBar L2，禁止出现于其他位置",
+      "tokens": { "bg": "--fill-tertiary", "text": "--text-primary", "fontSize": 14, "fontWeight": 500, "radius": "--radius-m" }
+    },
+    "list":     "Plain List / Grouped List 行左侧头像 / 图标 / 缩略图右上角可叠加 B1-B4（默认）或 W1-W4（已免打扰）；不建议贴附于 R 区域文本之间或行容器自身",
+    "card":     "Card 头像区可在头像右上角叠加 B1/B2 提示未读；已免打扰会话改用 W1/W2",
+    "tab_bar":  "底部导航各 tab 图标右上角叠加 B1/B2",
+    "aio_input": "❌ 禁止使用 A1-A3（AIO Input 不承载未读数）",
+    "button_grid_image": "默认不建议贴附；如需扩展为新宿主，先在 spec 声明并更新典型宿主列表"
+  }
+}

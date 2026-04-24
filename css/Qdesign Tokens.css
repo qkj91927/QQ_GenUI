@@ -214,10 +214,10 @@
  *
  *   --radius-xs    4px   超小圆角：细边框、小尺寸组件、缩略图小圆角
  *   --radius-s     8px   小圆角：搜索栏、标签 Tag、小卡片内元素
- *   --radius-m    12px   中圆角：输入框、菜单、分段选择器、宫格缩略图、App 图标
+ *   --radius-m    12px   中圆角：输入框、菜单、分段选择器、宫格缩略图、App 图标、Card 卡片容器
  *   --radius-l    16px   大圆角：按钮（大/中）、对话框、操作面板、Toast
  *   --radius-xl   20px   超大圆角：半屏浮层顶部、分段选择器外框
- *   --radius-xxl  24px   超超大圆角：Card 卡片容器、AIOInput 输入栏
+ *   --radius-xxl  28px   超超大圆角：AIOInput 输入栏
  *   --radius-full 1000px 全圆角：头像、胶囊按钮
  *
  * ══════════════════════════════════════════════════════════
@@ -228,72 +228,95 @@
  *   |-------------------------------|---------------|--------|
  *   | 列表行内小缩略图               | radius-xs     | 4px    |
  *   | 搜索栏、标签 Tag               | radius-s      | 8px    |
- *   | 输入框、菜单、宫格缩略图        | radius-m      | 12px   |
+ *   | 输入框、菜单、宫格缩略图、Card   | radius-m      | 12px   |
  *   | 大按钮、对话框、操作面板         | radius-l      | 16px   |
  *   | 半屏浮层顶部圆角               | radius-xl     | 20px   |
- *   | Card 卡片容器、AIOInput 输入栏  | radius-xxl    | 24px   |
+ *   | AIOInput 输入栏                 | radius-xxl    | 28px   |
  *   | 头像、胶囊按钮                  | radius-full   | 1000px |
  *
  */
 :root {
   --radius-xs:    4px;     /* 超小圆角：细边框、小缩略图 */
   --radius-s:     8px;     /* 小圆角：搜索栏、标签 Tag */
-  --radius-m:    12px;     /* 中圆角：输入框、菜单、宫格缩略图、App 图标 */
+  --radius-m:    12px;     /* 中圆角：输入框、菜单、宫格缩略图、App 图标、Card 卡片容器 */
   --radius-l:    16px;     /* 大圆角：按钮(大/中)、对话框、操作面板、Toast */
   --radius-xl:   20px;     /* 超大圆角：半屏浮层顶部 */
-  --radius-xxl:  28px;     /* 超超大圆角：Card 卡片容器 */
+  --radius-xxl:  28px;     /* 超超大圆角：AIOInput 输入栏（当前默认/输入态） */
   --radius-full: 1000px;   /* 全圆角：头像、胶囊按钮 */
 }
 
 /* ————————————————————————————————————
    4. 动效 Token (Animation)
+   设计原则：所有动效统一对标 iOS UIKit / CAMediaTimingFunction
+   只保留实际用到的 token —— 5 档 Duration + 5 档 Easing = 10 个原子 token
+   分两层：① 基础原子 token + ② 组件语义 token（引用 ①，禁止硬编码）
    ———————————————————————————————————— */
 :root {
-  /* 按压 */
-  --anim-press-in-duration:    100ms;
-  --anim-press-in-easing:      ease-out;
-  --anim-press-out-duration:   150ms;
-  --anim-press-out-easing:     ease-out;
+  /* ——— ① 基础原子：动效时长 Duration（5 档 · iOS-aligned · 每档都有实际场景）——— */
+  --duration-fast:    150ms;  /* 快速反馈 / 退场——按压、菜单收起、Toast 出现 */
+  --duration-base:    200ms;  /* 标准短过渡——Switch、Dialog/Overlay/Collapse 退场、菜单出现 */
+  --duration-medium:  250ms;  /* 标准过渡——Expand、Dialog/Overlay 入场 */
+  --duration-slow:    300ms;  /* 慢退场——HSO / ActionSheet 退场 */
+  --duration-modal:   420ms;  /* 模态入场——HSO / ActionSheet 入场（iOS .pageSheet 曲线时长） */
 
-  /* 开关切换 */
-  --anim-switch-duration:      200ms;
-  --anim-switch-easing:        ease-out;
+  /* ——— ① 基础原子：缓动曲线 Easing（5 档 · iOS-aligned · 每档都有实际场景）——— */
+  --easing-standard:    cubic-bezier(0.42, 0, 0.58, 1);   /* UIView easeInOut · 通用对称（Expand 展开） */
+  --easing-out:         cubic-bezier(0, 0, 0.58, 1);      /* UIView easeOut · 入场 / 按下（Dialog/Menu/Overlay/Switch in） */
+  --easing-in:          cubic-bezier(0.42, 0, 1, 1);      /* UIView easeIn · 退场（Dialog/Menu/Overlay/Collapse out） */
+  --easing-emphasized:  cubic-bezier(0.32, 0.72, 0, 1);   /* iOS Modal Sheet 曲线 · 模态强调（HSO / ActionSheet） */
+  --easing-linear:      cubic-bezier(0, 0, 1, 1);         /* CAMediaTimingFunction.linear · 匀速循环（进度条 / 加载圈 / 重复旋转） */
 
-  /* 子行展开/收起 */
-  --anim-expand-duration:      250ms;
-  --anim-expand-easing:        ease-in-out;
-  --anim-collapse-duration:    200ms;
-  --anim-collapse-easing:      ease-in;
+  /* ——— ② 组件语义 token：必须引用上方原子 token，禁止硬编码值 ——— */
 
-  /* 半屏浮层 */
-  --anim-halfscreen-in-duration:  420ms;
-  --anim-halfscreen-in-easing:    cubic-bezier(0.32, 0.72, 0.35, 1);
-  --anim-halfscreen-out-duration: 300ms;
-  --anim-halfscreen-out-easing:   cubic-bezier(0.32, 0.72, 0.35, 1);
+  /* 按压 Press（合并入退场为同一 fast 时长，符合人眼对 100/150ms 不可分辨） */
+  --anim-press-in-duration:    var(--duration-fast);      /* 150ms */
+  --anim-press-in-easing:      var(--easing-out);
+  --anim-press-out-duration:   var(--duration-fast);      /* 150ms */
+  --anim-press-out-easing:     var(--easing-out);
 
-  /* 菜单 */
-  --anim-menu-in-duration:     200ms;
-  --anim-menu-in-easing:       ease-out;
-  --anim-menu-in-transform:    scale(0.9);   /* → scale(1) */
-  --anim-menu-out-duration:    150ms;
-  --anim-menu-out-easing:      ease-in;
-  --anim-menu-out-transform:   scale(1);     /* → scale(0.9) */
+  /* 开关切换 Switch */
+  --anim-switch-duration:      var(--duration-base);      /* 200ms */
+  --anim-switch-easing:        var(--easing-out);
+
+  /* 子行展开 / 收起 Expand / Collapse */
+  --anim-expand-duration:      var(--duration-medium);    /* 250ms */
+  --anim-expand-easing:        var(--easing-standard);
+  --anim-collapse-duration:    var(--duration-base);      /* 200ms */
+  --anim-collapse-easing:      var(--easing-in);
+
+  /* 半屏浮层 HSO */
+  --anim-halfscreen-in-duration:  var(--duration-modal);  /* 420ms */
+  --anim-halfscreen-in-easing:    var(--easing-emphasized);
+  --anim-halfscreen-out-duration: var(--duration-slow);   /* 300ms */
+  --anim-halfscreen-out-easing:   var(--easing-emphasized);
+
+  /* 菜单 Menu */
+  --anim-menu-in-duration:     var(--duration-base);      /* 200ms */
+  --anim-menu-in-easing:       var(--easing-out);
+  --anim-menu-in-transform:    scale(0.9);                /* → scale(1) */
+  --anim-menu-out-duration:    var(--duration-fast);      /* 150ms */
+  --anim-menu-out-easing:      var(--easing-in);
+  --anim-menu-out-transform:   scale(1);                  /* → scale(0.9) */
 
   /* 操作面板 ActionSheet（底部弹出） */
-  --anim-actionsheet-in-duration:  420ms;
-  --anim-actionsheet-in-easing:    cubic-bezier(0.32, 0.72, 0.35, 1);
-  --anim-actionsheet-out-duration: 300ms;
-  --anim-actionsheet-out-easing:   cubic-bezier(0.32, 0.72, 0.35, 1);
+  --anim-actionsheet-in-duration:  var(--duration-modal); /* 420ms */
+  --anim-actionsheet-in-easing:    var(--easing-emphasized);
+  --anim-actionsheet-out-duration: var(--duration-slow);  /* 300ms */
+  --anim-actionsheet-out-easing:   var(--easing-emphasized);
 
   /* 对话框 Dialog（居中缩放淡入） */
-  --anim-dialog-in-duration:   250ms;
-  --anim-dialog-in-easing:     ease-out;
-  --anim-dialog-out-duration:  200ms;
-  --anim-dialog-out-easing:    ease-in;
+  --anim-dialog-in-duration:   var(--duration-medium);    /* 250ms */
+  --anim-dialog-in-easing:     var(--easing-out);
+  --anim-dialog-out-duration:  var(--duration-base);      /* 200ms */
+  --anim-dialog-out-easing:    var(--easing-in);
 
   /* 蒙层 Overlay */
-  --anim-overlay-in-duration:  250ms;
-  --anim-overlay-in-easing:    ease-out;
-  --anim-overlay-out-duration: 200ms;
-  --anim-overlay-out-easing:   ease-in;
+  --anim-overlay-in-duration:  var(--duration-medium);    /* 250ms */
+  --anim-overlay-in-easing:    var(--easing-out);
+  --anim-overlay-out-duration: var(--duration-base);      /* 200ms */
+  --anim-overlay-out-easing:   var(--easing-in);
+
+  /* 进度 / 加载循环 Progress / Loading（匀速线性循环） */
+  --anim-progress-duration:    1000ms;                    /* 1s 循环周期，符合 iOS 加载圈节奏 */
+  --anim-progress-easing:      var(--easing-linear);
 }

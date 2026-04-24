@@ -7,6 +7,28 @@
 > Figma Frame: `1_9610` (468×4056px)  
 > 资源路径: `icons/`（通用占位图：`placeholder_landscape.svg` / `placeholder_portrait.svg` / `placeholder_square.svg`）
 
+## 🔒 强约束声明
+
+@LINT F1, F11, F15, S17, TK1, TK14
+@SPEC_OF_TRUTH 本文件为 ImageBlock 权威规范
+
+### @MUST
+- 变体仅限 A1-A5（通栏）+ B1-B5（嵌入），共 10 种
+- A 通栏宽度 428px / B 嵌入宽度 396px
+- 图片填充方式 `object-fit: cover`
+- **倒角规则按容器类型区分**：
+  - **通栏型 A1-A5**：图片 / 宫格每格 / 容器**全部不加任何倒角**（图片需直达屏幕边缘，必须保持锐角）
+  - **嵌入型 B1-B5**：单图轮播图片 + 宫格每格统一使用 **8px 倒角**（`border-radius: var(--radius-s)`），容器本身无倒角（倒角由内部图片承担）
+- 占位图必须按场景使用：A1/A2/B1/B2 → `placeholder_landscape.svg`；A3/B3 → `placeholder_portrait.svg`；A4/A5/B4/B5 → `placeholder_square.svg`
+
+### @FORBIDDEN
+- 发明注册表外的变体
+- 使用灰色矩形 / 彩色块 / 文字占位替代 placeholder
+- `object-fit` 非 `cover`（除特殊场景明确标注）
+- 图片来源使用 Base64 或外链 URL
+- **嵌入型**单张图片硬编码圆角（必须使用 `var(--radius-s)` token / 8px）或省略圆角
+- **通栏型**任何位置（容器 / 图片 / 宫格每格）出现 `border-radius`（必须保持锐角）
+
 ---
 
 ## 一、组件概述
@@ -96,11 +118,15 @@
 **宫格容器通用属性**：
 ```css
 .image-block-grid {
-    position: relative;      /* 子元素绝对定位 */
+    position: relative;          /* 子元素绝对定位 */
 }
 .image-block-grid img {
     display: block;
-    position: absolute;      /* 每个格子通过 left/top 精确定位 */
+    position: absolute;          /* 每个格子通过 left/top 精确定位 */
+}
+/* 嵌入型 B4/B5：每格 8px 倒角；通栏型 A4/A5：保持锐角 */
+.image-block-grid.inset img {
+    border-radius: var(--radius-s); /* 8px */
 }
 ```
 
@@ -157,16 +183,19 @@
 .image-block-dots .dot.inactive { background: var(--fill-tertiary); }
 ```
 
-**图片样式**：
+**图片样式**（嵌入型 8px 倒角；通栏型保持锐角）：
 ```css
+/* 通栏型：图片直达屏幕边缘，必须保持锐角，禁止任何 border-radius */
 .image-block-container.full-width .image-block-img {
     width: 428px;
     display: block;
 }
+/* 嵌入型：每张图 8px 倒角 */
 .image-block-container.inset .image-block-img {
     width: 396px;
     margin: 16px 16px 0 16px;
     display: block;
+    border-radius: var(--radius-s); /* 8px */
 }
 ```
 

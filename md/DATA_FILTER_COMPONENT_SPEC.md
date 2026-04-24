@@ -4,6 +4,32 @@
 > **大类**：数据  
 > **变体数量**：16 种（A页签4 + B分段选择4 + C下拉筛选1 + D标签5 + E面包屑2）
 
+## 🔒 强约束声明
+
+@LINT F1, F4, TK1
+@SPEC_OF_TRUTH 本文件为 DataFilter 权威规范
+
+### @MUST
+- 变体仅限 A1-A4（页签）+ B1-B4（分段选择）+ C1（下拉筛选）+ D1-D5（标签）+ E1-E2（面包屑），共 16 种
+- A 页签容器底线：0.5px solid `var(--border-default)`（组件内部强描边）
+- **A 页签模式二选一**：① 等分模式（A1-A3，4-6 个）；② 横滑模式（A4，≥7 个或文本溢出时）。**统一 `padding: 0 16px`**（内容区 396px）
+- A 等分模式项宽：**A1 (4 个) = 96px · A2 (5 个) = 80px · A3 (6 个) = 68px**；`justify-content: center`，文本居中
+- A 横滑模式：`justify-content: flex-start; gap: 24px; overflow-x: auto`，项宽 auto 自适应文本
+- A 指示器：宽 32px，**中心与页签文字中心对齐**（`transform: translateX(-50%)`），仅选中态可见
+- B 分段选择内部垂直分隔线：0.5×16px + `var(--border-default)`
+- B 选中项左右相邻分隔线 `opacity: 0`，其余恢复 `opacity: 1`
+- E2 超限渐隐使用 `mask-image: linear-gradient(to right, transparent 0%, black 24px)`
+- **吸顶复合角色**（S24/S27）：① **A 页签 = L2 层**（紧跟 NavBar 时可吸顶）；② **D 标签 / E 面包屑 = L3 层**（可作最下层吸顶）；③ 吸顶时 A 页签底线 `var(--border-default)` 0.5px 作整体底线承担者；④ D / E 自身无底线，作最下层时整体吸顶无分割线
+
+### @FORBIDDEN
+- 发明注册表外的变体
+- 修改分隔线尺寸或颜色
+- 选中态切换时未同步更新分隔线可见性
+- E2 渐隐依赖特定背景色（必须用 mask-image）
+- **B 分段选择 / C 下拉筛选 参与吸顶复合**（S27）：B 分段与 C 下拉**永不吸顶**，只能作为页面内容流中的普通组件
+- 同层多组件并排吸顶（如两个页签并列 / 标签+面包屑并排）
+- **A 页签伪左对齐**：非等分且非横滑的"左对齐固定宽度"布局 · `padding` 左右不对称 · 等分模式下手写 `justify-content: flex-start` · 横滑模式不设 `overflow-x: auto`
+
 ## 1. 概述
 
 数据筛选（DataFilter）是页面中用于分类切换、条件筛选与层级导航的组合组件族，包含页签、分段选择、下拉筛选、标签、面包屑五种子组件类型，适用于不同信息架构与交互场景。
@@ -33,11 +59,15 @@
 
 ### 3.1 A. 页签 Tab
 
-- **容器**：宽 428px，高 24px，透明背景（跟随页面背景色），底部 0.5px 分割线 `var(--border-default)`，`overflow: hidden`
-- **等分模式**（A1-A3，4-6 个）：页签项等分容器宽度（428 / n），文本居中
-- **横滑模式**（A4，8 个）：内边距 `0 16px`，页签项宽度自适应文本内容，间距 `gap: 24px`，支持左右滑动（`overflow-x: auto`，隐藏滚动条：`scrollbar-width: none` + `::-webkit-scrollbar { display: none }`），`flex-shrink: 0`
+- **容器**：宽 **428px**，高 **48px**，透明背景（跟随页面背景色），底部 0.5px 分割线 `var(--border-default)`，`overflow: hidden`
+- **统一左右边距**：`padding: 0 16px`（两种模式一致），内容区 **396px**
+- **等分模式**（A1-A3，4-6 个）：`justify-content: center`，文本居中
+  - A1 (4 页签)：**每项 96px**（4×96=384，居中 6px 两侧余白）
+  - A2 (5 页签)：**每项 80px**（5×80=400，余 ±2px 由 overflow:hidden 裁剪，视觉可接受）
+  - A3 (6 页签)：**每项 68px**（6×68=408，居中分布内容区 396px，余 ±6px 裁剪可接受）
+- **横滑模式**（A4，≥7 个 或 文本溢出时）：`justify-content: flex-start; gap: 24px`，页签项宽度**自适应文本内容**（`width: auto; flex-shrink: 0`），支持左右滑动（`overflow-x: auto`，隐藏滚动条：`scrollbar-width: none` + `::-webkit-scrollbar { display: none }`）
 - **文本**：16px / 22px PingFang SC，未选中 400 / 选中 500，颜色 `var(--text-primary)`
-- **指示器**：宽 32px，高 3px，圆角 1.5px，品牌蓝 `#0099FF`，底部对齐（`position: absolute; bottom: 0`），仅选中态可见（非选中 `opacity: 0`）
+- **指示器**：宽 32px，高 3px，圆角 1.5px，品牌蓝 `var(--brand-standard)`，底部对齐（`position: absolute; bottom: 0; left: 50%; transform: translateX(-50%)`），**中心与页签文字中心对齐**，仅选中态可见（非选中 `opacity: 0`）
 
 ### 3.2 B. 分段选择 Segment
 
@@ -46,7 +76,7 @@
 - **分段栏**：高 40px，圆角 12px，背景 `var(--fill-tertiary)`
 - **选项宽度**：每项 52px，总宽度 = 52.5 × n（含分隔线）
 - **分隔线**：宽 0.5px，高 16px，颜色 `var(--border-default)`，选中项相邻分隔线隐藏（`opacity: 0`）
-- **文本**：14px / 20px PingFang SC，未选中 400 色 `#6A6B6D` / 选中 500 色 `#1A1C1E`
+- **文本**：14px / 20px PingFang SC，未选中 400 色 `var(--text-secondary)` / 选中 500 色 `var(--text-primary)`
 - **选项数量**：2 / 3 / 4 / 5 个
 - **组合规则**：可独占一行，也可与相同/不同类型组件同行排列，间距 16px
 
@@ -64,17 +94,17 @@
 
 - **维度控制**：标签组件由**单行/双行**和**平铺/横滑**两个变量控制，共 5 种变体
 - **容器**：宽 428px，透明背景（跟随页面背景色），`overflow: hidden`
-  - 平铺模式：内边距 `8px 16px`，标签区宽 396px
-  - 横滑模式：内边距 `8px 0`，标签区内边距 `0 16px`，支持横向滚动（`overflow-x: auto`，隐藏滚动条：`scrollbar-width: none` + `::-webkit-scrollbar { display: none }`）
+  - 平铺模式：内边距 `0 16px`，标签区宽 396px
+  - 横滑模式：内边距 `0`，标签区内边距 `0 16px`，支持横向滚动（`overflow-x: auto`，隐藏滚动条：`scrollbar-width: none` + `::-webkit-scrollbar { display: none }`）
 - **标签项**：圆角 12px，背景 `var(--fill-tertiary)`，项间距 `gap: 8px`，`flex-shrink: 0`
 - **单行横滑**（D1，6 个标签）：容器高 40px，标签高 40px，每个标签 `padding: 0 16px` 自适应宽度，第一个文本"横滑标签"、其余"标签"
 - **单行4/3/2个**（D2-D4）：容器高 40px，标签高 40px，宽度 = `(396 - (n-1)×8) / n`，等分填满
 - **双行2个**（D5）：容器高 62px，标签高 62px，宽度 = `(396 - (n-1)×8) / n`，等分填满，每个标签包含标题行和描述行
-- **单行文本**：15px / 20px PingFang SC
+- **单行文本**：14px / 20px PingFang SC
   - 未选中：font-weight 400，颜色 `var(--text-secondary)`
   - 选中：font-weight 500，颜色 `var(--text-primary)`
 - **双行文本**：
-  - 标题：15px / 20px PingFang SC，未选中 400 `var(--text-secondary)` / 选中 500 `var(--text-primary)`
+  - 标题：14px / 20px PingFang SC，未选中 400 `var(--text-secondary)` / 选中 500 `var(--text-primary)`
   - 描述：14px / 20px PingFang SC 400，未选中 `var(--text-tertiary)` / 选中 `var(--text-secondary)`
 
 ### 3.5 E. 面包屑 Breadcrumb
@@ -85,7 +115,7 @@
 - **层级文本**：14px / 20px PingFang SC 500，`white-space: nowrap`，`flex-shrink: 0`
   - 中间层级：颜色 `var(--text-secondary)`
   - 最后层级（当前页）：颜色 `var(--text-primary)`
-- **分隔符**：12×12 右箭头 chevron 图标，颜色 `rgba(60,60,67,0.75)`，`margin: 0 8px`
+- **分隔符**：12×12 右箭头 chevron 图标，颜色 `var(--border-default)`（与分割线 token 统一），`margin: 0 8px`
 
 ## 4. 展示规则
 
@@ -95,10 +125,72 @@
 
 ## 5. 组件组合规则
 
-- **分段选择**和**下拉筛选**外层行为 `display: inline-flex`，透明背景，`padding: 0 16px`，宽度自适应内容（不设固定宽度）；内层容器 `display: inline-flex`，背景色 `var(--fill-tertiary)`，圆角 12px
-- 所有组件仅输出净内容高度，上下间距由外部间距组件提供
-- 可以独占一行，也可以将相同类型的多个组件、或不同类型的多种组件组合排列在同一行
-- 同行组件间距为 **16px**（由容器 `gap: 16px` 控制）
+### 5.1 合法组合场景（3 种）
+
+| 场景 | 组合 | 布局 | 适用 |
+|------|------|------|------|
+| **场景 A · 视图切换 + 排序** | B × 1 + C × 1 | `flex-start`，gap 16px | 时间维度切换 + 排序 |
+| **场景 B · 多条件筛选** | C × 2-3（上限 **3 个**）| `flex-start`，gap 16px | 商品筛选（类别+品牌+价格）|
+| **场景 C · 文件多维度筛选** | **B × 2-3 + C × 1** | `flex-start`，gap 16px | 文件管理（类型+排序+筛选）|
+
+> 独占一行也合法：B 或 C 可以作为唯一元素出现在一行。
+
+### 5.2 容器规格
+
+```css
+.df-combo-row {
+    width: 428px;
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    gap: 16px;                       /* 同行组件间距 */
+    padding: 0 16px;                 /* 左右各 16px，与 A 页签统一 */
+    box-sizing: border-box;
+}
+```
+
+### 5.3 @MUST 约束
+
+- 同行组合仅允许 3 种：**B+C** / **C×2-3** / **B×2-3+C×1**
+- C 按钮**最多 3 个**（超过改用 HSO 筛选面板）
+- B 分段**最多 3 个**（超过视觉压迫）
+- **禁止** A 页签 / D 标签 / E 面包屑加入组合行（这些是独立 chrome 或分类组件）
+- 统一 `padding: 0 16px` + `gap: 16px`
+
+### 5.4 正确使用 ASCII 示例
+
+**示例 1 · 视图切换 + 排序（场景 A）**：
+```
+┌─ 428px 通栏 ───────────────────────────┐
+│←16→ [日 │ 周 │ 月]  ←16→  [价格 ▼]     │
+│      B2 三选项              C1 下拉      │
+└────────────────────────────────────────┘
+```
+
+**示例 2 · 多条件筛选（场景 B · 上限 3 个 C）**：
+```
+┌─ 428px 通栏 ───────────────────────────┐
+│←16→ [类别 ▼] ←16→ [品牌 ▼] ←16→ [价格 ▼]│
+│       C1          C1           C1       │
+└────────────────────────────────────────┘
+```
+
+**示例 3 · 文件多维度筛选（场景 C · B×2+C×1）**：
+```
+┌─ 428px 通栏 ───────────────────────────┐
+│←16→[列表│宫格]←16→[已下载│未下载]←16→[文件类型▼]│
+│       B1 二选项    B1 二选项        C1 下拉    │
+└────────────────────────────────────────┘
+```
+
+### 5.5 @FORBIDDEN 约束
+
+- ❌ 组合行混入 A 页签 / D 标签 / E 面包屑
+- ❌ C × 4+ 同行（改用 HSO 筛选面板）
+- ❌ B × 4+ 同行
+- ❌ 组合总宽度超过 428px（需要减少元素数量）
+- ❌ 不设 `padding: 0 16px` 或 `gap: 16px`
+- ❌ 通用：所有组件仅输出净内容高度，上下间距由外部间距组件提供
 
 ## 6. 交互行为
 
@@ -148,7 +240,7 @@
 ```css
 .df-tab-container {
     width: 428px;
-    height: 24px;
+    height: 48px;
     background: transparent;
     position: relative;
     overflow: hidden;
@@ -156,20 +248,29 @@
 }
 .df-tab-inner {
     width: 428px;
-    height: 24px;
+    height: 48px;
     display: flex;
     align-items: center;
-    justify-content: center;
+    padding: 0 16px;                 /* 统一 16px 边距，两种模式一致 */
+    box-sizing: border-box;
 }
+.df-tab-inner.mode-equal  { justify-content: center; }
+.df-tab-inner.mode-scroll { justify-content: flex-start; gap: 24px; overflow-x: auto; }
 .df-tab-inner::-webkit-scrollbar { display: none; }
 .df-tab-item {
-    height: 24px;
+    height: 48px;
     display: flex;
     align-items: center;
     justify-content: center;
     position: relative;
     flex-shrink: 0;
 }
+/* 等分模式 · 项宽 */
+.df-tab-inner.mode-equal .df-tab-item.count-4 { width: 96px; }
+.df-tab-inner.mode-equal .df-tab-item.count-5 { width: 80px; }
+.df-tab-inner.mode-equal .df-tab-item.count-6 { width: 68px; }
+/* 横滑模式 · 自适应文本 */
+.df-tab-inner.mode-scroll .df-tab-item { width: auto; }
 .df-tab-item .df-tab-label {
     font-size: 16px;
     font-family: 'PingFang SC', -apple-system, sans-serif;
@@ -242,7 +343,7 @@
 }
 .df-segment-item.selected {
     background: var(--bg-bottom);
-    box-shadow: 0 1px 4px rgba(0,0,0,0.08), 0 0.5px 1px rgba(0,0,0,0.04);
+    /* 无 box-shadow（与全局规范一致：除 Menu 外其他组件不使用阴影） */
 }
 .df-segment-item.selected .df-seg-label {
     font-weight: 500;
@@ -323,7 +424,7 @@
     flex-shrink: 0;
 }
 .df-tag-item .df-tag-label {
-    font-size: 15px;
+    font-size: 14px;
     font-family: 'PingFang SC', -apple-system, sans-serif;
     font-weight: 400;
     color: var(--text-secondary);
@@ -341,7 +442,7 @@
     align-items: center;
 }
 .df-tag-item .df-tag-title {
-    font-size: 15px;
+    font-size: 14px;
     font-family: 'PingFang SC', -apple-system, sans-serif;
     font-weight: 400;
     color: var(--text-secondary);
@@ -436,7 +537,7 @@ document.addEventListener('click', function(e) {
 
 ### 10.2 分段选择 Segment 切换（组件内交互）
 
-- 点击任一分段选项后：该选项变为选中态（白色背景滑块 + 阴影），其余恢复非选中态
+- 点击任一分段选项后：该选项变为选中态（白色背景滑块），其余恢复非选中态
 - 选中项两侧相邻分隔线隐藏（`opacity: 0`），其余恢复（`opacity: 1`）
 - 过渡动画：`transition: all 200ms ease-out`
 

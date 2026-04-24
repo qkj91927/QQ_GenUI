@@ -26,18 +26,18 @@
       "default": { "bg": { "token": "brand-standard", "value": "#0099FF" }, "text": { "token": "text-white", "value": "#FFFFFF" }, "border": "none" },
       "pressed": { "bg": { "token": "brand-standard", "value": "#008AE5" }, "text": { "token": "text-white", "value": "#FFFFFF" }, "border": "none" },
       "loading": { "bg": { "token": "brand-standard", "value": "#008AE5" }, "text": { "token": "text-white", "value": "#FFFFFF" }, "border": "none" },
-      "disabled": { "bg": "rgba(0,153,255,0.50)", "text": "rgba(255,255,255,0.50)", "border": "none" }
+      "disabled": { "bg": { "token": "brand-standard", "value": "#0099FF" }, "text": { "token": "text-white", "value": "#FFFFFF" }, "border": "none", "opacity": 0.30, "note": "S11 规则：disabled 沿用默认色 + opacity 0.3，不另设 rgba 色值" }
     },
     "secondary": {
-      "default": { "bg": "transparent", "text": { "token": "text-primary", "value": "rgba(0,0,0,1.0)" }, "border": "rgba(60,60,67,0.25) 1px" },
-      "pressed": { "bg": "rgba(204,204,204,0.30)", "text": { "token": "text-primary", "value": "rgba(0,0,0,1.0)" }, "border": "rgba(60,60,67,0.25) 1px" },
-      "loading": { "bg": "rgba(204,204,204,0.30)", "text": { "token": "text-primary", "value": "rgba(0,0,0,1.0)" }, "border": "rgba(60,60,67,0.25) 1px" },
-      "disabled": { "bg": "rgba(204,204,204,0.30)", "text": "rgba(0,0,0,0.30)", "border": "rgba(60,60,67,0.12) 1px", "opacity": 0.30 }
+      "default": { "bg": "transparent", "text": { "token": "text-primary", "value": "rgba(0,0,0,1.0)" }, "border": { "token": "border-default", "width": "1px", "value": "#C6C6C8" } },
+      "pressed": { "bg": { "token": "feedback-press", "value": "rgba(120,120,120,0.2)" }, "text": { "token": "text-primary", "value": "rgba(0,0,0,1.0)" }, "border": { "token": "border-default", "width": "1px", "value": "#C6C6C8" } },
+      "loading": { "bg": { "token": "feedback-press", "value": "rgba(120,120,120,0.2)" }, "text": { "token": "text-primary", "value": "rgba(0,0,0,1.0)" }, "border": { "token": "border-default", "width": "1px", "value": "#C6C6C8" } },
+      "disabled": { "bg": "transparent", "text": { "token": "text-primary", "value": "rgba(0,0,0,1.0)" }, "border": { "token": "border-default", "width": "1px", "value": "#C6C6C8" }, "opacity": 0.30, "note": "S11 规则：disabled 沿用默认色 + opacity 0.3" }
     },
     "error": {
-      "default": { "bg": "transparent", "text": { "token": "accent-red", "value": "#E0462C" }, "border": "rgba(60,60,67,0.25) 1px" },
-      "pressed": { "bg": "rgba(204,204,204,0.30)", "text": { "token": "accent-red", "value": "#E0462C" }, "border": "rgba(60,60,67,0.25) 1px" },
-      "disabled": { "bg": "transparent", "text": "rgba(224,70,44,0.30)", "border": "rgba(60,60,67,0.12) 1px" }
+      "default": { "bg": "transparent", "text": { "token": "accent-red", "value": "#E0462C" }, "border": { "token": "border-default", "width": "1px", "value": "#C6C6C8" } },
+      "pressed": { "bg": { "token": "feedback-press", "value": "rgba(120,120,120,0.2)" }, "text": { "token": "accent-red", "value": "#E0462C" }, "border": { "token": "border-default", "width": "1px", "value": "#C6C6C8" } },
+      "disabled": { "bg": "transparent", "text": { "token": "accent-red", "value": "#E0462C" }, "border": { "token": "border-default", "width": "1px", "value": "#C6C6C8" }, "opacity": 0.30, "note": "S11 规则：disabled 沿用默认色 + opacity 0.3" }
     }
   },
 

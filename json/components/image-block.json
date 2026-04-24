@@ -27,8 +27,8 @@
   "layout": {
     "containerWidth": 428,
     "background": "white",
-    "fullWidth": { "imageWidth": 428, "padding": 0 },
-    "inset": { "imageWidth": 396, "padding": 16 }
+    "fullWidth":  { "imageWidth": 428, "padding": 0,  "imageRadius": { "value": 0, "token": null, "note": "通栏型不加任何倒角（图片直达屏幕边缘，需保持锐角）" } },
+    "inset":      { "imageWidth": 396, "padding": 16, "imageRadius": { "value": 8, "token": "--radius-s", "note": "嵌入型每张图（轮播 + 宫格每格）统一 8px 倒角" } }
   },
 
   "pageDots": {
@@ -42,7 +42,11 @@
 
   "gridLayout": {
     "positioning": "absolute",
-    "gap": 2
+    "gap": 2,
+    "cellRadius": {
+      "fullWidth": { "value": 0, "token": null, "note": "通栏型 A4/A5 宫格每格保持锐角" },
+      "inset":     { "value": 8, "token": "--radius-s", "note": "嵌入型 B4/B5 宫格每格 8px" }
+    }
   },
 
   "interaction": {

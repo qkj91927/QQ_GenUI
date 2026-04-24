@@ -4,6 +4,22 @@
 > **使用规则**：执行半屏浮层设计任务时，**优先查阅本文档**，判断是否可直接使用或小幅修改某个模版，再按规范生成代码。如果实际任务或场景不满足任何模版，则基于 `HALF_SCREEN_OVERLAY_COMPONENT_SPEC.md` 规范约束，使用 Basic 1.0 设计组件库自行开展设计。所有模版均已通过 Basic 1.0 规范校验。  
 > **前置必读**：使用模版前需读取 `HALF_SCREEN_OVERLAY_COMPONENT_SPEC.md`（浮层容器规范）和 `DIVIDER_SPACING_COMPONENT_SPEC.md`（间距规则）。
 
+## 🔒 强约束声明
+
+@LINT F1, F10, S8, S9
+@SPEC_OF_TRUTH 本文件为 HSO 场景模版库权威索引；模版本身的组件规范以各组件 spec 为准
+
+### @MUST
+- 执行半屏浮层设计任务时，**优先查阅本文档**，按核心特征匹配最接近的模版
+- 使用模版前必须先读取 `HALF_SCREEN_OVERLAY_COMPONENT_SPEC.md` + `DIVIDER_SPACING_COMPONENT_SPEC.md`
+- 所有模版已通过 Basic 1.0 规范校验，直接使用或小幅修改即可
+- 任务或场景不匹配任何模版时，才基于 HSO spec 自行设计
+
+### @FORBIDDEN
+- 发明注册表外的变体（本文档未定义的 HSO 模版组合）
+- 绕过本文档直接从零设计 HSO（应先尝试模版匹配）
+- 跳过前置必读文档
+
 ---
 
 ## 模版匹配机制

@@ -52,7 +52,7 @@
     "width": 296,
     "radius": 14,
     "background": { "token": "bg-bottom", "value": "#FFFFFF" },
-    "shadow": { "token": "shadow.dialog", "value": "0 8px 32px rgba(0,0,0,0.12)" },
+    "shadow": "none",
     "overlay": { "token": "overlay-modal", "value": "rgba(0, 0, 0, 0.40)" },
     "actionButtonHeight": 54,
     "divider": { "height": 0.5, "color": { "token": "border-default", "value": "#C6C6C8" } },

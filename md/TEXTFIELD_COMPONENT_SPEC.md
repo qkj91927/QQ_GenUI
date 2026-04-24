@@ -4,6 +4,25 @@
 > **大类**：操作  
 > **变体数量**：50 种（A-D 4类型 × 5状态 = 20 + E复合输入框 6种 × 5状态 = 30）
 
+## 🔒 强约束声明
+
+@LINT F1, F4, F11, S11, TK1, TK10, TK15
+@SPEC_OF_TRUTH 本文件为 Textfield 权威规范
+
+### @MUST
+- 变体仅限 A-D 基础 × 5 态（20）+ E1-E6 复合 × 5 态（30），共 50 种
+- 5 种状态：default / focused / typing / completed / error
+- 完成指示器必须用 `icons/done.svg`（40×40px 蓝色圆形+白色对勾）
+- 默认态/激活态 opacity: 0.3（disabled 视觉）；输入态/完成态/错误态 opacity: 1
+- 清除按钮颜色：`var(--icon-secondary)`
+- 输入框描边：`0.5px solid var(--border-default)`（组件内部强描边）
+
+### @FORBIDDEN
+- 发明注册表外的变体
+- 完成指示器自绘 SVG（必须调用 `icons/done.svg`）
+- 输入框描边硬编码 rgba 或其他颜色
+- Disabled 态单独设色（应继承默认态色 + opacity 0.3）
+
 ## 1. 组件概述
 
 输入框（Textfield）是表单交互中最基础的信息录入组件，用于接收用户的文字、数字等文本内容输入。组件支持 A-D 共 4 种类型 × 5 种交互状态 = 20 种子组件变体，以及 E 复合输入框 6 种 × 5 种状态 = 30 种子组件变体，总计 50 种。

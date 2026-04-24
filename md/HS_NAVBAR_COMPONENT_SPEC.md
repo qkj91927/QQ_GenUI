@@ -4,6 +4,26 @@
 > **大类**：导航  
 > **变体数量**：7 种（A1-A4 + B1-B3）
 
+## 🔒 强约束声明
+
+@LINT F1, F4, NV1, NV2, S14, S17
+@SPEC_OF_TRUTH 本文件为 HS_NavBar 权威规范
+
+### @MUST
+- 变体仅限 A1-A4（一级）+ B1-B3（二级），共 7 种
+- 必须嵌入 HalfScreenOverlay HSO-A 内部使用
+- **HSO 内容滚动时 HS_NavBar 必须保持可见**（S18）：HS_NavBar 须在 HSO 滚动容器之上（z-index 高于内容），滚动内容从其下方穿过
+- 容器宽度 429px（HSO 内部）
+- 底色走 `bg-*` 4-token 白名单，默认 `var(--bg-top)`（浮层容器色）
+- 滚动态分割线：默认无；滚动时显 0.5px + `var(--border-weak)`（`::after` + opacity 过渡，200ms ease-out）
+- IntersectionObserver 的 `root` 必须指向 HSO 内容容器
+
+### @FORBIDDEN
+- 独立使用（脱离 HSO-A）
+- 在 HSO-B（把手型）内使用 HS_NavBar
+- 底色 `transparent` / `fill-*` / 毛玻璃 / 硬编码 rgba
+- 默认态永久显示分割线 / 用 `border-bottom` / 非 0.5px / 非 `--border-weak`
+
 ## 1. 组件概述 (Overview)
 
 半屏导航栏是专用于半屏浮层（Bottom Sheet / Half-Screen Overlay）顶部的导航组件，承载标题展示、层级返回与关闭操作。与全屏顶部导航栏（NavBar）不同，半屏导航栏始终锚定在浮层内容区顶部，宽度跟随浮层容器而非全屏。
@@ -95,10 +115,23 @@ B3  返回+标题           → [←]      [二级标题]
     display: flex;
     align-items: center;
     width: 429px;
-    background: transparent;
+    /* 底色：HS_NavBar 位于浮层内，默认 --bg-top（浮层容器色）。严格遵守 NV1。禁止 transparent。 */
+    background: var(--bg-top);
     position: relative;
     box-sizing: border-box;
 }
+/* NV2 · 滚动态分割线（复用 divider A1 视觉规范：0.5px + --border-weak） */
+.hs-navbar-row::after {
+    content: '';
+    position: absolute;
+    left: 0; right: 0; bottom: 0;
+    height: 0.5px;
+    background: var(--border-weak);
+    opacity: 0;
+    transition: opacity 200ms ease-out;
+    pointer-events: none;
+}
+.hs-navbar-row.scrolled::after { opacity: 1; }
 .hs-navbar-row.level-1 {
     height: 54px;
     padding: 0 16px;
@@ -182,7 +215,40 @@ B3  返回+标题           → [←]      [二级标题]
 - **把手型（HSO-B）不使用半屏导航栏（HS_NavBar）**，半屏态顶部为把手条；上滑进入全屏态后，把手条隐藏，显示全屏导航栏（NavBar），左侧必须为 L3 关闭，中间/右侧可按业务配置（交叉过渡规范详见 `HALF_SCREEN_OVERLAY_COMPONENT_SPEC.md` §6.6）
 - 全屏页面顶部应使用 NavBar（`navbar`），不可使用 HS_NavBar
 
-### 8.2 底色规则
-- 半屏导航栏本身为**透明底色**（`background: transparent`）
-- 视觉上跟随半屏浮层面板的底色显示（默认白色 `#FFFFFF`）
-- 当浮层内容区因嵌入 Card/Grouped List 而切换为灰底（`var(--bg-secondary)`）时，导航栏底色需同步调整
+### 8.2 底色规则（严格遵守 NV1）
+- HS_NavBar 必须使用 `bg-*` 系列 token，**禁止 transparent / 毛玻璃 / 硬编码 rgba**
+- 默认 `var(--bg-top)`（浮层容器色）
+- 当浮层内容区因嵌入 Card / Grouped List 而切换为灰底时，HS_NavBar 底色应同步切换为 `var(--bg-secondary)`，与内容一体；或保持 `var(--bg-top)`（分层，白名单组合）
+- 详细拼接白名单见 `QUI_DESIGN_LINT_SKILL.md` NV1 规则
+
+### 8.3 滚动态分割线（NV2 · 对齐 divider A1）
+
+HS_NavBar 默认**不展示**底部分割线；当浮层内容区滚动使内容进入 HS_NavBar 下方覆盖区时，**显示** 0.5px 分割线（复用 `divider_spacing` A1 规范：`0.5px` + `var(--border-weak)`）；回滚到顶部时分割线淡出。
+
+#### HTML 结构（sentinel 置于 HSO 内容容器顶部）
+```html
+<div class="hso-content" id="hsoContent">
+  <div class="scroll-sentinel" aria-hidden="true"></div>
+  <nav class="hs-navbar-row">...</nav>
+  <!-- 内容区 -->
+</div>
+```
+
+#### JS（IntersectionObserver，root 指向 HSO 内容容器）
+```js
+(function initHSNavbarEdge() {
+    const hsoContent = document.getElementById('hsoContent');
+    const sentinel = hsoContent?.querySelector('.scroll-sentinel');
+    const navbar = hsoContent?.querySelector('.hs-navbar-row');
+    if (!sentinel || !navbar) return;
+    new IntersectionObserver(([entry]) => {
+        navbar.classList.toggle('scrolled', !entry.isIntersecting);
+    }, { root: hsoContent }).observe(sentinel);   /* 关键：root = HSO 容器 */
+})();
+```
+
+#### 约束
+1. 默认态**禁止**使用 `border-bottom`（会占高度导致切换时 1px 跳动）——必须用伪元素
+2. 分割线**必须** 0.5px + `var(--border-weak)`（对齐 divider A1）
+3. 过渡属性仅允许 `opacity`（200ms ease-out），禁止 border-color / transform / box-shadow
+4. IntersectionObserver 的 `root` 必须指向 HSO 内容容器，不是 `window`

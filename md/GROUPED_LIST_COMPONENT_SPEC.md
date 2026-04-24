@@ -4,6 +4,23 @@
 > **大类**：数据  
 > **变体数量**：52 种（46 基础变体 + 6 组合变体）
 
+## 🔒 强约束声明
+
+@LINT F1, F3, F4, S11, S17, TK1, DV1
+@SPEC_OF_TRUTH 本文件为 Grouped List（form）权威规范
+
+### @MUST
+- 变体仅限 L1-L11 × R0-R5 共 52 种（含 46 基础 + 6 Combo），经约束矩阵过滤
+- 容器宽度 396px 卡片式
+- 分割线 0.5px + `var(--border-weak)`，左端与标题文本左边缘对齐，右侧固定 16px
+- 同一卡片组内分割线长度必须一致，混排不一致须拆分为不同卡片组
+- 层级上限 2 级（父→子）
+- 整行禁用 `opacity: 0.4`，`pointer-events: none`
+
+### @FORBIDDEN
+- 分割线长度不一致仍保留为同组
+- 发明注册表外的变体
+
 ## 1. 组件概述
 
 卡片式列表（Inset Grouped List）是设置页面的核心布局组件，由背景容器、内容行、左侧区域、右侧区域、分隔线及底部说明文字组成。左右缩进且以圆角容器封装，适合任务驱动型界面，在复杂信息中快速定位功能或操作。
@@ -15,8 +32,8 @@
 ### 2.1 整体属性
 | 属性名 | 标识 | 视觉特征 |
 | :--- | :--- | :--- |
-| 分割线 | Separator | 底部 0.5px `rgba(0, 0, 0, 0.05)` 实线（Token `--border-weak`），左右对称缩进 16px |
-| 底部说明 | Bottom Hint | 组件下方 14px 辅助文字，颜色 `var(--text-secondary)` |
+| 分割线 | Separator | 底部 0.5px 实线，颜色 `var(--border-weak)`；左端与标题文本左边缘对齐，右侧固定 16px：L1/L2 左侧 16px；L3–L6/L8–L11 左侧 52px（16px 行内边距 + 24px 图标 + 12px gap）；L7 左侧 68px（16px + 40px 头像 + 12px gap）；**同一卡片组内分割线长度必须一致，若混排导致不一致须拆分为不同卡片组** |
+| 底部说明 | Bottom Hint | 组件下方 14px 辅助文字，颜色 `var(--text-secondary)`；上下内边距均为 8px，左右 32px；`display: flex; align-items: center; gap: 5px` |
 
 ### 2.2 左侧区域 (L) — 11 种
 | 标识 | 名称 | 视觉特征 |
@@ -25,8 +42,8 @@
 | L2 | 双行标题 | 17px 标题 + 14px 辅助说明 |
 | L3 | 图标+单行标题 | `icons/empty_icon.svg`（24px 占位图标）+ 17px 文字，间距 12px |
 | L4 | 图标+双行标题 | `icons/empty_icon.svg`（24px 占位图标）+ 17px 标题 + 14px 辅助说明 |
-| L5 | 二级+单行标题 | `icons/secondary.svg`（二级引导图标）+ 17px 文字（从属层级） |
-| L6 | 二级+双行标题 | `icons/secondary.svg`（二级引导图标）+ 17px 标题 + 14px 辅助说明（从属层级） |
+| L5 | 二级+单行标题 | `icons/secondary.svg`（24px 二级引导图标，颜色 `var(--icon-secondary)`）+ 17px 文字（从属层级） |
+| L6 | 二级+双行标题 | `icons/secondary.svg`（24px 二级引导图标，颜色 `var(--icon-secondary)`）+ 17px 标题 + 14px 辅助说明（从属层级） |
 | L7 | 头像+双行标题 | `icons/Avatar_40.svg`（40px 圆形头像占位）+ 17px 标题 + 14px 辅助说明 |
 | L8 | 已勾选+单行标题 | `icons/tick.svg`（24px，`var(--brand-standard)`）+ 17px 标题，间距 12px |
 | L9 | 未勾选+单行标题 | 无图标 + 17px 标题（与 L8 对应的未选状态，左侧缩进与 L8 保持一致） |
@@ -37,9 +54,9 @@
 | 标识 | 名称 | 视觉特征 |
 | :--- | :--- | :--- |
 | R0 | 为空 / None | 无右侧内容 |
-| R1 | 跳转 / Detail | **可选**辅助信息文字（17px，`var(--text-secondary)`）+ `icons/chevron_right.svg`（16px 右箭头）；辅助信息可隐藏 |
-| R2 | 辅助信息+下拉菜单 / Dropdown | **可选**辅助信息文字（17px，`var(--text-secondary)`）+ `icons/expand_list.svg`（16px 下拉箭头）；辅助信息可隐藏 |
-| R3 | 辅助信息+头像+箭头 / Avatar | **可选**辅助信息文字（17px，`var(--text-secondary)`）+ `icons/Avatar_32.svg`（32px 圆形头像）+ `icons/chevron_right.svg`（16px 右箭头）；辅助信息和头像均可独立隐藏 |
+| R1 | 跳转 / Detail | **可选**辅助信息文字（14px，行高 20px，`var(--text-secondary)`）+ `icons/chevron_right.svg`（16×16px 右箭头，颜色 `var(--icon-tertiary)`）；辅助信息可隐藏 |
+| R2 | 辅助信息+下拉菜单 / Dropdown | **可选**辅助信息文字（14px，行高 20px，`var(--text-secondary)`）+ `icons/expand_list.svg`（16×16px 下拉箭头，颜色 `var(--icon-tertiary)`）；辅助信息可隐藏 |
+| R3 | 辅助信息+头像+箭头 / Avatar | **可选**辅助信息文字（14px，行高 20px，`var(--text-secondary)`）+ `icons/Avatar_32.svg`（32px 圆形头像）+ `icons/chevron_right.svg`（16×16px 右箭头，颜色 `var(--icon-tertiary)`）；辅助信息和头像均可独立隐藏 |
 | R4 | 开关 / Switch | 44×26px 胶囊开关，开启态背景 `var(--brand-standard)` |
 | R5 | 勾选 / Checkbox | `icons/Checkbox_filled.svg`(选中) / `icons/Checkbox.svg`(未选中)（20px，`var(--brand-standard)`） |
 
@@ -97,7 +114,11 @@
 - **内边距**: 左右 16px
 - **背景色**: 页面 `var(--bg-secondary)`，组件 `#FFFFFF`
 - **字体**: 标题 `17px var(--text-primary)`；描述 `14px var(--text-secondary)`，line-height: 1.2, margin-top: 1px
-- **分割线**: `0.5px rgba(0,0,0,0.05)`（Token `--border-weak`），左右缩进 16px
+- **分割线**: 0.5px 实线，颜色 `var(--border-weak)`；左端与标题文本左边缘对齐，右侧固定 16px
+  - L1/L2（无图标）：左侧 16px
+  - L3–L6/L8–L11（24px 图标/tick）：左侧 52px（= 16px 行内边距 + 24px 图标 + 12px gap）
+  - L7（40px 头像）：左侧 68px（= 16px 行内边距 + 40px 头像 + 12px gap）
+  - **同一卡片组内分割线长度必须一致，若混排导致不一致须拆分为不同卡片组**
 - **卡片圆角**: 12px，Inset Grouped 样式
 - **组间距**: spacing-m（12px）（同类卡片容器相邻规则）
 - **右侧区域间距**: gap: 4px, margin-left: 12px
@@ -200,8 +221,28 @@ Flex 算法分配顺序：
     margin-left: 12px;
 }
 .form-row .helper-text {
-    font-size: 17px;
+    font-size: 14px;
+    line-height: 20px;
     color: var(--text-secondary);
+}
+/* L5/L6 左侧二级引导图标（secondary.svg）：固定使用 --icon-secondary 着色 */
+.form-row .left-area .icon-secondary-left {
+    width: 24px;
+    height: 24px;
+    flex-shrink: 0;
+    color: var(--icon-secondary);       /* SVG currentColor 着色 */
+    /* 若使用 <img> 标签，改用 CSS filter 实现：*/
+    /* filter: opacity(0.6);             对应 --icon-secondary rgba(60,60,67,0.6) */
+}
+/* R1/R2/R3 方向图标（chevron_right、expand_list）：16×16px，次级图标色 */
+.form-row .right-area .icon-arrow,
+.form-row .right-area .icon-expand {
+    width: 16px;
+    height: 16px;
+    flex-shrink: 0;
+    color: var(--icon-tertiary);        /* SVG currentColor 着色 */
+    /* 若使用 <img> 标签，改用 CSS filter 实现：*/
+    /* filter: opacity(0.3);             对应 --icon-tertiary rgba(60,60,67,0.3) */
 }
 .form-switch {
     width: 44px;
@@ -237,16 +278,24 @@ Flex 算法分配顺序：
 ```css
 .form-group {
     background: var(--bg-secondary);
-    padding: 16px 0;
+    padding: 0;
     border-radius: 0;
     width: 428px;
     display: flex;
     flex-direction: column;
 }
 .form-group-header {
-    padding: 0 32px 4px;
-    font-size: 14px;
+    display: flex;
+    width: 428px;
+    padding: 8px 32px;
+    align-items: flex-start;
     color: var(--text-secondary);
+    font-feature-settings: 'liga' off, 'clig' off;
+    font-family: "PingFang SC";
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: 22px;
 }
 .form-group-content {
     background: var(--bg-bottom);
@@ -266,16 +315,27 @@ Flex 算法分配顺序：
     gap: 12px;
 }
 .form-group-footer {
-    padding: 4px 32px 0;
+    display: flex;
+    width: 428px;
+    padding: 8px 32px;
+    align-items: center;
+    gap: 5px;
     font-size: 14px;
     color: var(--text-secondary);
     line-height: 1.4;
 }
+/* 分割线左端与标题文本左边缘对齐，右侧固定 16px */
 .form-separator {
     height: 0.5px;
     background: var(--border-weak);
-    margin-left: 16px;
+    margin-left: 16px;      /* L1/L2：无图标，左侧 16px */
     margin-right: 16px;
+}
+.form-separator.inset-icon {
+    margin-left: 52px;      /* L3–L6/L8–L11：16px + 24px 图标 + 12px gap */
+}
+.form-separator.inset-avatar {
+    margin-left: 68px;      /* L7：16px + 40px 头像 + 12px gap */
 }
 ```
 
@@ -296,10 +356,12 @@ Flex 算法分配顺序：
 - **表单行 (Form Item)**: 核心内容
 - **底部说明 (Bottom Description)**: 可选，位于组合下方，支持文本及 Textlink
 
+> 卡片式列表组合支持选配分组标题、底部说明，也可以不配置。
+
 **视觉规则**：
 1. 组合采用 Inset Grouped 排版，宽度 396px（428px - 左右 16px 外边距）
 2. 整个组合卡片 12px 圆角，父容器统一包裹
-3. 分割线仅在组合内相邻项之间显示，左右缩进 16px
+3. 分割线仅在组合内相邻项之间显示；左端与标题文本左边缘对齐，右侧固定 16px：L1/L2 左侧 16px；L3–L6/L8–L11 左侧 52px；L7 左侧 68px；**同一卡片组内分割线长度必须一致，若混排导致不一致须拆分为不同卡片组**
 4. 分组标题距卡片顶边 4px（spacing-xs），卡片底边距底部说明 4px（spacing-xs）
 5. 组合内单体高度由内容自适应，多项组合纵向顶部对齐
 

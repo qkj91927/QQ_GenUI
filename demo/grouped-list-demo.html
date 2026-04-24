@@ -1,0 +1,786 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-theme="qq-light">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>母体 × 规则 → 变体</title>
+<link rel="stylesheet" href="../css/Qdesign Color Tokens.css">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg-canvas:var(--bg-select);
+  --bg-item:var(--bg-bottom);
+  --brand-blue:var(--brand-standard);
+}
+body{font-family:-apple-system,"SF Pro SC","PingFang SC",sans-serif;background:var(--bg-canvas);color:var(--text-primary);-webkit-font-smoothing:antialiased}
+img{display:block}
+
+/* Nav */
+.top-nav{position:fixed;top:0;left:0;right:0;height:64px;display:grid;grid-template-columns:auto 1fr;align-items:center;padding:0 40px;z-index:1000;gap:16px}
+/* NV2 · 滚动态分割线（对齐 divider A1：0.5px + --border-weak） */
+.top-nav::after{content:'';position:absolute;left:0;right:0;bottom:0;height:0.5px;background:var(--border-weak);opacity:0;transition:opacity 200ms ease-out;pointer-events:none}
+.top-nav.scrolled::after{opacity:1}
+.scroll-sentinel{position:absolute;top:0;left:0;height:1px;width:1px;pointer-events:none;visibility:hidden}
+.nav-left{display:flex;align-items:center;gap:12px}
+.nav-title-main{font-size:16px;font-weight:600;letter-spacing:-.02em}
+.nav-right{display:flex;align-items:center;gap:10px;justify-content:flex-end}
+.step-bar{display:flex;align-items:center;justify-content:flex-start;height:100%}
+.step-item{display:flex;align-items:center;gap:8px;padding:0 16px;height:64px;cursor:pointer;transition:all .2s;user-select:none;white-space:nowrap}
+/* 首个步骤：padding-left: 0 + margin-left: -10px → step-num 圆圈中心落在 40px，
+   使圆圈内的 "1" 字符与 panel-title 的 "生"/"应"/"后" 首字符视觉居左对齐 */
+.step-item:first-child{padding-left:0;margin-left:-10px}
+.step-item.active{}
+.step-num{width:20px;height:20px;border-radius:50%;background:var(--border-weak);color:var(--text-tertiary);font-size:11px;font-weight:700;display:flex;align-items:center;justify-content:center;transition:all .25s;flex-shrink:0}
+.step-item.active .step-num{background:var(--text-primary,#1a1a1a);color:#fff}
+.step-label{font-size:13px;font-weight:500;color:var(--text-tertiary);transition:color .2s}
+.step-item.active .step-label{color:var(--text-primary,#1a1a1a);font-weight:600}
+.step-div{width:16px;height:16px;flex-shrink:0;margin:0 2px;opacity:.3}
+
+/* Layout */
+.main-wrap{margin-top:64px;padding:32px 40px 100px}
+.step-panel{display:none;flex-direction:column;gap:24px}
+.step-panel.visible{display:flex;animation:panelIn .35s ease-out}
+@keyframes panelIn{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:translateY(0)}}
+
+/* Intro View (Step 1) — Figma canvas 972×900 */
+#introView{display:flex;justify-content:center;margin:-32px -40px 0;animation:panelIn .4s ease-out;overflow:hidden}
+#introView.hiding{animation:introOut .25s ease-in forwards}
+@keyframes introOut{from{opacity:1;transform:scale(1)}to{opacity:0;transform:scale(.97)}}
+.figma-canvas{position:relative;width:972px;height:900px;flex-shrink:0;overflow:hidden;background:#F0F0F2;border-radius:8px}
+.figma-canvas .fc-text{position:absolute;font-family:'PingFang SC',sans-serif;white-space:nowrap}
+.figma-canvas .fc-purple{color:#9747FF;font-weight:500}
+.figma-canvas .fc-black{color:rgba(0,0,0,.9);font-weight:400}
+
+/* (Legacy figma-frame CSS removed — now using figma-canvas absolute layout) */
+
+/* Panel header */
+.panel-header{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:16px}
+.ph-left{flex:1;min-width:200px}
+.panel-title{font-size:22px;font-weight:700;letter-spacing:-.03em;line-height:1.25}
+.panel-desc{font-size:13px;color:var(--text-tertiary);margin-top:5px;line-height:1.6;max-width:560px}
+.ph-stats{display:flex;align-items:center;gap:8px;flex-shrink:0}
+.ps-chip{background:rgba(255,255,255,.85);border-radius:10px;padding:8px 14px;border:1px solid rgba(0,0,0,.07);text-align:center}
+.ps-val{font-size:22px;font-weight:700;letter-spacing:-.03em}
+.ps-chip.blue .ps-val{color:#0099ff}.ps-chip.red .ps-val{color:#e0462c}
+.ps-chip.green .ps-val{color:#0a8a4a}.ps-chip.orange .ps-val{color:#c97000}
+.ps-op{font-size:18px;color:var(--text-quaternary);font-weight:300;padding:0 1px}
+.btn-row{display:flex;align-items:center;gap:10px;flex-wrap:wrap;flex-shrink:0}
+.btn-action{display:inline-flex;align-items:center;background:#0099ff;color:#fff;font-size:13px;font-weight:600;padding:9px 20px;border-radius:11px;border:none;cursor:pointer;transition:all .18s;user-select:none;white-space:nowrap}
+.btn-action:disabled{background:rgba(0,0,0,.1);color:rgba(0,0,0,.3);cursor:not-allowed}
+.btn-next{display:none;align-items:center;background:#0099ff;color:#fff;font-size:13px;font-weight:600;padding:9px 20px;border-radius:11px;border:none;cursor:pointer;transition:all .18s;user-select:none;white-space:nowrap}
+.btn-next.show{display:inline-flex;animation:fadeSlideIn .4s ease-out}
+@keyframes fadeSlideIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+
+/* Content grid */
+.content-grid{display:grid;grid-template-columns:290px 1fr;gap:20px;align-items:start}
+.side-col{position:sticky;top:80px;display:flex;flex-direction:column;max-height:calc(100vh - 100px);overflow-y:auto;scrollbar-width:none;-ms-overflow-style:none}
+.side-col::-webkit-scrollbar{display:none}
+.side-panel{background:rgba(255,255,255,.72);border-radius:14px;padding:14px;display:flex;flex-direction:column;gap:9px;border:1px solid rgba(0,0,0,.06);overflow-x:hidden;overflow-y:auto;scrollbar-width:none;-ms-overflow-style:none}
+.side-panel::-webkit-scrollbar{display:none}
+.side-title{font-size:10px;font-weight:700;letter-spacing:.07em;text-transform:uppercase;color:var(--text-tertiary);padding-bottom:7px}
+.rule-card{padding:6px 0;font-size:12px;color:#e0462c;font-weight:700;line-height:1.5;transition:all .3s;display:flex;align-items:flex-start;gap:6px}
+.rule-card .rc-icon{width:14px;height:14px;flex-shrink:0;margin-top:1px;position:relative}
+.rule-card .rc-icon img{position:absolute;left:0;top:0;width:14px;height:14px;visibility:hidden}
+.rule-card .rc-icon .rc-loading{filter:brightness(0) saturate(100%) invert(28%) sepia(95%) saturate(1800%) hue-rotate(345deg);animation:rcSpin 1s linear infinite}
+.rule-card .rc-icon .rc-check{filter:grayscale(1) opacity(.5)}
+.rule-card.hl .rc-icon .rc-loading{visibility:visible}
+.rule-card.ok .rc-icon .rc-loading{visibility:hidden}
+.rule-card.ok .rc-icon .rc-check{visibility:visible}
+.rule-card.ok{color:var(--text-tertiary,#999);font-weight:400;opacity:1}
+@keyframes rcSpin{from{transform:rotate(0deg)}to{transform:rotate(360deg)}}
+.rule-card.new-rule{animation:slideInR .4s ease-out}
+@keyframes slideInR{from{opacity:0;transform:translateX(16px)}to{opacity:1;transform:translateX(0)}}
+.legend-row{display:flex;gap:10px;flex-wrap:wrap}
+.legend-item{display:flex;align-items:center;gap:5px;font-size:11px;color:var(--text-tertiary)}
+.ldot{width:10px;height:10px;border-radius:3px;flex-shrink:0}
+.ldot.valid{background:rgba(0,0,0,.06);border:1.5px solid rgba(0,0,0,.12)}
+.ldot.invalid{background:rgba(255,59,48,.15);border:1.5px solid rgba(255,59,48,.4)}
+.ldot.gone{background:transparent;border:1.5px dashed rgba(0,0,0,.1)}
+.ldot.newv{background:rgba(255,149,0,.15);border:1.5px solid rgba(255,149,0,.35)}
+.prog-wrap{background:rgba(0,0,0,.06);border-radius:3px;height:3px;overflow:hidden}
+.prog-bar{height:100%;border-radius:3px;background:#0099ff;width:0%;transition:width .5s ease}
+.prog-bar.done{background:#15d173}
+
+/* Matrix */
+.matrix-scroll{overflow:auto;padding-bottom:16px;scrollbar-width:none;-ms-overflow-style:none;max-height:calc(100vh - 100px)}
+.matrix-scroll::-webkit-scrollbar{display:none}
+.matrix-wrap{display:flex;flex-direction:column;gap:0;min-width:max-content}
+.mhdr{display:flex;margin-bottom:4px;gap:8px;position:sticky;top:0;z-index:3;background:#F0F0F2}
+.mhdr-spacer{width:120px;flex-shrink:0;position:sticky;left:0;z-index:4;background:#F0F0F2}
+.col-lbl{width:428px;text-align:center;font-size:10px;font-weight:600;color:var(--text-tertiary);letter-spacing:.05em;text-transform:uppercase;padding:6px 4px}
+.matrix-row{display:flex;align-items:stretch;margin-bottom:8px}
+.row-lbl-w{width:120px;flex-shrink:0;display:flex;align-items:center;justify-content:flex-end;padding-right:12px;text-align:right;position:sticky;left:0;z-index:2;background:#F0F0F2}
+.row-chip{font-size:10px;font-weight:600;color:var(--text-tertiary);letter-spacing:.05em;text-transform:uppercase;position:relative;cursor:default;white-space:nowrap}
+.row-chip.nc{color:#b06400}
+.new-dot{position:absolute;top:-4px;right:-4px;width:7px;height:7px;background:#ff9500;border-radius:50%;border:1.5px solid #F0F0F2}
+.matrix-cells{display:flex;gap:8px}
+.m-cell{width:428px;flex-shrink:0;position:relative;transition:opacity .3s}
+.m-cell.pending{opacity:.35}
+.m-cell.pending .form-row{background:rgba(255,255,255,.5);border:1.5px dashed rgba(0,0,0,.12)}
+.m-cell.generated .form-row{border-radius:12px;overflow:hidden}
+.m-cell.invalid{opacity:.3}
+.m-cell.disabled{opacity:.3}
+.m-cell.highlight .form-row{outline:2px solid rgba(255,59,48,.5);outline-offset:0;border-radius:12px}
+.m-cell.marking{animation:markFade .5s ease-out forwards}
+@keyframes markFade{0%{opacity:1}100%{opacity:.3}}
+.m-cell.appear{animation:cellIn .3s ease-out both}
+@keyframes cellIn{from{opacity:0;transform:scale(.9)}to{opacity:1;transform:scale(1)}}
+.matrix-row.new-row{animation:rowIn .5s ease-out both}
+@keyframes rowIn{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
+
+
+/* Form Container + Row — exact component-matrix.html structure */
+/* form-container: 428px 外壳，padding:12px 16px 提供左右16px间距 */
+.form-container{width:428px;background:transparent;padding:12px 16px;display:flex;flex-direction:column}
+/* form-row: width:100%（=428-32=396px），自身 padding:0 16px 为内容区 */
+.form-row{display:flex;align-items:center;padding:0 16px;width:100%;background:var(--bg-item);position:relative;border-radius:12px;overflow:hidden}
+.form-row.single-line{height:56px}
+.form-row.double-line{height:72px}
+.form-row .left-area{flex:1;min-width:0;display:flex;align-items:center;gap:12px;overflow:hidden}
+.form-row .left-area .text-group{flex:1;min-width:0;display:flex;flex-direction:column;overflow:hidden}
+.form-row .title{font-size:17px;color:var(--text-primary);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.form-row .subtitle{font-size:14px;color:var(--text-tertiary);line-height:1.2;margin-top:1px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.form-row .right-area{display:flex;align-items:center;gap:4px;flex-shrink:0;margin-left:12px}
+.form-row .helper-text{font-size:17px;color:var(--text-secondary);max-width:120px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.form-switch{width:44px;height:26px;background:var(--brand-blue);border-radius:13px;position:relative;cursor:pointer;transition:background 200ms ease-out}
+.form-switch.off{background:rgba(120,120,128,.16)}
+.form-switch::after{content:'';position:absolute;right:2px;top:2px;width:22px;height:22px;background:var(--bg-item);border-radius:50%;transition:right 200ms ease-out,left 200ms ease-out}
+.form-switch.off::after{right:auto;left:2px}
+
+/* Icon Indicator (CSS mask, 颜色由 token 控制) — 与 component-matrix.html 一致 */
+.icon-indicator{display:inline-block;flex-shrink:0;background-color:var(--color-icon-secondary,#929296);-webkit-mask-repeat:no-repeat;mask-repeat:no-repeat;-webkit-mask-position:center;mask-position:center;-webkit-mask-size:contain;mask-size:contain}
+.icon-indicator.chevron-right{width:16px;height:16px;-webkit-mask-image:url("data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTYiIGhlaWdodD0iMTYiIHZpZXdCb3g9IjAgMCAxNiAxNiIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPHBhdGggZmlsbC1ydWxlPSJldmVub2RkIiBjbGlwLXJ1bGU9ImV2ZW5vZGQiIGQ9Ik00LjkzMjgxIDEuNTk5MzJDNC43MTE1MSAxLjgyMDYyIDQuNzExNTEgMi4xNzk0MSA0LjkzMjgxIDIuNDAwNzFMMTAuMTc4NiA3LjY0NjQ2QzEwLjMxNzIgNy43ODUwOCAxMC4zOTY3IDcuODY1MjYgMTAuNDUwNSA3LjkyODU0QzEwLjQ3MjQgNy45NTQ0MiAxMC40ODMzIDcuOTY5OTIgMTAuNDg4IDcuOTc3MTJDMTAuNDkxNiA3Ljk5MjE4IDEwLjQ5MTYgOC4wMDc4NiAxMC40ODggOC4wMjI5MkMxMC40ODMzIDguMDMwMTEgMTAuNDcyNCA4LjA0NTYxIDEwLjQ1MDUgOC4wNzE0OUMxMC4zOTY3IDguMTM0NzggMTAuMzE3MiA4LjIxNDk1IDEwLjE3ODYgOC4zNTM1N0w0LjkzMjgxIDEzLjU5OTNDNC43MTE1MSAxMy44MjA2IDQuNzExNTEgMTQuMTc5NCA0LjkzMjgxIDE0LjQwMDdDNS4xNTQxIDE0LjYyMiA1LjUxMjkgMTQuNjIyIDUuNzM0MTkgMTQuNDAwN0wxMC45OTM0IDkuMTQxNDZDMTEuMTEzOCA5LjAyMTEgMTEuMjI3MSA4LjkwNzg5IDExLjMxNDQgOC44MDQ5NkMxMS40MDk0IDguNjkzMTIgMTEuNTA2NiA4LjU1NjczIDExLjU2MzcgOC4zODExNEMxMS42NDQxIDguMTMzNDMgMTEuNjQ0MSA3Ljg2NjYgMTEuNTYzNyA3LjYxODlDMTEuNTA2NiA3LjQ0MzMxIDExLjQwOTQgNy4zMDY5MSAxMS4zMTQ0IDcuMTk1MDhDMTEuMjI3MSA3LjA5MjE0IDExLjExMzggNi45Nzg5MiAxMC45OTM0IDYuODU4NTZMNS43MzQxOSAxLjU5OTMyQzUuNTEyOSAxLjM3ODAzIDUuMTU0MSAxLjM3ODAzIDQuOTMyODEgMS41OTkzMloiIGZpbGw9IiMxQTFBMUEiLz4KPC9zdmc+Cg==");mask-image:url("data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTYiIGhlaWdodD0iMTYiIHZpZXdCb3g9IjAgMCAxNiAxNiIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPHBhdGggZmlsbC1ydWxlPSJldmVub2RkIiBjbGlwLXJ1bGU9ImV2ZW5vZGQiIGQ9Ik00LjkzMjgxIDEuNTk5MzJDNC43MTE1MSAxLjgyMDYyIDQuNzExNTEgMi4xNzk0MSA0LjkzMjgxIDIuNDAwNzFMMTAuMTc4NiA3LjY0NjQ2QzEwLjMxNzIgNy43ODUwOCAxMC4zOTY3IDcuODY1MjYgMTAuNDUwNSA3LjkyODU0QzEwLjQ3MjQgNy45NTQ0MiAxMC40ODMzIDcuOTY5OTIgMTAuNDg4IDcuOTc3MTJDMTAuNDkxNiA3Ljk5MjE4IDEwLjQ5MTYgOC4wMDc4NiAxMC40ODggOC4wMjI5MkMxMC40ODMzIDguMDMwMTEgMTAuNDcyNCA4LjA0NTYxIDEwLjQ1MDUgOC4wNzE0OUMxMC4zOTY3IDguMTM0NzggMTAuMzE3MiA4LjIxNDk1IDEwLjE3ODYgOC4zNTM1N0w0LjkzMjgxIDEzLjU5OTNDNC43MTE1MSAxMy44MjA2IDQuNzExNTEgMTQuMTc5NCA0LjkzMjgxIDE0LjQwMDdDNS4xNTQxIDE0LjYyMiA1LjUxMjkgMTQuNjIyIDUuNzM0MTkgMTQuNDAwN0wxMC45OTM0IDkuMTQxNDZDMTEuMTEzOCA5LjAyMTEgMTEuMjI3MSA4LjkwNzg5IDExLjMxNDQgOC44MDQ5NkMxMS40MDk0IDguNjkzMTIgMTEuNTA2NiA4LjU1NjczIDExLjU2MzcgOC4zODExNEMxMS42NDQxIDguMTMzNDMgMTEuNjQ0MSA3Ljg2NjYgMTEuNTYzNyA3LjYxODlDMTEuNTA2NiA3LjQ0MzMxIDExLjQwOTQgNy4zMDY5MSAxMS4zMTQ0IDcuMTk1MDhDMTEuMjI3MSA3LjA5MjE0IDExLjExMzggNi45Nzg5MiAxMC45OTM0IDYuODU4NTZMNS43MzQxOSAxLjU5OTMyQzUuNTEyOSAxLjM3ODAzIDUuMTU0MSAxLjM3ODAzIDQuOTMyODEgMS41OTkzMloiIGZpbGw9IiMxQTFBMUEiLz4KPC9zdmc+Cg==")}
+.icon-indicator.expand-list{width:16px;height:16px;-webkit-mask-image:url("data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTYiIGhlaWdodD0iMTYiIHZpZXdCb3g9IjAgMCAxNiAxNiIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPHBhdGggZmlsbC1ydWxlPSJldmVub2RkIiBjbGlwLXJ1bGU9ImV2ZW5vZGQiIGQ9Ik0xMS4zNzExIDkuNzk5MjhDMTEuNTkyNCA5LjU3ODMgMTEuOTUwNyA5LjU3ODE0IDEyLjE3MTkgOS43OTkyOEMxMi4zOTMxIDEwLjAyMDUgMTIuMzkyOSAxMC4zNzg3IDEyLjE3MTkgMTAuNjAwMUw4LjQwMDQ0IDE0LjM3MTVMOC4zNTc0NyAxNC40MTA2QzguMTM0OSAxNC41OTIxIDcuODA3MTEgMTQuNTc5IDcuNTk5NjYgMTQuMzcxNUwzLjgyODE3IDEwLjYwMDFMMy43ODkxMSAxMC41NTgxQzMuNjA3NTggMTAuMzM1NSAzLjYyMDcxIDEwLjAwNjggMy44MjgxNyA5Ljc5OTI4QzQuMDM1NjQgOS41OTE4NiA0LjM2NDQxIDkuNTc4NyA0LjU4Njk2IDkuNzYwMjJMNC42Mjg5NSA5Ljc5OTI4TDguMDAwMDUgMTMuMTcwNEwxMS4zNzExIDkuNzk5MjhaTTcuNjQyNjMgMS41ODkzMkM3Ljg2NTE3IDEuNDA3OTEgOC4xOTMwMSAxLjQyMTAxIDguNDAwNDQgMS42MjgzOUwxMi4xNzE5IDUuMzk5ODdMMTIuMjExIDUuNDQyODRDMTIuMzkyMyA1LjY2NTM5IDEyLjM3OTMgNS45OTMyNyAxMi4xNzE5IDYuMjAwNjVDMTEuOTY0NSA2LjQwODEyIDExLjYzNTcgNi40MjEyNSAxMS40MTMxIDYuMjM5NzFMMTEuMzcxMSA2LjIwMDY1TDguMDAwMDUgMi44Mjk1Nkw0LjYyODk1IDYuMjAwNjVDNC40MDc2NCA2LjQyMTc1IDQuMDQ5NCA2LjQyMTg4IDMuODI4MTcgNi4yMDA2NUMzLjYwNyA1Ljk3OTQyIDMuNjA3MDkgNS42MjExNiAzLjgyODE3IDUuMzk5ODdMNy41OTk2NiAxLjYyODM5TDcuNjQyNjMgMS41ODkzMloiIGZpbGw9IiMxQTFBMUEiLz4KPC9zdmc+Cg==");mask-image:url("data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTYiIGhlaWdodD0iMTYiIHZpZXdCb3g9IjAgMCAxNiAxNiIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPHBhdGggZmlsbC1ydWxlPSJldmVub2RkIiBjbGlwLXJ1bGU9ImV2ZW5vZGQiIGQ9Ik0xMS4zNzExIDkuNzk5MjhDMTEuNTkyNCA5LjU3ODMgMTEuOTUwNyA5LjU3ODE0IDEyLjE3MTkgOS43OTkyOEMxMi4zOTMxIDEwLjAyMDUgMTIuMzkyOSAxMC4zNzg3IDEyLjE3MTkgMTAuNjAwMUw4LjQwMDQ0IDE0LjM3MTVMOC4zNTc0NyAxNC40MTA2QzguMTM0OSAxNC41OTIxIDcuODA3MTEgMTQuNTc5IDcuNTk5NjYgMTQuMzcxNUwzLjgyODE3IDEwLjYwMDFMMy43ODkxMSAxMC41NTgxQzMuNjA3NTggMTAuMzM1NSAzLjYyMDcxIDEwLjAwNjggMy44MjgxNyA5Ljc5OTI4QzQuMDM1NjQgOS41OTE4NiA0LjM2NDQxIDkuNTc4NyA0LjU4Njk2IDkuNzYwMjJMNC42Mjg5NSA5Ljc5OTI4TDguMDAwMDUgMTMuMTcwNEwxMS4zNzExIDkuNzk5MjhaTTcuNjQyNjMgMS41ODkzMkM3Ljg2NTE3IDEuNDA3OTEgOC4xOTMwMSAxLjQyMTAxIDguNDAwNDQgMS42MjgzOUwxMi4xNzE5IDUuMzk5ODdMMTIuMjExIDUuNDQyODRDMTIuMzkyMyA1LjY2NTM5IDEyLjM3OTMgNS45OTMyNyAxMi4xNzE5IDYuMjAwNjVDMTEuOTY0NSA2LjQwODEyIDExLjYzNTcgNi40MjEyNSAxMS40MTMxIDYuMjM5NzFMMTEuMzcxMSA2LjIwMDY1TDguMDAwMDUgMi44Mjk1Nkw0LjYyODk1IDYuMjAwNjVDNC40MDc2NCA2LjQyMTc1IDQuMDQ5NCA2LjQyMTg4IDMuODI4MTcgNi4yMDA2NUMzLjYwNyA1Ljk3OTQyIDMuNjA3MDkgNS42MjExNiAzLjgyODE3IDUuMzk5ODdMNy41OTk2NiAxLjYyODM5TDcuNjQyNjMgMS41ODkzMloiIGZpbGw9IiMxQTFBMUEiLz4KPC9zdmc+Cg==")}
+.icon-indicator.secondary-icon{width:24px;height:24px;-webkit-mask-image:url("data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjQiIGhlaWdodD0iMjQiIHZpZXdCb3g9IjAgMCAyNCAyNCIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPHBhdGggZmlsbC1ydWxlPSJldmVub2RkIiBjbGlwLXJ1bGU9ImV2ZW5vZGQiIGQ9Ik02LjY1MzgxIDEyLjAwMDRDNi42NTM4MSAxMS41MzA5IDcuMDM0MzcgMTEuMTUwNCA3LjUwMzgxIDExLjE1MDRIMTYuNTAzOEMxNi45NzMzIDExLjE1MDQgMTcuMzUzOCAxMS41MzA5IDE3LjM1MzggMTIuMDAwNEMxNy4zNTM4IDEyLjQ2OTggMTYuOTczMyAxMi44NTA0IDE2LjUwMzggMTIuODUwNEg3LjUwMzgxQzcuMDM0MzcgMTIuODUwNCA2LjY1MzgxIDEyLjQ2OTggNi42NTM4MSAxMi4wMDA0WiIgZmlsbD0iIzFBMUExQSIvPgo8L3N2Zz4K");mask-image:url("data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjQiIGhlaWdodD0iMjQiIHZpZXdCb3g9IjAgMCAyNCAyNCIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPHBhdGggZmlsbC1ydWxlPSJldmVub2RkIiBjbGlwLXJ1bGU9ImV2ZW5vZGQiIGQ9Ik02LjY1MzgxIDEyLjAwMDRDNi42NTM4MSAxMS41MzA5IDcuMDM0MzcgMTEuMTUwNCA3LjUwMzgxIDExLjE1MDRIMTYuNTAzOEMxNi45NzMzIDExLjE1MDQgMTcuMzUzOCAxMS41MzA5IDE3LjM1MzggMTIuMDAwNEMxNy4zNTM4IDEyLjQ2OTggMTYuOTczMyAxMi44NTA0IDE2LjUwMzggMTIuODUwNEg3LjUwMzgxQzcuMDM0MzcgMTIuODUwNCA2LjY1MzgxIDEyLjQ2OTggNi42NTM4MSAxMi4wMDA0WiIgZmlsbD0iIzFBMUExQSIvPgo8L3N2Zz4K")}
+
+/* Module previews in Step 4 */
+.module-row{background:#fff;border-radius:8px;overflow:hidden;border:1px solid rgba(0,0,0,.06);position:relative;margin-bottom:4px}
+.module-preview-wrap{overflow:hidden;border-radius:6px;position:relative}
+.module-preview-wrap.sl-wrap{height:28px}.module-preview-wrap.dl-wrap{height:37px}
+.module-preview{transform:scale(0.6);transform-origin:left top;width:428px;pointer-events:none}
+.module-label-abs{position:absolute;top:3px;left:5px;font-size:8px;font-weight:800;letter-spacing:.06em;opacity:.4;z-index:2;pointer-events:none}
+.module-label-abs.new-label{color:#b06400;opacity:.6}
+.section-note{background:rgba(255,255,255,.7);border-radius:12px;padding:14px 18px;font-size:13px;color:var(--text-tertiary);border:1px solid rgba(0,0,0,.06);line-height:1.65}
+.section-note strong{color:var(--text-primary)}
+::-webkit-scrollbar{width:5px;height:5px}
+::-webkit-scrollbar-thumb{background:rgba(0,0,0,.14);border-radius:3px}
+
+/* Embed Mode（嵌入 component-matrix.html 的 iframe 场景） */
+/* 目标：去除独立页面的大内边距，让变体矩阵真正盛满父 iframe 的可用宽度 */
+html[data-embed="1"] body{background:transparent}
+html[data-embed="1"] .top-nav{position:sticky;top:0;padding:0 20px;height:56px}
+html[data-embed="1"] .nav-title-main{font-size:14px}
+html[data-embed="1"] .step-item{padding:0 10px;height:56px}
+html[data-embed="1"] .step-label{font-size:12px}
+html[data-embed="1"] .main-wrap{margin-top:0;padding:20px 20px 60px}
+html[data-embed="1"] #introView{margin:0;justify-content:center}
+html[data-embed="1"] .content-grid{grid-template-columns:260px 1fr;gap:16px}
+html[data-embed="1"] .side-col{top:16px;max-height:calc(100vh - 80px)}
+html[data-embed="1"] .matrix-scroll{max-height:calc(100vh - 80px)}
+/* 超窄宽度下（iframe 可用宽 < 900）侧栏折叠，矩阵独占一行 */
+@media (max-width: 900px){
+  html[data-embed="1"] .content-grid{grid-template-columns:1fr}
+  html[data-embed="1"] .side-col{position:static;max-height:none}
+}
+</style>
+<script>
+  // 识别 ?embed=1 参数，进入嵌入模式（供 component-matrix.html 的 iframe 调用）
+  (function(){
+    try{
+      var p = new URLSearchParams(location.search);
+      if (p.get('embed') === '1') {
+        document.documentElement.setAttribute('data-embed', '1');
+      }
+    }catch(e){}
+  })();
+</script>
+</head>
+<body>
+<nav class="top-nav">
+  <div class="step-bar">
+    <div class="step-item active" id="tab1" onclick="goStep(1)"><div class="step-num">1</div><div class="step-label">母组件与插槽</div></div>
+    <img class="step-div" src="../icons/chevron_right.svg">
+    <div class="step-item" id="tab2" onclick="goStep(2)"><div class="step-num">2</div><div class="step-label">生成变体矩阵</div></div>
+    <img class="step-div" src="../icons/chevron_right.svg">
+    <div class="step-item" id="tab3" onclick="goStep(3)"><div class="step-num">3</div><div class="step-label">应用约束规则</div></div>
+    <img class="step-div" src="../icons/chevron_right.svg">
+    <div class="step-item" id="tab4" onclick="goStep(4)"><div class="step-num">4</div><div class="step-label">后期变体更新</div></div>
+  </div>
+  <div class="nav-right">
+    <div id="navFormula" style="display:flex;align-items:center;gap:6px;font-size:14px;font-weight:600;font-family:-apple-system,'SF Pro Display','Helvetica Neue',sans-serif;color:var(--text-primary)">
+      <span id="nfL">7</span>
+      <span style="font-weight:400">×</span>
+      <span id="nfR">6</span>
+      <span id="nfMinus" style="display:none;font-weight:400">−</span>
+      <span id="nfInv" style="display:none">0</span>
+      <span style="font-weight:400">=</span>
+      <span id="nfTotal">42</span>
+      <span style="font-weight:400;margin-left:2px">种变体</span>
+    </div>
+  </div>
+</nav>
+<div class="main-wrap">
+  <!-- Step 1: Intro View -->
+  <div id="introView">
+    <div class="figma-canvas" id="figmaCanvas">
+      <!-- 紫色标题 -->
+      <div class="fc-text fc-purple" style="left:277px;top:58px;font-size:20px">卡片式列表&nbsp;Grouped&nbsp;List</div>
+      <div class="fc-text fc-purple" style="left:160px;top:325px;font-size:17px;text-align:center">左侧区域</div>
+      <div class="fc-text fc-purple" style="left:312px;top:325px;font-size:17px">[可调属性]</div>
+      <div class="fc-text fc-purple" style="left:635px;top:325px;font-size:17px;text-align:center">右侧区域</div>
+      <div class="fc-text fc-purple" style="left:785px;top:325px;font-size:17px">[可调属性]</div>
+      <!-- L 属性列表 -->
+      <div class="fc-text fc-black" style="left:312px;top:395px;font-size:17px">[L1/单行标题]</div>
+      <div class="fc-text fc-black" style="left:312px;top:458px;font-size:17px">[L2/双行标题]</div>
+      <div class="fc-text fc-black" style="left:312px;top:520px;font-size:17px">[L3/图标+单行标题]</div>
+      <div class="fc-text fc-black" style="left:312px;top:583px;font-size:17px">[L4/图标+双行标题]</div>
+      <div class="fc-text fc-black" style="left:312px;top:645px;font-size:17px">[L5/二级+单行标题]</div>
+      <div class="fc-text fc-black" style="left:312px;top:708px;font-size:17px">[L6/二级+双行标题]</div>
+      <div class="fc-text fc-black" style="left:312px;top:779px;font-size:17px">[L7/头像+双行标题]</div>
+      <!-- R 属性列表 -->
+      <div class="fc-text fc-black" style="left:785px;top:399px;font-size:17px">[R0/为空]</div>
+      <div class="fc-text fc-black" style="left:785px;top:451px;font-size:17px">[R1/跳转]</div>
+      <div class="fc-text fc-black" style="left:785px;top:504px;font-size:17px">[R2/切换]</div>
+      <div class="fc-text fc-black" style="left:785px;top:558px;font-size:17px">[R3/头像]</div>
+      <div class="fc-text fc-black" style="left:785px;top:611px;font-size:17px">[R4/开关]</div>
+      <div class="fc-text fc-black" style="left:785px;top:664px;font-size:17px">[R5/勾选]</div>
+      <!-- 母组件 468×96 outline:1px #9747FF dashed -->
+      <div style="position:absolute;left:191px;top:106px;width:468px;height:96px;border-radius:8px;outline:1px dashed #9747FF" id="motherFrame"></div>
+      <!-- 紫色折线 -->
+      <img src="../assets/CodeBuddyAssets/4497_4495/1.svg" style="position:absolute;left:191px;top:183px;width:131px;height:126px">
+      <img src="../assets/CodeBuddyAssets/4497_4495/2.svg" style="position:absolute;left:548px;top:183px;width:131px;height:126px">
+      <!-- L frame 176×472 dashed -->
+      <div style="position:absolute;left:106px;top:369px;width:176px;height:472px;overflow:hidden;border-radius:5px;border:1px dashed #9747FF" id="lFrame"></div>
+      <!-- R frame 172×346 dashed -->
+      <div style="position:absolute;left:583px;top:369px;width:172px;height:346px;overflow:hidden;border-radius:8px;border:1px dashed #9747FF" id="rFrame"></div>
+    </div>
+  </div>
+  <!-- Step 2 -->
+  <div class="step-panel" id="panel2">
+    <div class="panel-header">
+      <div class="ph-left"><div class="panel-title">生成变体矩阵</div><div class="panel-desc">L1–L7（7种左侧）× R0–R5（6种右侧）= 理论 42 个变体。</div></div>
+    </div>
+    <div class="matrix-scroll"><div class="matrix-wrap" id="matrix2"></div></div>
+  </div>
+  <!-- Step 3 -->
+  <div class="step-panel" id="panel3">
+    <div class="content-grid">
+      <div class="side-col">
+        <div class="panel-title">应用约束规则</div>
+        <div class="panel-desc" style="margin-top:5px">非法组合置灰显示。</div>
+        <div class="side-panel" style="margin-top:16px">
+          <div class="side-title">约束规则</div>
+          <div id="ruleCards3" style="display:flex;flex-direction:column;gap:7px"></div>
+        </div>
+      </div>
+      <div class="matrix-scroll"><div class="matrix-wrap" id="matrix3"></div></div>
+    </div>
+  </div>
+  <!-- Step 4 -->
+  <div class="step-panel" id="panel4">
+    <div class="content-grid">
+      <div class="side-col">
+        <div class="panel-title">后期变体更新</div>
+        <div class="panel-desc" style="margin-top:5px">新增 L8/L9/L10/L11（tick 勾选类）。</div>
+        <div class="side-panel" style="margin-top:16px">
+          <div class="side-title">新增左侧变体</div>
+          <div id="lNewModules"></div>
+        </div>
+        <div class="side-panel" style="margin-top:12px">
+          <div class="side-title">约束规则更新</div>
+          <div id="newRuleCards" style="display:flex;flex-direction:column;gap:7px"></div>
+        </div>
+      </div>
+      <div class="matrix-scroll"><div class="matrix-wrap" id="matrix4"></div></div>
+    </div>
+  </div>
+</div>
+<script>
+/* DATA — matching component-matrix.html renderForm() exactly */
+const L_OPTIONS=[
+  {id:'L1',name:'单行标题',title:'标题文本',lines:1},
+  {id:'L2',name:'双行标题',title:'标题文本',subtitle:'辅助说明文字',lines:2},
+  {id:'L3',name:'图标+单行标题',icon:'../icons/empty_icon.svg',title:'标题文本',lines:1},
+  {id:'L4',name:'图标+双行标题',icon:'../icons/empty_icon.svg',title:'标题文本',subtitle:'辅助说明文字',lines:2},
+  {id:'L5',name:'二级+单行标题',icon:'../icons/secondary.svg',title:'标题文本',lines:1},
+  {id:'L6',name:'二级+双行标题',icon:'../icons/secondary.svg',title:'标题文本',subtitle:'辅助说明文字',lines:2},
+  {id:'L7',name:'头像+双行标题',icon:'../icons/Avatar_40.svg',title:'标题文本',subtitle:'辅助说明文字',lines:2,isAvatar:true}
+];
+const L_NEW=[
+  {id:'L8',name:'已勾选+单行标题',icon:'../icons/tick.svg',title:'标题文本',lines:1,isTick:true},
+  {id:'L9',name:'未勾选+单行标题',title:'标题文本',lines:1,isTick:true,unchecked:true},
+  {id:'L10',name:'已勾选+双行标题',icon:'../icons/tick.svg',title:'标题文本',subtitle:'辅助说明文字',lines:2,isTick:true},
+  {id:'L11',name:'未勾选+双行标题',title:'标题文本',subtitle:'辅助说明文字',lines:2,isTick:true,unchecked:true}
+];
+const R_OPTIONS=[
+  {id:'R0',name:'为空'},
+  {id:'R1',name:'跳转',text:'辅助信息',iconCls:'chevron-right'},
+  {id:'R2',name:'下拉菜单',text:'辅助信息',iconCls:'expand-list'},
+  {id:'R3',name:'头像+箭头',text:'辅助信息',avatar:'../icons/Avatar_32.svg',iconCls:'chevron-right'},
+  {id:'R4',name:'开关',isSwitch:true},
+  {id:'R5',name:'勾选',tickIcon:'../icons/tick.svg'}
+];
+const INV_BASE=[
+  {l:'L1',r:'R3'},{l:'L2',r:'R3'},
+  {l:'L5',r:'R0'},{l:'L5',r:'R3'},{l:'L5',r:'R5'},
+  {l:'L6',r:'R0'},{l:'L6',r:'R3'},{l:'L6',r:'R5'},
+  {l:'L7',r:'R1'},{l:'L7',r:'R2'},{l:'L7',r:'R3'},{l:'L7',r:'R4'}
+];
+const INV_NEW=[
+  {l:'L8',r:'R4'},{l:'L8',r:'R5'},{l:'L9',r:'R4'},{l:'L9',r:'R5'},
+  {l:'L10',r:'R4'},{l:'L10',r:'R5'},{l:'L11',r:'R4'},{l:'L11',r:'R5'}
+];
+const RULES_BASE=[
+  {num:'1',text:'L5/L6 只能与 R1/R2/R4 组合',cells:[{l:'L5',r:'R0'},{l:'L5',r:'R3'},{l:'L5',r:'R5'},{l:'L6',r:'R0'},{l:'L6',r:'R3'},{l:'L6',r:'R5'}]},
+  {num:'2',text:'R3 只能与 L3/L4/L8–L11 组合',cells:[{l:'L1',r:'R3'},{l:'L2',r:'R3'},{l:'L5',r:'R3'},{l:'L6',r:'R3'}]},
+  {num:'3',text:'L7 只能与 R0/R5 组合',cells:[{l:'L7',r:'R1'},{l:'L7',r:'R2'},{l:'L7',r:'R3'},{l:'L7',r:'R4'}]}
+];
+const RULES_NEW=[
+  {num:'4',text:'L8–L11 不能与 R4/R5 组合',cells:INV_NEW}
+];
+
+let st={step1:false,step2:false,step3:false,step4:false};
+const isInv=(list,l,r)=>list.some(x=>x.l===l&&x.r===r);
+function animNum(el,to,dur){dur=dur||600;const from=parseInt(el.textContent)||0;const t0=Date.now();(function fn(){const p=Math.min((Date.now()-t0)/dur,1);el.textContent=Math.round(from+(to-from)*p);if(p<1)requestAnimationFrame(fn);else el.textContent=to;})();}
+function sleep(ms){return new Promise(r=>setTimeout(r,ms));}
+
+/* Build form-container + form-row — EXACT match with component-matrix.html renderForm() */
+function makeFormRow(L,R){
+  const isDouble=['L2','L4','L6','L7','L10','L11'].includes(L.id);
+  const container=document.createElement('div');
+  container.className='form-container';
+  const row=document.createElement('div');
+  row.className='form-row '+(isDouble?'double-line':'single-line');
+  const left=document.createElement('div');left.className='left-area';
+  if(L.isTick){
+    if(!L.unchecked){const img=document.createElement('img');img.src='../icons/tick.svg';img.style.width='24px';img.style.height='24px';left.appendChild(img);}
+    else{const ph=document.createElement('div');ph.style.cssText='width:24px;height:24px;flex-shrink:0;';left.appendChild(ph);}
+  }else if(L.icon){
+    const img=document.createElement('img');img.src=L.icon;img.style.width=L.isAvatar?'40px':'24px';img.style.height=L.isAvatar?'40px':'24px';if(L.isAvatar)img.style.borderRadius='50%';left.appendChild(img);
+  }
+  const tg=document.createElement('div');tg.className='text-group';
+  tg.innerHTML='<div class="title">'+L.title+'</div>'+(L.subtitle?'<div class="subtitle">'+L.subtitle+'</div>':'');
+  left.appendChild(tg);row.appendChild(left);
+  const right=document.createElement('div');right.className='right-area';let hasRight=false;
+  if(R.text){right.innerHTML+='<span class="helper-text">'+R.text+'</span>';hasRight=true;}
+  if(R.avatar){right.innerHTML+='<img src="'+R.avatar+'" style="width:32px;height:32px;border-radius:50%">';hasRight=true;}
+  if(R.isSwitch){right.innerHTML+='<div class="form-switch"></div>';hasRight=true;}
+  if(R.iconCls){right.innerHTML+='<div class="icon-indicator '+R.iconCls+'"></div>';hasRight=true;}
+  if(R.tickIcon){right.innerHTML+='<img src="'+R.tickIcon+'" style="width:24px;height:24px">';hasRight=true;}
+  if(hasRight)row.appendChild(right);
+  container.appendChild(row);
+  return container;
+}
+function makeFormRowHTML(L,R){const tmp=document.createElement('div');tmp.appendChild(makeFormRow(L,R));return tmp.innerHTML;}
+
+/* Build Figma frame contents — using 4497_4390 assets */
+function buildMotherFrame(){
+  const f=document.getElementById('motherFrame');if(!f||f.children.length)return;
+  f.innerHTML='<div style="width:428px;height:56px;left:20px;top:20px;position:absolute">'
+    +'<div style="width:428px;height:56px;left:0;top:0;position:absolute">'
+    +'<div style="left:16px;top:0;position:absolute"><img src="../assets/CodeBuddyAssets/4497_4390/10.svg"></div>'
+    +'<div style="width:364px;height:56px;left:32px;top:0;position:absolute;background:var(--bg-item,white)">'
+    +'<div style="width:104px;height:24px;left:0;top:16px;position:absolute">'
+    +'<div style="left:0;top:0;position:absolute"><img src="../assets/CodeBuddyAssets/4497_4390/7.svg"></div>'
+    +'<div style="left:36px;top:2px;position:absolute;display:inline-block"><span style="font-size:17px;font-family:PingFang SC;font-weight:400;color:var(--text-primary)">标题文本</span></div>'
+    +'</div>'
+    +'<div style="width:92px;height:24px;left:272px;top:16px;position:absolute">'
+    +'<div style="left:0;top:0;position:absolute;text-align:right;display:inline-block"><span style="font-size:17px;font-family:PingFang SC;font-weight:400;color:var(--text-secondary)">辅助信息</span></div>'
+    +'<div style="left:76px;top:4px;position:absolute"><img src="../assets/CodeBuddyAssets/4497_4390/1.svg"></div>'
+    +'</div>'
+    +'</div>'
+    +'<div style="left:396px;top:0;position:absolute"><img src="../assets/CodeBuddyAssets/4497_4390/12.svg"></div>'
+    +'</div></div>';
+}
+function buildLFrame(){
+  const f=document.getElementById('lFrame');if(!f||f.children.length)return;
+  const items=[
+    {top:30,h:'<div style="left:0;top:0;position:absolute;display:inline-block"><span style="font-size:17px;font-family:PingFang SC;font-weight:400;color:var(--text-primary)">标题文本</span></div>',w:68,ht:20},
+    {top:80,h:'<div style="left:0;top:0;position:absolute;display:inline-block"><span style="font-size:17px;font-family:PingFang SC;font-weight:400;color:var(--text-primary)">标题文本</span></div><div style="left:0;top:24px;position:absolute;display:inline-block"><span style="font-size:14px;font-family:PingFang SC;font-weight:400;color:var(--text-tertiary)">辅助说明文字</span></div>',w:84,ht:41},
+    {top:151,h:'<div style="left:0;top:0;position:absolute"><img src="../assets/CodeBuddyAssets/4497_4390/7.svg"></div><div style="left:36px;top:2px;position:absolute;display:inline-block"><span style="font-size:17px;font-family:PingFang SC;font-weight:400;color:var(--text-primary)">标题文本</span></div>',w:104,ht:24},
+    {top:205,h:'<div style="left:0;top:8.5px;position:absolute"><img src="../assets/CodeBuddyAssets/4497_4390/7.svg"></div><div style="width:84px;height:41px;left:36px;top:0;position:absolute"><div style="left:0;top:0;position:absolute;display:inline-block"><span style="font-size:17px;font-family:PingFang SC;font-weight:400;color:var(--text-primary)">标题文本</span></div><div style="left:0;top:24px;position:absolute;display:inline-block"><span style="font-size:14px;font-family:PingFang SC;font-weight:400;color:var(--text-tertiary)">辅助说明文字</span></div></div>',w:120,ht:41},
+    {top:276,h:'<div style="left:0;top:0;position:absolute"><img src="../assets/CodeBuddyAssets/4497_4390/9.svg"></div><div style="left:36px;top:2px;position:absolute;display:inline-block"><span style="font-size:17px;font-family:PingFang SC;font-weight:400;color:var(--text-primary)">标题文本</span></div>',w:104,ht:24},
+    {top:330,h:'<div style="left:0;top:8.5px;position:absolute"><img src="../assets/CodeBuddyAssets/4497_4390/9.svg"></div><div style="width:84px;height:41px;left:36px;top:0;position:absolute"><div style="left:0;top:0;position:absolute;display:inline-block"><span style="font-size:17px;font-family:PingFang SC;font-weight:400;color:var(--text-primary)">标题文本</span></div><div style="left:0;top:24px;position:absolute;display:inline-block"><span style="font-size:14px;font-family:PingFang SC;font-weight:400;color:var(--text-tertiary)">辅助说明文字</span></div></div>',w:120,ht:41},
+    {top:401,h:'<div style="left:0;top:0.5px;position:absolute"><img src="../assets/CodeBuddyAssets/4497_4390/16.svg"></div><div style="width:84px;height:41px;left:52px;top:0;position:absolute"><div style="left:0;top:0;position:absolute;display:inline-block"><span style="font-size:17px;font-family:PingFang SC;font-weight:400;color:var(--text-primary)">标题文本</span></div><div style="left:0;top:24px;position:absolute;display:inline-block"><span style="font-size:14px;font-family:PingFang SC;font-weight:400;color:var(--text-tertiary)">辅助说明文字</span></div></div>',w:136,ht:41}
+  ];
+  items.forEach(it=>{
+    f.innerHTML+='<div style="width:'+it.w+'px;height:'+it.ht+'px;left:20px;top:'+it.top+'px;position:absolute">'+it.h+'</div>';
+  });
+}
+function buildRFrame(){
+  const f=document.getElementById('rFrame');if(!f||f.children.length)return;
+  f.innerHTML=''
+    +'<div style="width:20px;height:20px;left:76px;top:30px;position:absolute"></div>'
+    +'<div style="width:92px;height:24px;left:40px;top:80px;position:absolute"><div style="left:0;top:0;position:absolute;text-align:right;display:inline-block"><span style="font-size:17px;font-family:PingFang SC;font-weight:400;color:var(--text-secondary)">辅助信息</span></div><div style="left:76px;top:4px;position:absolute"><img src="../assets/CodeBuddyAssets/4497_4390/1.svg"></div></div>'
+    +'<div style="width:92px;height:24px;left:40px;top:134px;position:absolute"><div style="left:0;top:0;position:absolute;text-align:right;display:inline-block"><span style="font-size:17px;font-family:PingFang SC;font-weight:400;color:var(--text-secondary)">辅助信息</span></div><div style="left:76px;top:4px;position:absolute"><img src="../assets/CodeBuddyAssets/4497_4390/2.svg"></div></div>'
+    +'<div style="width:132px;height:24px;left:20px;top:188px;position:absolute"><div style="left:0;top:0;position:absolute;text-align:right;display:inline-block"><span style="font-size:17px;font-family:PingFang SC;font-weight:400;color:var(--text-secondary)">辅助信息</span></div><div style="width:32px;height:32px;left:76px;top:-4px;position:absolute"><img src="../assets/CodeBuddyAssets/4497_4390/15.svg" style="width:32px;height:32px"></div><div style="left:116px;top:4px;position:absolute"><img src="../assets/CodeBuddyAssets/4497_4390/3.svg"></div></div>'
+    +'<div style="width:44px;height:24px;left:64px;top:242px;position:absolute"><div style="width:44px;height:26px;left:0;top:-1px;position:absolute;background:var(--brand-blue,#0099FF);overflow:hidden;border-radius:9999px"><img src="../assets/CodeBuddyAssets/4497_4390/4.svg" style="position:absolute;left:19.35px;top:1.68px"></div></div>'
+    +'<div style="width:20px;height:20px;left:76px;top:296px;position:absolute"><img src="../assets/CodeBuddyAssets/4497_4390/5.svg"></div>';
+}
+
+/* Build Matrix */
+function buildMatrix(wrapId,lList,pending,invList,markNew){
+  const wrap=document.getElementById(wrapId);wrap.innerHTML='';
+  const hdr=document.createElement('div');hdr.className='mhdr';
+  hdr.innerHTML='<div class="mhdr-spacer"></div>'+R_OPTIONS.map(r=>'<div class="col-lbl">'+r.id+' <span style="font-weight:400;opacity:.65">'+r.name+'</span></div>').join('');
+  wrap.appendChild(hdr);
+  lList.forEach((l,li)=>{
+    const isNR=markNew&&li>=L_OPTIONS.length;
+    const row=document.createElement('div');row.className='matrix-row'+(isNR?' new-row':'');
+    if(isNR)row.style.animationDelay=((li-L_OPTIONS.length)*100)+'ms';
+    const lw=document.createElement('div');lw.className='row-lbl-w';
+    lw.innerHTML='<div class="row-chip">'+l.id+'<br><span style="font-weight:400;opacity:.65">'+l.name+'</span></div>';
+    row.appendChild(lw);
+    const cells=document.createElement('div');cells.className='matrix-cells';
+    R_OPTIONS.forEach(r=>{
+      const lid=l.id,rid=r.id==='R0'?'R0':r.id;
+      const cell=document.createElement('div');
+      cell.id='c-'+wrapId+'-'+lid+'-'+rid;cell.className='m-cell';
+      if(pending){cell.classList.add('pending');cell.appendChild(makeFormRow(l,r));}
+      else{
+        const bad=invList&&isInv(invList,lid,rid);
+        cell.classList.add('generated');
+        if(bad)cell.classList.add('disabled');
+        cell.appendChild(makeFormRow(l,r));
+      }
+      cells.appendChild(cell);
+    });
+    row.appendChild(cells);wrap.appendChild(row);
+  });
+}
+
+/* NAVIGATION — click step tab to jump & auto-execute */
+function updateFormula(l,r,inv,total){
+  document.getElementById('nfL').textContent=l;
+  document.getElementById('nfR').textContent=r;
+  const minusEl=document.getElementById('nfMinus');
+  const invEl=document.getElementById('nfInv');
+  if(inv>0){minusEl.style.display='';invEl.style.display='';invEl.textContent=inv;}
+  else{minusEl.style.display='none';invEl.style.display='none';}
+  document.getElementById('nfTotal').textContent=total;
+}
+function goStep(n){
+  document.querySelectorAll('.step-item').forEach((t,i)=>{t.classList.remove('active');if(i+1===n)t.classList.add('active');});
+  const intro=document.getElementById('introView');
+  intro.style.display=n===1?'flex':'none';
+  /* 所有步骤禁止 body 滚动；步骤 4 的内容滚动由 .matrix-scroll 内部承担（上下左右） */
+  document.body.style.overflow='hidden';
+  document.querySelectorAll('.step-panel').forEach(p=>p.classList.remove('visible'));
+  if(n===1){updateFormula('7','6',0,'42');}
+  if(n===2){updateFormula('7','6',0,'42');initStep2(true);document.getElementById('panel2').classList.add('visible');}
+  if(n===3){updateFormula('7','6','12','30');initStep3();document.getElementById('panel3').classList.add('visible');if(!st.step3)doFilter();}
+  if(n===4){updateFormula('11','6','20','46');initStep4();document.getElementById('panel4').classList.add('visible');if(!st.step4)doUpdate();}
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+
+/* Init */
+document.addEventListener('DOMContentLoaded',()=>{
+  document.body.style.overflow='hidden';
+  buildMotherFrame();buildLFrame();buildRFrame();
+});
+
+/* Step 2 */
+function initStep2(animate){
+  if(document.querySelector('#matrix2 .m-cell'))return;
+  buildMatrix('matrix2',L_OPTIONS,true,null,false);
+  if(!animate)return;
+  const cells=[...document.querySelectorAll('#matrix2 .m-cell')];
+  let done=0;
+  cells.forEach((cell,i)=>{
+    const l=L_OPTIONS[Math.floor(i/6)],r=R_OPTIONS[i%6];
+    setTimeout(()=>{
+      cell.classList.remove('pending');cell.classList.add('generated','appear');
+      cell.innerHTML='';cell.appendChild(makeFormRow(l,r));
+      done++;
+      if(done===cells.length){st.step2=true;}
+    },i*18);
+  });
+}
+
+/* Step 3 */
+function initStep3(){
+  if(document.querySelector('#matrix3 .m-cell'))return;
+  buildMatrix('matrix3',L_OPTIONS,false,null,false);
+  const rc=document.getElementById('ruleCards3');rc.innerHTML='';
+  RULES_BASE.forEach((rule,idx)=>{
+    const el=document.createElement('div');el.className='rule-card';el.id='r3-'+idx;
+    el.innerHTML='<span class="rc-icon"><img class="rc-loading" src="../icons/loading.svg"><img class="rc-check" src="../icons/Checkbox_filled.svg"></span><span>'+rule.num+'. '+rule.text+'</span>';
+    rc.appendChild(el);
+  });
+}
+
+/* 缓动函数 & 同步滚动 */
+function easeInOutCubic(t){return t<.5?4*t*t*t:(t-1)*(2*t-2)*(2*t-2)+1;}
+
+/* 元素属性滚动（指定 duration，可外部统一） */
+function smoothScroll(el,prop,target,dur){
+  return new Promise(resolve=>{
+    const start=el[prop],dist=target-start;
+    if(Math.abs(dist)<2){resolve();return;}
+    if(!dur)dur=Math.min(800,Math.max(250,Math.abs(dist)/1.2));
+    const t0=performance.now();
+    function step(now){
+      const p=Math.min((now-t0)/dur,1);
+      el[prop]=start+dist*easeInOutCubic(p);
+      if(p<1)requestAnimationFrame(step);else resolve();
+    }
+    requestAnimationFrame(step);
+  });
+}
+/* 窗口垂直滚动（指定 duration，可外部统一） */
+function smoothScrollWindow(target,dur){
+  return new Promise(resolve=>{
+    const start=window.scrollY,dist=target-start;
+    if(Math.abs(dist)<2){resolve();return;}
+    if(!dur)dur=Math.min(800,Math.max(250,Math.abs(dist)/1.2));
+    const t0=performance.now();
+    function step(now){
+      const p=Math.min((now-t0)/dur,1);
+      window.scrollTo(0,start+dist*easeInOutCubic(p));
+      if(p<1)requestAnimationFrame(step);else resolve();
+    }
+    requestAnimationFrame(step);
+  });
+}
+
+/* 通用规则应用动画：自动定位 + 红色标记 + 置灰 */
+async function applyRules(matrixId,rules,rulePrefix,idOffset){
+  const off=idOffset||0;
+  const matEl=document.getElementById(matrixId);
+  const scrollEl=matEl?matEl.closest('.matrix-scroll')||matEl.parentElement:null;
+  console.log('[applyRules] matrixId='+matrixId+', rules.length='+rules.length+', rulePrefix='+rulePrefix+', off='+off);
+  console.log('[applyRules] matEl='+(matEl?'found':'NULL')+', scrollEl='+(scrollEl?scrollEl.className:'NULL'));
+  await sleep(600);
+  for(let ri=0;ri<rules.length;ri++){
+    const rule=rules[ri],ruleEl=document.getElementById(rulePrefix+(ri+off));
+    console.log('[applyRules] 处理规则 '+rule.num+': '+rule.text+' (ruleElId='+rulePrefix+(ri+off)+', found='+(!!ruleEl)+')');
+    if(ruleEl)ruleEl.classList.add('hl');
+    const targets=[];
+    rule.cells.forEach(({l,r})=>{
+      const cellId='c-'+matrixId+'-'+l+'-'+r;
+      const c=document.getElementById(cellId);
+      if(!c){console.log('  ✗ '+cellId+' NOT FOUND in DOM');}
+      else if(c.classList.contains('disabled')){console.log('  ⊘ '+cellId+' already disabled, skip');}
+      else{console.log('  ✓ '+cellId+' → target');targets.push(c);}
+    });
+    console.log('[applyRules] targets.length='+targets.length);
+    if(!targets.length){await sleep(200);if(ruleEl){ruleEl.classList.remove('hl','new-rule');ruleEl.classList.add('ok');}continue;}
+    /* 自动定位
+       原则1：如果所有非法变体能同时显示在可视区域，则移动到全部可见的位置
+       原则2：否则回退到左上角第一个锚点，保证它完整展示
+       原则3：所有轴统一 duration 同时移动 */
+    if(scrollEl){
+      const sRect=scrollEl.getBoundingClientRect();
+      const PAD=20;
+      const LBL_W=120; /* row-lbl-w 宽度 */
+      const NAV_H=84;  /* 顶部导航栏高度 */
+
+      /* 可视区有效边界（视口坐标） */
+      const viewL=sRect.left+LBL_W+PAD;
+      const viewR=sRect.right-PAD;
+      const viewT=Math.max(sRect.top,NAV_H)+PAD;
+      const viewB=Math.min(sRect.bottom,window.innerHeight)-PAD;
+      const viewW=viewR-viewL;
+      const viewH=viewB-viewT;
+
+      /* 计算所有目标的包围盒（视口坐标） */
+      let minL=Infinity,maxR=-Infinity,minT=Infinity,maxB=-Infinity;
+      targets.forEach(c=>{
+        const r=c.getBoundingClientRect();
+        if(r.left<minL)minL=r.left;
+        if(r.right>maxR)maxR=r.right;
+        if(r.top<minT)minT=r.top;
+        if(r.bottom>maxB)maxB=r.bottom;
+      });
+      const boxW=maxR-minL, boxH=maxB-minT;
+
+      let deltaX=0, deltaY=0;
+
+      if(boxW<=viewW && boxH<=viewH){
+        /* ✅ 所有目标能完全装进可视区 — 优先全部显示 */
+        const idealL=viewL+Math.max(0,(viewW-boxW)/2);
+        deltaX=minL-idealL;
+        const idealT=viewT+Math.max(0,(viewH-boxH)/2);
+        deltaY=minT-idealT;
+      }else{
+        /* ✗ 装不下 — 回退到左上角锚点策略 */
+        let anchorTop=Infinity,anchorLeft=Infinity;
+        targets.forEach(c=>{
+          const r=c.getBoundingClientRect();
+          if(r.top<anchorTop-1||(Math.abs(r.top-anchorTop)<2&&r.left<anchorLeft)){
+            anchorTop=r.top;anchorLeft=r.left;
+          }
+        });
+        deltaX=anchorLeft-viewL;
+        deltaY=anchorTop-viewT;
+      }
+
+      /* 分配滚动量到 scrollEl（容器）和 window（页面） */
+      const needX=Math.abs(deltaX)>2;
+      const needY=Math.abs(deltaY)>2;
+      if(needX||needY){
+        /* 统一 duration：取最大距离来计算，保证所有轴同步完成 */
+        const maxDist=Math.max(Math.abs(deltaX),Math.abs(deltaY));
+        const dur=Math.min(800,Math.max(250,maxDist/1.2));
+        const sp=[];
+        if(needX){
+          const newSL=Math.max(0,scrollEl.scrollLeft+deltaX);
+          sp.push(smoothScroll(scrollEl,'scrollLeft',newSL,dur));
+        }
+        if(needY){
+          /* 判断垂直滚动应分配给容器 scrollTop 还是 window scrollY
+             如果容器本身可滚（scrollHeight > clientHeight），优先滚容器 */
+          const canScrollInner=scrollEl.scrollHeight>scrollEl.clientHeight+2;
+          if(canScrollInner){
+            const newST=Math.max(0,scrollEl.scrollTop+deltaY);
+            sp.push(smoothScroll(scrollEl,'scrollTop',newST,dur));
+          }else{
+            const newWY=Math.max(0,window.scrollY+deltaY);
+            sp.push(smoothScrollWindow(newWY,dur));
+          }
+        }
+        await Promise.all(sp);
+      }
+    }
+    await sleep(200);
+    /* 红色边框高亮 */
+    targets.forEach(c=>c.classList.add('highlight'));
+    await sleep(500);
+    /* 置灰动画 */
+    targets.forEach(c=>{c.classList.remove('highlight');c.classList.add('marking');});
+    await sleep(600);
+    /* 设为 disabled — 必须同时移除 appear 类和清除 animation，
+       否则 cellIn 动画的 fill-mode:both 会把 opacity 锁在1，覆盖 .disabled 的 opacity:.3 */
+    targets.forEach(c=>{c.classList.remove('marking','appear');c.style.animation='none';c.classList.add('disabled');});
+    if(ruleEl){ruleEl.classList.remove('hl','new-rule');ruleEl.classList.add('ok');}
+    await sleep(300);
+  }
+  /* 滚回初始位置 — 所有轴统一 duration 同步丝滑 */
+  if(scrollEl){
+    const dists=[];
+    if(scrollEl.scrollLeft>2)dists.push(scrollEl.scrollLeft);
+    if(scrollEl.scrollTop>2)dists.push(scrollEl.scrollTop);
+    if(window.scrollY>2)dists.push(window.scrollY);
+    if(dists.length){
+      const maxD=Math.max(...dists);
+      const dur=Math.min(800,Math.max(250,maxD/1.2));
+      const sp2=[];
+      if(scrollEl.scrollLeft>2)sp2.push(smoothScroll(scrollEl,'scrollLeft',0,dur));
+      if(scrollEl.scrollTop>2)sp2.push(smoothScroll(scrollEl,'scrollTop',0,dur));
+      if(window.scrollY>2)sp2.push(smoothScrollWindow(0,dur));
+      await Promise.all(sp2);
+    }
+  }
+}
+
+let _s3run=false;
+async function doFilter(){
+  if(st.step3||_s3run)return;
+  _s3run=true;
+  initStep3();
+  await applyRules('matrix3',RULES_BASE,'r3-');
+  st.step3=true;_s3run=false;
+}
+
+/* Step 4 */
+function initStep4(){
+  if(document.querySelector('#matrix4 .m-cell'))return;
+  buildMatrix('matrix4',L_OPTIONS,false,INV_BASE,false);
+  const nrc=document.getElementById('newRuleCards');nrc.innerHTML='';
+  const ALL_RULES=[...RULES_BASE,...RULES_NEW];
+  ALL_RULES.forEach((rule,idx)=>{
+    const el=document.createElement('div');el.className='rule-card';el.id='r4-'+idx;
+    if(idx>=RULES_BASE.length){el.classList.add('new-rule');el.style.animationDelay=((idx-RULES_BASE.length)*80)+'ms';}
+    else{el.classList.add('ok');}
+    el.innerHTML='<span class="rc-icon"><img class="rc-loading" src="../icons/loading.svg"><img class="rc-check" src="../icons/Checkbox_filled.svg"></span><span>'+rule.num+'. '+rule.text+'</span>';
+    nrc.appendChild(el);
+  });
+  const wrap=document.getElementById('lNewModules');
+  if(wrap&&!wrap.children.length){
+    const container=document.createElement('div');
+    container.style.cssText='position:relative;width:100%;height:280px;';
+    /* 左侧：插槽预览 frame — 严格还原 Figma 4497_15218 */
+    const frame=document.createElement('div');
+    frame.style.cssText='position:absolute;left:0;top:0;width:170px;height:280px;border:1px dashed #9747FF;border-radius:5px;overflow:hidden;';
+    frame.innerHTML=''
+      /* L8: tick+单行 top:30 */
+      +'<div style="width:104px;height:24px;left:20px;top:30px;position:absolute"><div style="left:0;top:0;position:absolute"><img src="../icons/tick.svg" style="width:24px;height:24px"></div><div style="left:36px;top:2px;position:absolute;display:inline-block"><span style="font-size:17px;font-family:PingFang SC;font-weight:400;color:var(--text-primary)">标题文本</span></div></div>'
+      /* L9: 空+单行 top:84 */
+      +'<div style="width:104px;height:24px;left:20px;top:84px;position:absolute"><div style="width:24px;height:24px;left:0;top:0;position:absolute;opacity:0"></div><div style="left:36px;top:2px;position:absolute;display:inline-block"><span style="font-size:17px;font-family:PingFang SC;font-weight:400;color:var(--text-primary)">标题文本</span></div></div>'
+      /* L10: tick+双行 top:138 */
+      +'<div style="width:120px;height:41px;left:20px;top:138px;position:absolute"><div style="left:0;top:8.5px;position:absolute"><img src="../icons/tick.svg" style="width:24px;height:24px"></div><div style="width:84px;height:41px;left:36px;top:0;position:absolute"><div style="left:0;top:0;position:absolute;display:inline-block"><span style="font-size:17px;font-family:PingFang SC;font-weight:400;color:var(--text-primary)">标题文本</span></div><div style="left:0;top:24px;position:absolute;display:inline-block"><span style="font-size:14px;font-family:PingFang SC;font-weight:400;color:var(--text-tertiary)">辅助说明文字</span></div></div></div>'
+      /* L11: 空+双行 top:209 */
+      +'<div style="width:120px;height:41px;left:20px;top:209px;position:absolute"><div style="width:24px;height:24px;left:0;top:8.5px;position:absolute;opacity:0"></div><div style="width:84px;height:41px;left:36px;top:0;position:absolute"><div style="left:0;top:0;position:absolute;display:inline-block"><span style="font-size:17px;font-family:PingFang SC;font-weight:400;color:var(--text-primary)">标题文本</span></div><div style="left:0;top:24px;position:absolute;display:inline-block"><span style="font-size:14px;font-family:PingFang SC;font-weight:400;color:var(--text-tertiary)">辅助说明文字</span></div></div></div>';
+    container.appendChild(frame);
+    /* 右侧：属性编号（与每行变体垂直居中） */
+    [{id:'L8',name:'单行已勾选',top:30,ht:24},{id:'L9',name:'单行未勾选',top:84,ht:24},{id:'L10',name:'双行已勾选',top:138,ht:41},{id:'L11',name:'双行未勾选',top:209,ht:41}].forEach(it=>{
+      const lbl=document.createElement('div');
+      const centerY=it.top+it.ht/2;
+      lbl.style.cssText='position:absolute;left:190px;top:'+centerY+'px;transform:translateY(-50%);font-size:10px;font-weight:600;color:var(--text-tertiary);letter-spacing:.05em;line-height:1.5;';
+      lbl.innerHTML=it.id+'<br>'+it.name.replace('\n','<br>');
+      container.appendChild(lbl);
+    });
+    wrap.appendChild(container);
+  }
+}
+let _s4run=false;
+async function doUpdate(){
+  if(st.step4||_s4run)return;
+  _s4run=true;
+  initStep4();await sleep(300);
+  const wrap=document.getElementById('matrix4');
+  /* 添加 L8-L11 新行 */
+  L_NEW.forEach((l,li)=>{
+    const row=document.createElement('div');row.className='matrix-row new-row';row.style.animationDelay=(li*110)+'ms';
+    const lw=document.createElement('div');lw.className='row-lbl-w';
+    lw.innerHTML='<div class="row-chip">'+l.id+'<br><span style="font-weight:400;opacity:.65">'+l.name+'</span></div>';
+    row.appendChild(lw);
+    const cells=document.createElement('div');cells.className='matrix-cells';
+    R_OPTIONS.forEach(r=>{
+      const cell=document.createElement('div');cell.id='c-matrix4-'+l.id+'-'+r.id;cell.className='m-cell generated appear';
+      cell.style.animationDelay=(li*110+R_OPTIONS.indexOf(r)*18)+'ms';
+      cell.appendChild(makeFormRow(l,r));
+      cells.appendChild(cell);
+    });
+    row.appendChild(cells);wrap.appendChild(row);
+  });
+  updateFormula('11','6','20','46');
+  /* 等 DOM 和动画就绪 — 确认新单元格已挂载 */
+  await sleep(800);
+  /* 清除 appear 动画残留：cellIn 的 animation-fill-mode:both 会锁 opacity=1，
+     覆盖后续 .disabled{opacity:.3}，必须在 applyRules 前清除 */
+  document.querySelectorAll('#matrix4 .m-cell.appear').forEach(c=>{
+    c.classList.remove('appear');
+    c.style.animation='none';
+  });
+  document.querySelectorAll('#matrix4 .matrix-row.new-row').forEach(r=>{
+    r.classList.remove('new-row');
+    r.style.animation='none';
+  });
+  /* DEBUG：验证目标单元格确实存在 */
+  console.log('[Step4] 准备 applyRules，验证目标单元格:');
+  INV_NEW.forEach(({l,r})=>{
+    const el=document.getElementById('c-matrix4-'+l+'-'+r);
+    console.log('  '+l+'×'+r+': '+(el?'found, classes='+el.className:'*** NOT FOUND ***'));
+  });
+  await applyRules('matrix4',RULES_NEW,'r4-',RULES_BASE.length);
+  /* 兜底保障：无论 applyRules 动画是否成功，强制将 INV_NEW 全部置灰 */
+  console.log('[Step4] applyRules 完成，执行兜底置灰:');
+  INV_NEW.forEach(({l,r})=>{
+    const c=document.getElementById('c-matrix4-'+l+'-'+r);
+    if(c){
+      if(!c.classList.contains('disabled')){
+        console.log('  兜底置灰: '+l+'×'+r);
+        c.classList.remove('highlight','marking','pending','appear');
+        c.style.animation='none';
+        c.classList.add('disabled');
+      }
+    }else{
+      console.log('  *** 兜底找不到: '+l+'×'+r+' ***');
+    }
+  });
+  st.step4=true;_s4run=false;
+}
+</script>
+</body>
+</html>

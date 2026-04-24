@@ -4,6 +4,24 @@
 > **大类**：数据  
 > **变体数量**：110 种（67 默认态 + 43 多选态）
 
+## 🔒 强约束声明
+
+@LINT F1, F3, F4, S7, S17, TK1, DV1
+@SPEC_OF_TRUTH 本文件为 List（通栏列表）权威规范
+
+### @MUST
+- 变体仅限 L0-L7 × C1-C3 × R0-R9，共 110 种（67 默认 + 43 多选），经约束矩阵过滤
+- 容器宽度 428px 通栏
+- 行间分割线 0.5px + `var(--border-weak)`，距左 16px 到右侧边缘
+- 列表最后一行底部不显示分割线
+- 多选态 S1：L0-L7 × C × {R0,R1,R2,R3,R6,R7}
+- 约束：L0 禁 C3 且 R 限 R1/R4/R5/R6；R2 限 L1+C1；R3 限 C1；R7/R8 限 L4；R9 限 L5+C2
+
+### @FORBIDDEN
+- 发明注册表外的变体
+- 最后一行显示底部分割线
+- 分割线距左非 16px 或颜色非 `--border-weak`
+
 本文件定义了移动端通栏式列表母组件的系统化构建逻辑、属性约束及 UI 规范。
 
 ---
@@ -42,9 +60,9 @@
 | 标识 | 属性名 | 视觉特征 |
 | :--- | :--- | :--- |
 | R0/Empty | Empty | 不显示右侧区域 |
-| R1 | 辅助+箭头 | 灰色文本（**可省略**）+ `icons/chevron_right.svg`（向右箭头） |
-| R2 | 辅助+头像+箭头 | 文本 + `icons/Avatar_32.svg`（32×32 头像）+ `icons/chevron_right.svg`（箭头） |
-| R3 | 辅助+图片+箭头 | 文本 + `icons/Thumbnail_32.svg`（32×32 缩略图，圆角4px）+ `icons/chevron_right.svg`（箭头） |
+| R1 | 辅助+箭头 | 辅助文字（14px，行高 20px，`var(--text-secondary)`，**可省略**）+ `icons/chevron_right.svg`（16×16px，`var(--icon-tertiary)`） |
+| R2 | 辅助+头像+箭头 | 辅助文字（14px，行高 20px，`var(--text-secondary)`）+ `icons/Avatar_32.svg`（32×32 头像）+ `icons/chevron_right.svg`（16×16px，`var(--icon-tertiary)`） |
+| R3 | 辅助+图片+箭头 | 辅助文字（14px，行高 20px，`var(--text-secondary)`）+ `icons/Thumbnail_32.svg`（32×32 缩略图，圆角4px）+ `icons/chevron_right.svg`（16×16px，`var(--icon-tertiary)`） |
 | R4 | 按钮 | 次级按钮 (Button) |
 | R5 | Action | 蓝色链接文字 |
 | R6 | Icon | `icons/empty_icon.svg`（24×24 占位，实际任务中替换为 `icons/QUI_24_icons/<图标名>.svg`） |
@@ -130,9 +148,9 @@
 | R | 结构 | 样式细节 |
 |---|------|---------|
 | R0/Empty | 无 | 不渲染右侧区域 |
-| R1 辅助+箭头 | 灰色文字（可省略）+ 箭头 SVG | 文字 17px `var(--text-secondary)`，margin-right: 4px；辅助文字可选配，省略时仅显示箭头 |
-| R2 辅助+头像+箭头 | 文字 + 32px 头像 + 箭头 | 头像 margin-right: 8px |
-| R3 辅助+图片+箭头 | 文字 + 32px 图片(圆角4px) + 箭头 | 图片 margin-right: 8px |
+| R1 辅助+箭头 | 灰色文字（可省略）+ 箭头 SVG | 辅助文字 **14px**，行高 **20px**，颜色 `var(--text-secondary)`，margin-right: 4px；箭头 `icons/chevron_right.svg` 16×16px，颜色 `var(--icon-tertiary)`；辅助文字可选配，省略时仅显示箭头 |
+| R2 辅助+头像+箭头 | 文字 + 32px 头像 + 箭头 | 辅助文字 **14px**，行高 **20px**，颜色 `var(--text-secondary)`；头像 margin-right: 8px；箭头同 R1 |
+| R3 辅助+图片+箭头 | 文字 + 32px 图片(圆角4px) + 箭头 | 辅助文字 **14px**，行高 **20px**，颜色 `var(--text-secondary)`；图片 margin-right: 8px；箭头同 R1 |
 | R4 按钮 | 次级按钮 | padding: 6px 16px, border-radius: 18px, font-size: 14px, font-weight: 500, 背景 `rgba(116,116,128,0.08)` |
 | R5 Action | 蓝色链接文字 | font-size: 17px, color: `#214CA5` |
 | R6 Icon | `icons/empty_icon.svg`（24×24 占位，实际任务中替换） | — |
@@ -330,7 +348,7 @@ Flex 算法分配顺序：
 - 列表行之间的分割线由外部列表容器控制
 - 分割线宽度: 距左 16px 到右侧边缘
 - 分割线高度: 0.5px
-- 颜色: `rgba(0,0,0,0.05)`（Token `--border-weak`）
+- 颜色: `var(--border-weak)`
 
 ---
 

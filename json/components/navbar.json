@@ -17,7 +17,7 @@
   "dimensions": {
     "L": [
       { "id": "L1", "name": "返回", "visual": "基础返回箭头图标" },
-      { "id": "L2", "name": "返回+气泡", "visual": "返回箭头 + 数字气泡 (Badge，中性灰色)" },
+      { "id": "L2", "name": "返回+气泡", "visual": "返回箭头 + Badge A1-A3（AIO 导航栏类，--fill-tertiary 浅灰底 + --text-primary 黑字）", "uses": "badge:A1-A3", "scope": "AIO 页面专用：返回 AIO 聊天列表时显示未读消息数" },
       { "id": "L3", "name": "关闭", "visual": "关闭图标 (X)" },
       { "id": "L4", "name": "图标", "visual": "其他功能性图标" },
       { "id": "L5", "name": "操作", "visual": "17px 纯文字按钮" },
@@ -27,8 +27,8 @@
       { "id": "C0/Empty", "name": "Empty", "visual": "空白" },
       { "id": "C1", "name": "标题", "visual": "17px 粗体居中标题" },
       { "id": "C2", "name": "下拉标题", "visual": "标题文字 + icons/chevron_down.svg（12×12px 向下箭头）" },
-      { "id": "C3", "name": "标题+副标题", "visual": "主标题 + 11px 辅助描述" },
-      { "id": "C4", "name": "标题+可点击副标题", "visual": "主标题 + 黑色 11px 副标题(具备点击态)" },
+      { "id": "C3", "name": "标题+副标题", "visual": "主标题 + 12px 辅助描述" },
+      { "id": "C4", "name": "标题+可点击副标题", "visual": "主标题 + 黑色 12px 副标题(具备点击态)" },
       { "id": "C5", "name": "分段选择", "visual": "分段控制器，胶囊背景 + 选中滑块" }
     ],
     "R": [
@@ -61,7 +61,7 @@
 
   "style": {
     "title": { "fontSize": 17, "fontWeight": 600, "color": { "token": "text-primary", "value": "rgba(0, 0, 0, 1.0)" } },
-    "subtitle_C3": { "fontSize": 11, "color": { "token": "text-primary", "value": "rgba(0, 0, 0, 1.0)" } },
+    "subtitle_C3": { "fontSize": 12, "color": { "token": "text-primary", "value": "rgba(0, 0, 0, 1.0)" } },
     "descGroup_C4_L6": { "fontSize": 10, "color": { "token": "text-secondary", "value": "rgba(60, 60, 67, 0.6)" } },
     "actionText": { "fontSize": 17, "color": { "token": "text-primary", "value": "rgba(0, 0, 0, 1.0)" } },
     "iconSize": 24,

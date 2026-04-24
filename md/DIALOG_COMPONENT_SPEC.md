@@ -4,6 +4,25 @@
 > **大类**：模态  
 > **变体数量**：15 种
 
+## 🔒 强约束声明
+
+@LINT F1, F3, F10, S8, S15, TK1, TK9
+@SPEC_OF_TRUTH 本文件为 Dialog 权威规范
+
+### @MUST
+- 变体编码 `{T|NT}-{P|C|I}-{S|D|T}`，共 15 种
+- 输入类(I) 必须有标题(T)
+- 圆角统一 14px，**无阴影**（与全局规范一致：除 Menu 外其他组件不使用阴影）
+- 居中对齐 + 遮罩 `var(--overlay-modal)`
+- 双按钮水平排列，中间 0.5×54px 竖向分割线 + `var(--border-default)`
+- 三按钮纵向堆叠，每个 54px，顶部 0.5px 横向分割线 + `var(--border-default)`
+- 操作按钮区与正文区之间 0.5px 横向分割线 + `var(--border-default)`
+
+### @FORBIDDEN
+- 发明注册表外的变体
+- 与 ActionSheet / HalfScreenOverlay 相互嵌套
+- 修改 14px 圆角或 54px 按钮高度
+
 ## 1. 组件概述
 
 对话框（Dialog）是居中显示的模态弹窗组件，用于向用户传达重要信息并请求确认或决策。它通常在需要用户明确响应后才能继续操作时触发，是 iOS/移动端设计中的标准交互模式。
@@ -80,7 +99,7 @@ Action layouts:
 | 输入框光标 | #0099FF | `--brand-standard` |
 | 操作按钮文字 | #214CA5 | `--text-link` |
 | 分割线 | var(--border-default) | `--border-default` |
-| 阴影 | 0 8px 32px var(--border-weak) | — |
+| 阴影 | 无（除 Menu 外其他组件不使用阴影） | — |
 
 ### 3.3 字体规范
 
@@ -120,9 +139,9 @@ Action layouts:
 
 | 类型 | 按钮 | 说明 |
 |------|------|------|
-| 单按钮 | Action | 仅一个操作按钮，全宽横向，文字 #214CA5 Regular |
-| 双按钮 | Action + Action | 两个按钮水平排列，中间有 0.5px 竖向分割线，文字 #214CA5 Regular |
-| 三按钮 | Action × 3 | 三个按钮纵向堆叠，每个高 54px，顶部有 0.5px 横向分割线，文字 #214CA5 Regular |
+| 单按钮 | Action | 仅一个操作按钮，全宽横向，文字 `var(--text-link)` Regular |
+| 双按钮 | Action + Action | 两个按钮水平排列，中间有 0.5px 竖向分割线，文字 `var(--text-link)` Regular |
+| 三按钮 | Action × 3 | 三个按钮纵向堆叠，每个高 54px，顶部有 0.5px 横向分割线，文字 `var(--text-link)` Regular |
 
 ## 5. 变体矩阵
 
@@ -184,7 +203,7 @@ Action layouts:
 ## 7. 布局规则
 
 1. 对话框固定宽度 **296px**，垂直居中于遮罩层
-2. 圆角统一 **14px**，阴影 `0 8px 32px var(--border-weak)`
+2. 圆角统一 **14px**，**无阴影**（与全局规范一致）
 3. 操作按钮区域与正文区域之间有 **0.5px** 横向分割线（`var(--border-default)`）；三按钮时每个按钮顶部均有 **0.5px** 横向分割线
 4. 双按钮时水平排列（`display: flex`），按钮间有 **0.5px × 54px** 竖向分割线
 5. 三按钮时纵向堆叠（`flex-direction: column`），每个按钮顶部有 **0.5px** 横向分割线
@@ -208,7 +227,7 @@ Action layouts:
     background: var(--bg-bottom);
     border-radius: 14px;
     overflow: hidden;
-    box-shadow: var(--overlay-modal);
+    /* 无 box-shadow（与全局规范一致：除 Menu 外其他组件不使用阴影；遮罩由父容器 .dialog-overlay 承担） */
 }
 ```
 

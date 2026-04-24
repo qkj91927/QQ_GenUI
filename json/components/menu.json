@@ -37,7 +37,7 @@
     "containerWidth": 180,
     "radius": 12,
     "background": { "token": "bg-bottom", "value": "#FFFFFF" },
-    "shadow": { "token": "shadow.menu", "value": "0 8px 32px rgba(0,0,0,0.12)" }
+    "shadow": { "token": "shadow-menu", "value": "0 8px 32px rgba(0, 0, 0, 0.12)" }
   },
 
   "style": {

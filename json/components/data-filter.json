@@ -11,10 +11,10 @@
     "A_tab": {
       "name": "页签 Tab",
       "items": [
-        { "id": "A1", "name": "四页签", "count": 4, "height": 24, "mode": "equal" },
-        { "id": "A2", "name": "五页签", "count": 5, "height": 24, "mode": "equal" },
-        { "id": "A3", "name": "六页签", "count": 6, "height": 24, "mode": "equal" },
-        { "id": "A4", "name": "横滑", "count": 8, "height": 24, "mode": "scroll", "padding": "0 16px", "gap": 24 }
+        { "id": "A1", "name": "四页签", "count": 4, "height": 48, "mode": "equal", "padding": "0 16px", "itemWidth": 96 },
+        { "id": "A2", "name": "五页签", "count": 5, "height": 48, "mode": "equal", "padding": "0 16px", "itemWidth": 80 },
+        { "id": "A3", "name": "六页签", "count": 6, "height": 48, "mode": "equal", "padding": "0 16px", "itemWidth": 68 },
+        { "id": "A4", "name": "横滑", "count": 8, "height": 48, "mode": "scroll", "padding": "0 16px", "gap": 24, "itemWidth": "auto" }
       ],
       "layout": {
         "containerWidth": 428,
@@ -68,7 +68,7 @@
       },
       "style": {
         "text": { "fontSize": 14, "lineHeight": 20, "fontWeight": 400, "color": { "token": "text-primary", "value": "rgba(0, 0, 0, 1.0)" } },
-        "arrow": { "size": 14, "fill": "#000000", "file": "icons/chevron_down.svg" }
+        "arrow": { "size": 14, "fill": { "token": "text-primary", "value": "rgba(0, 0, 0, 1.0)" }, "file": "icons/chevron_down.svg" }
       },
       "note": "仅包含按钮，不包含弹窗菜单。点击后由 Menu 组件承担弹窗"
     },
@@ -94,10 +94,10 @@
         "tileTagWidth": "(396 - (n-1)×8) / n"
       },
       "style": {
-        "singleLineText": { "fontSize": 15, "lineHeight": 20, "font": "PingFang SC" },
+        "singleLineText": { "fontSize": 14, "lineHeight": 20, "font": "PingFang SC" },
         "unselected": { "fontWeight": 400, "color": "rgba(60,60,67,0.6)" },
         "selected": { "fontWeight": 500, "color": "rgba(0,0,0,1.0)" },
-        "doubleLineTitle": { "fontSize": 15, "lineHeight": 20 },
+        "doubleLineTitle": { "fontSize": 14, "lineHeight": 20 },
         "doubleLineDesc": { "fontSize": 14, "lineHeight": 20, "fontWeight": 400 },
         "doubleLineDescSelected": { "color": "rgba(60,60,67,0.6)" },
         "doubleLineDescUnselected": { "color": "rgba(60,60,67,0.3)" }
@@ -121,9 +121,9 @@
       },
       "style": {
         "text": { "fontSize": 14, "lineHeight": 20, "fontWeight": 500, "whiteSpace": "nowrap", "flexShrink": 0 },
-        "middleLevel": { "color": { "token": "text-tertiary", "value": "rgba(60, 60, 67, 0.6)" } },
+        "middleLevel": { "color": { "token": "text-secondary", "value": "rgba(60, 60, 67, 0.6)" } },
         "lastLevel": { "color": { "token": "text-primary", "value": "rgba(0, 0, 0, 1.0)" } },
-        "border-weak": { "size": 12, "color": "rgba(60,60,67,0.75)", "margin": "0 8px" }
+        "separator": { "size": 12, "color": { "token": "border-default", "value": "#C6C6C8" }, "margin": "0 8px", "icon": "icons/chevron_right.svg" }
       }
     }
   },

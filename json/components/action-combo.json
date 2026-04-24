@@ -40,7 +40,7 @@
     },
     "secondary": {
       "bg": "transparent",
-      "border": { "token": "border-default", "value": "rgba(60, 60, 67, 0.25) 1px" },
+      "border": { "token": "border-default", "width": "1px", "value": "#C6C6C8" },
       "text": { "token": "text-primary", "value": "rgba(0, 0, 0, 1.0)" },
       "fontSize": 17,
       "fontWeight": 600,

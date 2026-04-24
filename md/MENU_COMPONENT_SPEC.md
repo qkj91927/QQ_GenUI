@@ -4,6 +4,22 @@
 > **大类**：操作  
 > **变体数量**：15 种（有图标/无图标/有勾选 × 2-6项）
 
+## 🔒 强约束声明
+
+@LINT F1, S16, TK9
+@SPEC_OF_TRUTH 本文件为 Menu 权威规范
+
+### @MUST
+- 变体编码 `{I|NI|C}-{2-6}`，共 15 种（3 类型 × 5 项数）
+- 项数严格 2-6 项
+- 容器阴影使用 `var(--shadow-menu)`（即 `0 8px 32px var(--border-weak)`）
+- 非模态：无遮罩，可与页面其他区域交互
+
+### @FORBIDDEN
+- 发明注册表外的变体
+- 硬编码 box-shadow
+- 添加遮罩（会变成模态组件）
+
 ## 1. 概述
 
 菜单（Menu）是一种伴随式非模态浮层组件，用于在用户点击或长按触发元素后，在触发点附近弹出一组可选操作项。菜单不覆盖全屏、不带遮罩层，用户可直接与页面其他区域交互来关闭菜单。
@@ -194,7 +210,7 @@
     background: var(--bg-bottom);
     border-radius: 12px;
     overflow: hidden;
-    box-shadow: 0 8px 32px rgba(0,0,0,0.12);
+    box-shadow: var(--shadow-menu);  /* 等价 0 8px 32px rgba(0,0,0,0.12)，唯一允许使用阴影的组件 */
 }
 ```
 

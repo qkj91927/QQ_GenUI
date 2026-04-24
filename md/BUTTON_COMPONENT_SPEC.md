@@ -4,6 +4,25 @@
 > **大类**：操作  
 > **变体数量**：12 种（4尺寸 × 3类型）
 
+## 🔒 强约束声明
+
+@LINT F1, F4, F5, F18, S10, S11, TK1, TK7
+@SPEC_OF_TRUTH 本文件为 Button 权威规范
+
+### @MUST
+- 变体仅限 S1-S4（大/中/小/mini）× T1-T3（一级/二级/警示），共 12 种
+- 加载态仅 S1/S2 × T1/T2 支持（S3/S4/T3 不支持）
+- 大尺寸(S1) 圆角 14px / 字号 17px / 字重 600
+- 小尺寸(S3) 圆角 9999px（胶囊）
+- 二级按钮描边 `1px solid var(--border-default)`
+- Disabled 态 opacity ∈ [0.3, 0.4]，`pointer-events: none`
+- 内部图标白色效果仅允许 `filter: brightness(0) invert(1); opacity: 0.9`（一级白底图标）
+
+### @FORBIDDEN
+- 发明注册表外的变体
+- 自定义圆角/字号/字重（需与 Action Combo 联动保持一致）
+- Disabled 态单独硬编码色值
+
 ## 1. 组件概述
 
 按钮（Button）是移动端最基础的操作触发组件，用于引导用户执行主要或次要操作。按钮通过视觉层级（一级/二级/警示）和尺寸变化适配不同的交互场景与布局需求。

@@ -4,6 +4,28 @@
 > **大类**：操作  
 > **变体数量**：5 种（T1-T5）
 
+## 🔒 强约束声明
+
+@LINT F1, S14, S15, TK1, TK13
+@SPEC_OF_TRUTH 本文件为 Toast 权威规范
+
+### @MUST
+- 变体仅限 T1（加载中）/ T2（成功）/ T3（失败）/ T4（中性文字）/ T5（带操作），共 5 种
+- 背景 `var(--fill-gray-primary)` + `backdrop-filter: blur(20px)`（Toast 特例允许毛玻璃）
+- 文字颜色 `var(--text-white)`
+- 位置：上半屏居中（非贴顶也非贴底）
+- `z-index: 9999`（Toast 层级最高）
+- 同屏最多 1 个 Toast（队列或替换）
+- 非阻断式：无遮罩，无需用户交互，自动消失
+
+### @FORBIDDEN
+- 发明注册表外的变体
+- 同屏多 Toast 叠加显示
+- 在页面底部显示（与 HomeBar 冲突）
+- 文字颜色非 `--text-white`
+- 背景硬编码 rgba 或使用其他 token
+- **Toast 与模态组件（Dialog / ActionSheet / HalfScreenOverlay）同屏共存**（S26）：两者互斥；打开模态前必须关闭 Toast，反之亦然
+
 Toast 是一种短暂性的非阻断式反馈提示组件，用于告知用户操作结果或当前状态，无需用户交互即可自动消失。
 
 ---

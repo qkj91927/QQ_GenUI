@@ -4,6 +4,31 @@
 > **大类**：操作  
 > **变体数量**：15 种（A1-A8 按钮型 + B1-B7 辅助操作型）
 
+## 🔒 强约束声明
+
+@LINT F1, F4, F5, S11, S15, S16, S17, TK1
+@SPEC_OF_TRUTH 本文件为 Action / ActionCombo 权威规范
+
+### @MUST
+- 变体仅限 A1-A8（按钮型）+ B1-B7（辅助操作型），共 15 种
+- Action Combo 定位：`position: fixed; bottom: 34px; z-index: 10`（吸底 HomeBar 上方）
+- **滚动时不被内容遮挡**（S19）：页面内容滚动须在 Action Combo 之下，Home Bar 层级高于 Action Combo，Action Combo 高于页面内容
+- **Home Bar 底色联动**（S21）：Home Bar 底色须与 Action Combo 底色一致，避免视觉断层
+- **多行吸底**（S25）：A + B 辅助操作行组合时整体吸底 `bottom: 34px`，高度累加不压页面；页面滚动容器 `padding-bottom` ≥ Action Combo 总高度 + 34px
+
+### @FORBIDDEN 补充
+- **Action Combo 与 AIO Input 同页面共存**（S25）：两者互斥，同页最多存在其中一个
+- 容器宽度 428px 通栏
+- A 类按钮大尺寸(S1)：圆角 14px / 字号 17px / 字重 600（与 Button 联动）
+- B6/B7 竖向分隔线：0.5×14px + `var(--border-weak)`，水平间距 8px
+- 二级按钮描边：`1px solid var(--border-default)`
+
+### @FORBIDDEN
+- 发明注册表外的变体
+- 修改 Action Combo 的 fixed 定位或 bottom: 34px
+- 分隔线硬编码 rgba / 非 0.5px 宽度 / 非 `--border-weak`
+- 修改大尺寸按钮圆角/字号/字重
+
 本文件定义了移动端操作组合组件的系统化构建逻辑、属性约束及 UI 规范。操作组合用于页面底部或表单尾部的操作区域，分为 **操作组合 (A)** 和 **辅助操作组合 (B)** 两大类。
 
 ---
@@ -100,7 +125,7 @@
 | 字号 | 14px |
 | 字重 | 500 |
 | 颜色 | `var(--text-link)` |
-| 分隔线 | 1×14px, `rgba(0, 0, 0, 0.08)`, 水平间距 8px |
+| 分隔线 | 0.5×14px（垂直 divider，宽 0.5 高 14），`var(--border-weak)`，水平间距 8px |
 
 ### 辅助文案
 | 属性 | 值 |
@@ -152,7 +177,7 @@
 | 链接色（Action 文字链） | `--text-link` | `#214CA5` |
 | 次容器填充（图标按钮背景） | `--fill-secondary` | `var(--border-default)` |
 | 标准描边（二级按钮描边） | `--border-default` | `rgba(60, 60, 67, 0.25)` |
-| 弱描边（B 类分隔线） | `--border-weak` | `rgba(0, 0, 0, 0.05)` |
+| 弱描边（B 类分隔线） | `--border-weak` | — |
 
 > 颜色权威来源：`css/Qdesign Color Tokens.css`
 

@@ -32,9 +32,9 @@
     ],
     "R": [
       { "id": "R0/Empty", "name": "Empty" },
-      { "id": "R1", "name": "辅助+箭头", "structure": ["helperText(optional)", "arrow"], "helperTextOptional": true, "arrowIcon": "icons/chevron_right.svg", "helperStyle": { "fontSize": 17, "color": { "token": "text-secondary", "value": "rgba(60, 60, 67, 0.6)" }, "marginRight": 4 } },
-      { "id": "R2", "name": "辅助+头像+箭头", "structure": ["helperText", "avatar:32x32:round", "arrow"], "avatarAsset": "icons/Avatar_32.svg", "arrowIcon": "icons/chevron_right.svg", "avatarMarginRight": 8 },
-      { "id": "R3", "name": "辅助+图片+箭头", "structure": ["helperText", "image:32x32:r4", "arrow"], "imageAsset": "icons/Thumbnail_32.svg", "arrowIcon": "icons/chevron_right.svg", "imageRadius": 4, "imageMarginRight": 8 },
+      { "id": "R1", "name": "辅助+箭头", "structure": ["helperText(optional)", "arrow"], "helperTextOptional": true, "arrowIcon": "icons/chevron_right.svg", "arrowSize": 16, "arrowColor": { "token": "icon-tertiary", "value": "rgba(60,60,67,0.3)" }, "helperStyle": { "fontSize": 14, "lineHeight": 20, "color": { "token": "text-secondary", "value": "rgba(60, 60, 67, 0.6)" }, "marginRight": 4 } },
+      { "id": "R2", "name": "辅助+头像+箭头", "structure": ["helperText", "avatar:32x32:round", "arrow"], "avatarAsset": "icons/Avatar_32.svg", "arrowIcon": "icons/chevron_right.svg", "arrowSize": 16, "arrowColor": { "token": "icon-tertiary", "value": "rgba(60,60,67,0.3)" }, "avatarMarginRight": 8, "helperStyle": { "fontSize": 14, "lineHeight": 20, "color": { "token": "text-secondary", "value": "rgba(60, 60, 67, 0.6)" }, "marginRight": 4 } },
+      { "id": "R3", "name": "辅助+图片+箭头", "structure": ["helperText", "image:32x32:r4", "arrow"], "imageAsset": "icons/Thumbnail_32.svg", "arrowIcon": "icons/chevron_right.svg", "arrowSize": 16, "arrowColor": { "token": "icon-tertiary", "value": "rgba(60,60,67,0.3)" }, "imageRadius": 4, "imageMarginRight": 8, "helperStyle": { "fontSize": 14, "lineHeight": 20, "color": { "token": "text-secondary", "value": "rgba(60, 60, 67, 0.6)" }, "marginRight": 4 } },
       { "id": "R4", "name": "按钮", "style": { "padding": "6px 16px", "radius": 18, "fontSize": 14, "fontWeight": 500, "bg": { "token": "fill-tertiary", "value": "rgba(116, 116, 128, 0.08)" } } },
       { "id": "R5", "name": "Action", "style": { "fontSize": 17, "color": { "token": "text-link", "value": "#214CA5" } } },
       { "id": "R6", "name": "Icon", "visual": "基础操作图标" },

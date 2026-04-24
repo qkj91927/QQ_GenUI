@@ -4,6 +4,24 @@
 > **大类**：数据  
 > **变体数量**：4×2（A-D 四类 × 主/客态）
 
+## 🔒 强约束声明
+
+@LINT F1, S17, TK1, TK10
+@SPEC_OF_TRUTH 本文件为 Message 权威规范
+
+### @MUST
+- 变体仅限 A（文本）/ B（图文长）/ C（图文短）/ D（图标）× 主态/客态，共 8 种
+- 气泡宽度 396px（内嵌）
+- 主态：头像在右 + 蓝色气泡；客态：头像在左 + 白色气泡
+- 标题字号/行高 17px/24px，`var(--text-primary)`
+- 描述字号/行高 14px/20px，`var(--text-secondary)`
+- 辅助信息行：12px 图标（`empty_icon`，`var(--icon-secondary)`）+ 12px 文字（`var(--text-secondary)`）
+
+### @FORBIDDEN
+- 发明注册表外的变体
+- 修改气泡圆角或 396px 宽度
+- 图标色硬编码（必须 `var(--icon-secondary)`）
+
 ## 1. 组件概述
 
 即时通讯场景的聊天气泡消息组件，由头像区域和气泡内容区域组成。支持主态（头像在右 + 蓝色气泡）和客态（头像在左 + 白色气泡），包含 4 种内容类型。
@@ -84,7 +102,7 @@
 | 标题字号/行高 | 17px / 24px，color: var(--text-primary) |
 | 描述字号/行高 | 14px / 20px，color: var(--text-secondary)，margin-top: 4px |
 | App 图标 | 52×52px，border-radius: 12px |
-| 分割线 | 263×0.5px，rgba(0,0,0,0.05) |
+| 分割线 | 263×0.5px，`var(--border-weak)` |
 | 辅助信息行 | 高22px，12px占位图标(empty_icon) + 12px文字 var(--text-secondary) |
 
 ### 4.3 C.图文短标题 (rich_short)
@@ -112,7 +130,7 @@
 | 布局 | flex，align-items: center，gap: 8px |
 | 图标 | 52×52px，border-radius: 12px |
 | 标题字号/行高 | 17px / 24px，color: var(--text-primary) |
-| 分割线 | 263×0.5px，rgba(0,0,0,0.05) |
+| 分割线 | 263×0.5px，`var(--border-weak)` |
 | 辅助信息行 | 高22px，12px占位图标(empty_icon, `--icon-secondary`) + 12px文字 var(--text-secondary) |
 
 ---

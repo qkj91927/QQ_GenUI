@@ -23,9 +23,9 @@
     ],
     "R": [
       { "id": "R0", "name": "为空 / None" },
-      { "id": "R1", "name": "跳转 / Detail", "visual": "可选辅助信息文字（17px，var(--color-text-secondary)）+ icons/chevron_right.svg（16px 右箭头）；辅助信息可隐藏" },
-      { "id": "R2", "name": "辅助信息+下拉菜单", "visual": "可选辅助信息文字（17px，var(--color-text-secondary)）+ icons/expand_list.svg（16px 下拉箭头）；辅助信息可隐藏" },
-      { "id": "R3", "name": "辅助信息+头像+箭头 / Avatar", "visual": "可选辅助信息文字（17px，var(--color-text-secondary)）+ icons/Avatar_32.svg（32px）+ icons/chevron_right.svg（16px）；辅助信息和头像均可独立隐藏" },
+      { "id": "R1", "name": "跳转 / Detail", "visual": "可选辅助信息文字（14px，行高 20px，var(--text-secondary)）+ icons/chevron_right.svg（16×16，var(--icon-tertiary)）；辅助信息可隐藏" },
+      { "id": "R2", "name": "辅助信息+下拉菜单", "visual": "可选辅助信息文字（14px，行高 20px，var(--text-secondary)）+ icons/expand_list.svg（16×16，var(--icon-tertiary)）；辅助信息可隐藏" },
+      { "id": "R3", "name": "辅助信息+头像+箭头 / Avatar", "visual": "可选辅助信息文字（14px，行高 20px，var(--text-secondary)）+ icons/Avatar_32.svg（32px）+ icons/chevron_right.svg（16×16，var(--icon-tertiary)）；辅助信息和头像均可独立隐藏" },
       { "id": "R4", "name": "开关 / Switch", "visual": "44×26px 胶囊开关，开启态 var(--color-brand-standard)" },
       { "id": "R5", "name": "勾选 / Checkbox", "visual": "icons/Checkbox_filled.svg(选中) / icons/Checkbox.svg(未选中)（20px，var(--color-brand-standard)）" }
     ]
@@ -94,7 +94,7 @@
   "style": {
     "title": { "fontSize": 17, "color": { "token": "text-primary", "value": "rgba(0, 0, 0, 1.0)" }, "overflow": "ellipsis", "whiteSpace": "nowrap" },
     "subtitle": { "fontSize": 14, "color": { "token": "text-secondary", "value": "rgba(60, 60, 67, 0.6)" }, "lineHeight": 1.2, "marginTop": 1, "overflow": "ellipsis", "whiteSpace": "nowrap" },
-    "helperText": { "fontSize": 17, "color": { "token": "text-secondary", "value": "rgba(60, 60, 67, 0.6)" }, "maxWidth": 120, "overflow": "hidden", "textOverflow": "ellipsis", "whiteSpace": "nowrap" },
+    "helperText": { "fontSize": 14, "lineHeight": 20, "color": { "token": "text-secondary", "value": "rgba(60, 60, 67, 0.6)" }, "maxWidth": 120, "overflow": "hidden", "textOverflow": "ellipsis", "whiteSpace": "nowrap" },
     "border-weak": { "height": 0.5, "color": { "token": "border-weak", "value": "rgba(0, 0, 0, 0.05)" }, "inset": "16px" },
     "groupHeader": { "padding": "8px 0", "fontSize": 14, "color": { "token": "text-secondary", "value": "rgba(60, 60, 67, 0.6)" } },
     "groupFooter": { "padding": "8px 16px 0", "fontSize": 14, "color": { "token": "text-secondary", "value": "rgba(60, 60, 67, 0.6)" } }

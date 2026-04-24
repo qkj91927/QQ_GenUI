@@ -2,7 +2,27 @@
 
 > **组件 ID**：`action_sheet`  
 > **大类**：模态  
-> **变体数量**：22 种
+> **变体数量**：42 种（操作数 0-10 × 提示 T × 警示 D，经约束 "常规+警示≥1" 过滤）
+
+## 🔒 强约束声明
+
+@LINT F1, F10, S8, S11, S15, S16, S17, TK1
+@SPEC_OF_TRUTH 本文件为 ActionSheet 权威规范
+
+### @MUST
+- 变体编码 `AS-{0-10}{T?}{D?}`，主区最多 10 项
+- 容器 428px 通栏，吸底 + 底部 overlay
+- 主操作区与取消区间固定 10px gap（由 `var(--bg-secondary)` 填充）
+- 分割线高度 0.5px + `var(--border-weak)`（位于非第一行的顶部）
+- 文字单行，主区行 ≤20 字符，辅助/取消行 ≤10 字符，超出 `text-overflow: ellipsis`
+- 主区超过屏高 60%（≈556px）时主区内部滚动，取消区始终固定可见
+
+### @FORBIDDEN
+- 发明注册表外的变体
+- 与 Dialog / HalfScreenOverlay 相互嵌套
+- 修改主-取消 10px gap
+- 分割线非 0.5px 或颜色非 `--border-weak`
+- 文字换行或超字符数不截断
 
 ## 1. 组件概述
 
